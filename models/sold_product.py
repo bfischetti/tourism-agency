@@ -2,6 +2,7 @@ from db import db
 from models.product import ProductModel
 from models.sale import SaleModel
 
+
 class SoldProductModel(db.Model):
     __tablename__ = 'sold_product'
 
@@ -26,6 +27,4 @@ class SoldProductModel(db.Model):
         return {'sold_product_id': self.sold_product_id,
                 'price': self.price,
                 'product': self.product,
-                'sale': self.sale }
-
-
+                'sale': self.sale}
