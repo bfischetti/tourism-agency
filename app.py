@@ -8,6 +8,8 @@ from flask_jwt_extended import JWTManager
 from blacklist import BLACKLIST
 
 from resources.user import User, UserLogin, UserLogout, UserRegister, TokenRefresh
+from resources.provider import Provider, ProviderList
+from resources.product import Product, ProductList
 
 
 app = Flask(__name__)
@@ -63,6 +65,10 @@ api.add_resource(UserLogin, '/login')
 api.add_resource(UserLogout, '/logout')
 api.add_resource(TokenRefresh, '/refresh')
 api.add_resource(User, '/user')
+api.add_resource(Provider, '/provider')
+api.add_resource(ProviderList, '/providers')
+api.add_resource(Product, '/product')
+api.add_resource(ProductList, '/products')
 
 
 if __name__ == '__main__':

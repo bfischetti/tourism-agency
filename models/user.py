@@ -1,4 +1,3 @@
-import sqlite3
 from db import db
 
 
@@ -12,7 +11,7 @@ class UserModel(db.Model):
     last_name = db.Column(db.String(80))
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.email
 
     def update_to_db(self, user_id):
         user_to_update = UserModel.find_by_id(user_id)
