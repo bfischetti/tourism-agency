@@ -10,6 +10,8 @@ from blacklist import BLACKLIST
 from resources.user import User, UserLogin, UserLogout, UserRegister, TokenRefresh
 from resources.provider import Provider, ProviderList
 from resources.product import Product, ProductList
+from resources.category import Category, CategoryList
+from resources.transaction import TransactionList, Transaction
 
 
 app = Flask(__name__)
@@ -69,7 +71,10 @@ api.add_resource(Provider, '/provider')
 api.add_resource(ProviderList, '/providers')
 api.add_resource(Product, '/product')
 api.add_resource(ProductList, '/products')
-
+api.add_resource(CategoryList, '/categories')
+api.add_resource(Category, '/category')
+api.add_resource(TransactionList, '/transactions')
+api.add_resource(Transaction, '/transaction')
 
 if __name__ == '__main__':
 

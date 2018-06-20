@@ -1,21 +1,60 @@
 from db import db
+from datetime import datetime
 from models.sale import SaleModel
+from models.category import CategoryModel
 
 
 class TransactionModel(db.Model):
     __tablename__ = 'transaction'
 
     transaction_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(80))
-    price = db.Column(db.Float(precision=2))
+    amount = db.Column(db.Float(precision=2))
     description = db.Column(db.String(200))
+    date = db.Column(db.DateTime, default=datetime.now())
+    is_expense = db.Column(db.Boolean)
+
+    category_id = db.Column(db.Integer, db.ForeignKey('category.category_id'), nullable=False)
+    category = db.relationship('CategoryModel')
 
     sale_id = db.Column(db.Integer, db.ForeignKey('sale.sale_id'), nullable=True)
     sale = db.relationship('SaleModel')
 
+    def __init__(self, transaction_id, amount, description, date, is_expense, category_id, sale_id):
+        self.transaction_id = transaction_id
+        self.amount = amount
+        self.description = description
+        if date is not None:
+            formatted_date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+            self.date = formatted_date
+        self.is_expense = is_expense
+        self.category_id = category_id
+        self.sale_id = sale_id
+
     @classmethod
     def find_by_id(cls, _id):
-        return cls.query.filter_by(operation_id=_id).first()
+        return cls.query.filter_by(transaction_id=_id).first()
+
+    def update_to_db(self):
+        transaction_to_update = TransactionModel.find_by_id(self.transaction_id)
+        if self.category_id is not None:
+            transaction_to_update.category_id = self.category_id
+        if self.amount is not None:
+            transaction_to_update.amount = self.amount
+        if self.description is not None:
+            transaction_to_update.description = self.description
+        if self.date is not None:
+            formatted_date = datetime.strptime(self.date, "%Y-%m-%d %H:%M:%S")
+            transaction_to_update.date = formatted_date
+        if self.is_expense is not None:
+            transaction_to_update.is_expense = self.is_expense
+        if self.category_id is not None:
+            transaction_to_update.category_id = self.category_id
+
+        transaction_to_update.save_to_db()
+
+    @classmethod
+    def find_all(cls):
+        return cls.query.order_by(TransactionModel.date.desc()).all()
 
     def save_to_db(self):
         db.session.add(self)
@@ -27,7 +66,9 @@ class TransactionModel(db.Model):
 
     def json(self):
         return {'transaction_id': self.transaction_id,
-                'name': self.name,
-                'price': self.price,
+                'amount': self.amount,
                 'description': self.description,
-                'sale': self.sale}
+                'date': str(self.date)[:19],
+                'category_id': self.category_id,
+                'is_expense': self.is_expense,
+                'sale_id': self.sale_id}
