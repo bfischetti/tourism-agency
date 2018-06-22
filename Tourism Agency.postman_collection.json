@@ -283,6 +283,98 @@
 			]
 		},
 		{
+			"name": "client",
+			"description": "",
+			"item": [
+				{
+					"name": "/client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"testclient5@gmail.com\",\n  \"name\": \"Test Client\",\n  \"nationality\": \"Argentina\",\n  \"hotel\": \"Test Hotel\",\n  \"adults\": 2,\n  \"children\": 2,\n  \"babies\": 0\n}"
+						},
+						"url": {
+							"raw": "{{url}}/client",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"client"
+							]
+						},
+						"description": "  "
+					},
+					"response": []
+				},
+				{
+					"name": "/clients",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/clients",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"clients"
+							]
+						},
+						"description": null
+					},
+					"response": []
+				},
+				{
+					"name": "/client",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"client_id\": 1,\n    \"email\": \"testclient1@gmail.com\",\n    \"name\": \"Test Client\",\n    \"nationality\": \"Argentina\",\n    \"hotel\": \"Test Hotel\",\n    \"adults\": 2,\n    \"children\": 2,\n    \"babies\": 4\n}"
+						},
+						"url": {
+							"raw": "{{url}}/client",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"client"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "transaction",
 			"description": "",
 			"item": [
@@ -608,7 +700,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{  \n   \"billable\":false,\n   \"products\":[  \n      {  \n         \"product_id\":1,\n         \"price\":1000\n      },\n      {  \n         \"product_id\":2,\n         \"price\":1000\n      },\n      {  \n         \"product_id\":3,\n         \"price\":1000\n      }\n   ],\n   \"total\":4000\n}"
+							"raw": "{  \n   \"products\":[  \n      {  \n         \"product_id\":1,\n         \"price\":1000\n      },\n      {  \n         \"product_id\":2,\n         \"price\":1000\n      },\n      {  \n         \"product_id\":3,\n         \"price\":1000\n      }\n   ],\n   \"total\":4000\n}"
 						},
 						"url": {
 							"raw": "{{url}}/sale",
