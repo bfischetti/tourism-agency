@@ -13,6 +13,7 @@ from resources.product import Product, ProductList
 from resources.category import Category, CategoryList
 from resources.transaction import TransactionList, Transaction
 from resources.sale import Sale
+from resources.client import Client, ClientList
 
 
 app = Flask(__name__)
@@ -77,6 +78,8 @@ api.add_resource(Category, '/category')
 api.add_resource(TransactionList, '/transactions')
 api.add_resource(Transaction, '/transaction')
 api.add_resource(Sale, '/sale')
+api.add_resource(Client, '/client')
+api.add_resource(ClientList, '/clients')
 
 if __name__ == '__main__':
 
