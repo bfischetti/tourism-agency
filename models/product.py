@@ -7,16 +7,20 @@ class ProductModel(db.Model):
 
     product_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(80))
-    price = db.Column(db.Float(precision=2))
+    stock_price = db.Column(db.Float(precision=2))
+    selling_price = db.Column(db.Float(precision=2))
     description = db.Column(db.String(200))
+    billable = db.Column(db.Boolean, default=False)
 
     provider_id = db.Column(db.Integer, db.ForeignKey('provider.provider_id'))
     provider = db.relationship('ProviderModel')
 
-    def __init__(self, product_id, name, price, description, provider_id):
+    def __init__(self, product_id, billable, name, stock_price, selling_price, description, provider_id):
         self.product_id = product_id
+        self.billable = billable
         self.name = name
-        self.price = price
+        self.stock_price = stock_price
+        self.selling_price = selling_price
         self.description = description
         self.provider_id = provider_id
 
@@ -28,8 +32,10 @@ class ProductModel(db.Model):
         product_to_update = ProductModel.find_by_id(self.product_id)
         if self.name is not None:
             product_to_update.name = self.name
-        if self.price is not None:
-            product_to_update.price = self.price
+        if self.stock_price is not None:
+            product_to_update.stock_price = self.stock_price
+        if self.selling_price is not None:
+            product_to_update.selling_price = self.selling_price
         if self.description is not None:
             product_to_update.description = self.description
 
@@ -58,6 +64,7 @@ class ProductModel(db.Model):
     def json(self):
         return {'product_id': self.product_id,
                 'name': self.name,
-                'price': self.price,
+                'stock_price': self.stock_price,
+                'selling_price': self.selling_price,
                 'description': self.description,
                 'provider_id': self.provider_id}

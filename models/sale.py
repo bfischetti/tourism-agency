@@ -7,14 +7,12 @@ class SaleModel(db.Model):
 
     sale_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     total = db.Column(db.Float(precision=2))
-    billable = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     user = db.relationship('UserModel')
     date = db.Column(db.DateTime, default=datetime.now())
 
-    def __init__(self, total, billable, user_id, date, sale_id):
+    def __init__(self, total, user_id, date, sale_id):
         self.total = total
-        self.billable = billable
         if date is not None:
             formatted_date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
             self.date = formatted_date

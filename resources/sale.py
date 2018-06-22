@@ -13,9 +13,6 @@ class Product(object):
 
 class Sale(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('billable',
-                        type=bool,
-                        required=False)
     parser.add_argument('products',
                         type=Product,
                         location='json',
@@ -45,7 +42,7 @@ class Sale(Resource):
         else:
             user_id = get_jwt_identity()
 
-        sale = SaleModel(total=data['total'], billable=data['billable'], user_id=user_id, date=data['date'],
+        sale = SaleModel(total=data['total'], user_id=user_id, date=data['date'],
                          sale_id=data['sale_id'])
 
         sale.save_to_db()

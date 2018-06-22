@@ -19,7 +19,11 @@ class Product(Resource):
                         type=str,
                         required=True
                         )
-    parser.add_argument('price',
+    parser.add_argument('selling_price',
+                        type=float,
+                        required=False
+                        )
+    parser.add_argument('stock_price',
                         type=float,
                         required=False
                         )
@@ -29,6 +33,9 @@ class Product(Resource):
                         )
     parser.add_argument('provider_id',
                         type=int,
+                        required=False)
+    parser.add_argument('billable',
+                        type=bool,
                         required=False)
 
     @jwt_required
