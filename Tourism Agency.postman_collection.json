@@ -302,7 +302,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"testclient5@gmail.com\",\n  \"name\": \"Test Client\",\n  \"nationality\": \"Argentina\",\n  \"hotel\": \"Test Hotel\",\n  \"adults\": 2,\n  \"children\": 2,\n  \"babies\": 0\n}"
+							"raw": "{\n  \"email\": \"testclient1@gmail.com\",\n  \"name\": \"Test Client\",\n  \"nationality\": \"Argentina\",\n  \"hotel\": \"Test Hotel\",\n  \"adults\": 2,\n  \"children\": 2,\n  \"babies\": 0\n}"
 						},
 						"url": {
 							"raw": "{{url}}/client",
@@ -700,7 +700,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{  \n   \"products\":[  \n      {  \n         \"product_id\":1,\n         \"price\":1000\n      },\n      {  \n         \"product_id\":2,\n         \"price\":1000\n      },\n      {  \n         \"product_id\":3,\n         \"price\":1000\n      }\n   ],\n   \"total\":4000\n}"
+							"raw": "{  \n   \"products\":[  \n      {  \n         \"product_id\":1,\n         \"price\":1000\n      },\n      {  \n         \"product_id\":2,\n         \"price\":1000\n      },\n      {  \n         \"product_id\":3,\n         \"price\":1000\n      }\n   ],\n   \"client_id\":5,\n   \"total\":4000\n}"
 						},
 						"url": {
 							"raw": "{{url}}/sale",
@@ -709,6 +709,123 @@
 							],
 							"path": [
 								"sale"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/sale/<sale_id>",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/sale/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sale",
+								"1"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "promoter",
+			"description": "",
+			"item": [
+				{
+					"name": "/promoter",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"first_name\": \"Pepe\",\n\t\"last_name\": \"Tango\",\n\t\"email\": \"pepetango@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/promoter",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"promoter"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/promoter",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"pepetango2\",\n\t\"first_name\": \"Pepe\",\n\t\"last_name\": \"Tango\",\n\t\"promoter_id\":1\n}"
+						},
+						"url": {
+							"raw": "{{url}}/promoter",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"promoter"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "/promoters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/promoters",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"promoters"
 							]
 						},
 						"description": ""
