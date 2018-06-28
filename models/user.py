@@ -29,7 +29,7 @@ class UserModel(db.Model):
         db.session.commit()
 
     @classmethod
-    def find_by_username(cls, email):
+    def find_by_mail(cls, email):
         return cls.query.filter_by(email=email).first()
 
     @classmethod

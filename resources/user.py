@@ -67,7 +67,7 @@ class UserRegister(Resource):
     def post(cls):
         data = _user_parser.parse_args()
 
-        if UserModel.find_by_username(data['email']):
+        if UserModel.find_by_mail(data['email']):
             return {"message": "A user with that email already exists"}, 400
 
         user = UserModel(**data)
@@ -82,7 +82,7 @@ class UserLogin(Resource):
     def post(cls):
         data = _user_parser.parse_args()
 
-        user = UserModel.find_by_username(data['email'])
+        user = UserModel.find_by_mail(data['email'])
 
         if user and safe_str_cmp(user.password, data['password']):
             access_token = create_access_token(identity=user.user_id, fresh=True)
