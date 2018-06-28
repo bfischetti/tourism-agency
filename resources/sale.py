@@ -32,6 +32,9 @@ class Sale(Resource):
     parser.add_argument('sale_id',
                         type=int,
                         required=False)
+    parser.add_argument('client_id',
+                        type=int,
+                        required=False)
 
     @jwt_required
     def post(self):
@@ -43,7 +46,7 @@ class Sale(Resource):
             user_id = get_jwt_identity()
 
         sale = SaleModel(total=data['total'], user_id=user_id, date=data['date'],
-                         sale_id=data['sale_id'])
+                         sale_id=data['sale_id'], client_id=data['client_id'])
 
         sale.save_to_db()
 
@@ -60,3 +63,20 @@ class Sale(Resource):
         transaction.save_to_db()
 
         return transaction.json(), 201
+
+
+class Voucher(Resource):
+
+    @jwt_required
+    def get(self, sale_id):
+        sale = SaleModel.find_by_id(sale_id)
+
+        if not sale:
+            return {"message": "no sale with that id"}, 404
+
+        products_from_sale = SoldProductModel.find_by_sale_id(sale_id)
+
+        return {"sale_id": sale.sale_id,
+                "client": sale.client.json(),
+                "total": sale.total,
+                "products": [product.json() for product in products_from_sale]}, 200

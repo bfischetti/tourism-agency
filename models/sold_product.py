@@ -28,6 +28,10 @@ class SoldProductModel(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    @classmethod
+    def find_by_sale_id(cls, sale_id):
+        return cls.query.filter_by(sale_id=sale_id).all()
+
     def json(self):
         return {'sold_product_id': self.sold_product_id,
                 'price': self.price,

@@ -1,5 +1,8 @@
 from db import db
 from datetime import datetime
+from models.client import ClientModel
+from models.user import UserModel
+from models.promoter import PromoterModel
 
 
 class SaleModel(db.Model):
@@ -7,17 +10,22 @@ class SaleModel(db.Model):
 
     sale_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     total = db.Column(db.Float(precision=2))
+    client_id = db.Column(db.Integer, db.ForeignKey('client.client_id'), nullable=False)
+    client = db.relationship('ClientModel')
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     user = db.relationship('UserModel')
+    promoter_id = db.Column(db.Integer, db.ForeignKey('promoter.promoter_id'), nullable=True)
+    promoter = db.relationship('PromoterModel')
     date = db.Column(db.DateTime, default=datetime.now())
 
-    def __init__(self, total, user_id, date, sale_id):
+    def __init__(self, total, user_id, date, sale_id, client_id):
         self.total = total
         if date is not None:
             formatted_date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
             self.date = formatted_date
         self.user_id = user_id
         self.sale_id = sale_id
+        self.client_id = client_id
 
     def save_to_db(self):
         db.session.add(self)
@@ -35,4 +43,5 @@ class SaleModel(db.Model):
         return {'sale_id': self.sale_id,
                 'total': self.total,
                 'billable': self.billable,
-                'user_id': self.user_id}
+                'user_id': self.user_id,
+                'promoter_id': self.promoter_id}
