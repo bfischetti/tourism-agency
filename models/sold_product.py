@@ -35,5 +35,5 @@ class SoldProductModel(db.Model):
     def json(self):
         return {'sold_product_id': self.sold_product_id,
                 'price': self.price,
-                'product_id': self.product_id,
+                'product': self.product.json(),
                 'sale_id': self.sale_id}
