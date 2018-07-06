@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask
+from flask import Flask, send_from_directory
 from flask.json import jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
@@ -16,7 +16,7 @@ from resources.sale import Sale, Voucher
 from resources.client import Client, ClientList
 from resources.promoter import Promoter, PromoterList
 
-
+static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
 app = Flask(__name__)
 
 app.config['DEBUG'] = True
@@ -62,7 +62,16 @@ def check_if_token_in_blacklist(decrypted_token):
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    new_line = 1
+    return send_from_directory(static_file_dir, 'index.html')
+
+
+@app.route('/<path:path>')
+def serve_file_in_dir(path):
+    # if not os.path.isfile(os.path.join(static_file_dir, path)):
+    #     path = os.path.join(path, 'index.html')
+
+    return send_from_directory(static_file_dir, path)
 
 
 api.add_resource(UserRegister, '/register')
