@@ -68,8 +68,8 @@ def hello_world():
 
 @app.route('/<path:path>')
 def serve_file_in_dir(path):
-    # if not os.path.isfile(os.path.join(static_file_dir, path)):
-    #     path = os.path.join(path, 'index.html')
+    if not os.path.isfile(os.path.join(static_file_dir, path)):
+        path = os.path.join(path, 'index.html')
 
     return send_from_directory(static_file_dir, path)
 
