@@ -5,7 +5,7 @@ class ClientModel(db.Model):
     __tablename__ = 'client'
 
     client_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    email = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(100), nullable=False)
     passport_number = db.Column(db.String(80))
     name = db.Column(db.String(200))
     nationality = db.Column(db.String(80))
