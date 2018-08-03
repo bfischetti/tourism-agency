@@ -15,10 +15,17 @@ class SoldProductModel(db.Model):
     sale_id = db.Column(db.Integer, db.ForeignKey('sale.sale_id'))
     sale = db.relationship('SaleModel')
 
-    def __init__(self, price, product_id, sale_id):
+    adults = db.Column(db.Integer)
+    children = db.Column(db.Integer)
+    babies = db.Column(db.Integer)
+
+    def __init__(self, price, product_id, sale_id, adults, children, babies):
         self.price = price
         self.product_id = product_id
         self.sale_id = sale_id
+        self.adults = adults
+        self.children = children
+        self.babies = babies
 
     def save_to_db(self):
         db.session.add(self)
@@ -36,4 +43,7 @@ class SoldProductModel(db.Model):
         return {'sold_product_id': self.sold_product_id,
                 'price': self.price,
                 'product': self.product.json(),
+                'adults': self.adults,
+                'children': self.children,
+                'babies': self.babies,
                 'sale_id': self.sale_id}

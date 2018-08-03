@@ -13,19 +13,18 @@ class Product(object):
 
 class Sale(Resource):
     parser = reqparse.RequestParser()
+
     parser.add_argument('products',
                         type=Product,
                         location='json',
                         action='append',
-                        required=False
-                        )
+                        required=False)
     parser.add_argument('total',
                         type=float,
                         required=True)
     parser.add_argument('user_id',
                         type=int,
-                        required=False
-                        )
+                        required=False)
     parser.add_argument('date',
                         type=str,
                         required=False)
@@ -52,7 +51,9 @@ class Sale(Resource):
 
         for product in data['products']:
             sold_product = SoldProductModel(product_id=product.product_id['product_id'],
-                                            price=product.product_id['price'],
+                                            price=product.product_id['price'], adults=product.product_id['adults'],
+                                            children=product.product_id['children'],
+                                            babies=product.product_id['babies'],
                                             sale_id=sale.sale_id)
 
             sold_product.save_to_db()
