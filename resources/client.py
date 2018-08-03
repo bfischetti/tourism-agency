@@ -17,29 +17,29 @@ class Client(Resource):
                         required=False)
     parser.add_argument('name',
                         type=str,
-                        required=True
-                        )
+                        required=True)
     parser.add_argument('email',
                         type=str,
-                        required=True
-                        )
+                        required=True)
+    parser.add_argument('passport_number',
+                        type=str,
+                        required=False)
     parser.add_argument('nationality',
                         type=str,
-                        required=False
-                        )
+                        required=False)
     parser.add_argument('hotel',
                         type=str,
-                        required=False
-                        )
-    parser.add_argument('adults',
-                        type=int,
-                        required=True)
-    parser.add_argument('children',
-                        type=int,
-                        required=True)
-    parser.add_argument('babies',
-                        type=int,
-                        required=True)
+                        required=False)
+    parser.add_argument('address',
+                        type=str,
+                        required=False)
+    parser.add_argument('room_number',
+                        type=str,
+                        required=False)
+    parser.add_argument('contact_number',
+                        type=str,
+                        required=False)
+
 
     @jwt_required
     def post(self):
