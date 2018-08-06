@@ -18,7 +18,7 @@ class SaleModel(db.Model):
     promoter = db.relationship('PromoterModel')
     date = db.Column(db.DateTime, default=datetime.now())
 
-    def __init__(self, total, user_id, date, sale_id, client_id):
+    def __init__(self, total, user_id, date, sale_id, client_id, promoter_id):
         self.total = total
         if date is not None:
             formatted_date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
@@ -26,6 +26,7 @@ class SaleModel(db.Model):
         self.user_id = user_id
         self.sale_id = sale_id
         self.client_id = client_id
+        self.promoter_id = promoter_id
 
     def save_to_db(self):
         db.session.add(self)

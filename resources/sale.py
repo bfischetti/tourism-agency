@@ -34,6 +34,9 @@ class Sale(Resource):
     parser.add_argument('client_id',
                         type=int,
                         required=False)
+    parser.add_argument('promoter_id',
+                        type=int,
+                        required=False)
 
     @jwt_required
     def post(self):
@@ -45,7 +48,7 @@ class Sale(Resource):
             user_id = get_jwt_identity()
 
         sale = SaleModel(total=data['total'], user_id=user_id, date=data['date'],
-                         sale_id=data['sale_id'], client_id=data['client_id'])
+                         sale_id=data['sale_id'], client_id=data['client_id'], promoter_id=data['promoter_id'])
 
         sale.save_to_db()
 
