@@ -1,9 +1,10 @@
 {
+	"variables": [],
 	"info": {
 		"name": "Tourism Agency",
 		"_postman_id": "2806bcaa-ffc6-57a3-0331-2ee3fd005809",
 		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
@@ -13,6 +14,7 @@
 				{
 					"name": "/categories",
 					"request": {
+						"url": "{{url}}/categories",
 						"method": "GET",
 						"header": [
 							{
@@ -21,15 +23,6 @@
 							}
 						],
 						"body": {},
-						"url": {
-							"raw": "{{url}}/categories",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"categories"
-							]
-						},
 						"description": "get categories for a specific user"
 					},
 					"response": []
@@ -37,6 +30,7 @@
 				{
 					"name": "/category",
 					"request": {
+						"url": "{{url}}/category",
 						"method": "POST",
 						"header": [
 							{
@@ -52,22 +46,14 @@
 							"mode": "raw",
 							"raw": "{\n    \"description\": \"Gas\",\n    \"name\": \"Metrogas\"\n}"
 						},
-						"url": {
-							"raw": "{{url}}/category",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"category"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
 				{
 					"name": "/category",
 					"request": {
+						"url": "{{url}}/category",
 						"method": "PUT",
 						"header": [
 							{
@@ -83,16 +69,7 @@
 							"mode": "raw",
 							"raw": "{\n        \"name\": \"Edesur\",\n        \"description\": \"Luz\",\n        \"category_id\": 2\n    }"
 						},
-						"url": {
-							"raw": "{{url}}/category",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"category"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				}
@@ -105,6 +82,7 @@
 				{
 					"name": "/provider",
 					"request": {
+						"url": "{{url}}/provider",
 						"method": "POST",
 						"header": [
 							{
@@ -120,15 +98,6 @@
 							"mode": "raw",
 							"raw": "{\n  \"name\": \"tango buenos aires\",\n  \"url\": \"http://tuvieja.com\",\n  \"phone\":\"0810 122 2222\",\n  \"email\": \"tangobaires@gmail.com\"\n}"
 						},
-						"url": {
-							"raw": "{{url}}/provider",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"provider"
-							]
-						},
 						"description": "  "
 					},
 					"response": []
@@ -136,6 +105,7 @@
 				{
 					"name": "/providers",
 					"request": {
+						"url": "{{url}}/providers",
 						"method": "GET",
 						"header": [
 							{
@@ -144,15 +114,6 @@
 							}
 						],
 						"body": {},
-						"url": {
-							"raw": "{{url}}/providers",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"providers"
-							]
-						},
 						"description": null
 					},
 					"response": []
@@ -160,6 +121,7 @@
 				{
 					"name": "/provider",
 					"request": {
+						"url": "{{url}}/provider",
 						"method": "PUT",
 						"header": [
 							{
@@ -175,16 +137,7 @@
 							"mode": "raw",
 							"raw": "{\n  \"name\": \"sabado tango\",\n  \"price\": 450,\n  \"description\": \"lecciones tango sabado 11pm\",\n  \"provider_id\": 2\n}"
 						},
-						"url": {
-							"raw": "{{url}}/provider",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"provider"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				}
@@ -197,6 +150,7 @@
 				{
 					"name": "/product",
 					"request": {
+						"url": "{{url}}/product",
 						"method": "POST",
 						"header": [
 							{
@@ -212,15 +166,6 @@
 							"mode": "raw",
 							"raw": "{\n  \"name\": \"sabado tango\",\n  \"price\": 450,\n  \"description\": \"lecciones tango sabado 10pm\",\n  \"provider_id\": 1\n}"
 						},
-						"url": {
-							"raw": "{{url}}/product",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"product"
-							]
-						},
 						"description": "  "
 					},
 					"response": []
@@ -228,6 +173,7 @@
 				{
 					"name": "/products",
 					"request": {
+						"url": "{{url}}/products",
 						"method": "GET",
 						"header": [
 							{
@@ -236,15 +182,6 @@
 							}
 						],
 						"body": {},
-						"url": {
-							"raw": "{{url}}/products",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"products"
-							]
-						},
 						"description": null
 					},
 					"response": []
@@ -252,6 +189,7 @@
 				{
 					"name": "/product",
 					"request": {
+						"url": "{{url}}/product",
 						"method": "PUT",
 						"header": [
 							{
@@ -267,16 +205,7 @@
 							"mode": "raw",
 							"raw": "{\n  \"product_id\": 1,\n  \"name\": \"sabado tango\",\n  \"price\": 45123,\n  \"description\": \"lecciones tango sabado 11pm\",\n  \"provider_id\": 1\n}"
 						},
-						"url": {
-							"raw": "{{url}}/product",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"product"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				}
@@ -289,6 +218,7 @@
 				{
 					"name": "/client",
 					"request": {
+						"url": "{{url}}/client",
 						"method": "POST",
 						"header": [
 							{
@@ -304,15 +234,6 @@
 							"mode": "raw",
 							"raw": "{\n  \"email\": \"testclient1@gmail.com\",\n  \"name\": \"Test Client\",\n  \"nationality\": \"Argentina\",\n  \"hotel\": \"Test Hotel\",\n  \"adults\": 2,\n  \"children\": 2,\n  \"babies\": 0\n}"
 						},
-						"url": {
-							"raw": "{{url}}/client",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"client"
-							]
-						},
 						"description": "  "
 					},
 					"response": []
@@ -320,6 +241,7 @@
 				{
 					"name": "/clients",
 					"request": {
+						"url": "{{url}}/clients",
 						"method": "GET",
 						"header": [
 							{
@@ -328,15 +250,6 @@
 							}
 						],
 						"body": {},
-						"url": {
-							"raw": "{{url}}/clients",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"clients"
-							]
-						},
 						"description": null
 					},
 					"response": []
@@ -344,6 +257,7 @@
 				{
 					"name": "/client",
 					"request": {
+						"url": "{{url}}/client",
 						"method": "PUT",
 						"header": [
 							{
@@ -359,16 +273,7 @@
 							"mode": "raw",
 							"raw": "{\n    \"client_id\": 1,\n    \"email\": \"testclient1@gmail.com\",\n    \"name\": \"Test Client\",\n    \"nationality\": \"Argentina\",\n    \"hotel\": \"Test Hotel\",\n    \"adults\": 2,\n    \"children\": 2,\n    \"babies\": 4\n}"
 						},
-						"url": {
-							"raw": "{{url}}/client",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"client"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				}
@@ -381,6 +286,7 @@
 				{
 					"name": "/transaction",
 					"request": {
+						"url": "{{url}}/transaction",
 						"method": "POST",
 						"header": [
 							{
@@ -396,15 +302,6 @@
 							"mode": "raw",
 							"raw": "{\n  \"category_id\": 1,\n  \"amount\":2000,\n  \"is_expense\": true,\n  \"date\": \"2016-06-20 19:46:02\",\n  \"description\": \"Pago gas mes Julio\"\n}"
 						},
-						"url": {
-							"raw": "{{url}}/transaction",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"transaction"
-							]
-						},
 						"description": "  "
 					},
 					"response": []
@@ -412,6 +309,7 @@
 				{
 					"name": "/transactions",
 					"request": {
+						"url": "{{url}}/transactions",
 						"method": "GET",
 						"header": [
 							{
@@ -420,15 +318,6 @@
 							}
 						],
 						"body": {},
-						"url": {
-							"raw": "{{url}}/transactions",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"transactions"
-							]
-						},
 						"description": null
 					},
 					"response": []
@@ -436,6 +325,7 @@
 				{
 					"name": "/transaction",
 					"request": {
+						"url": "{{url}}/transaction",
 						"method": "PUT",
 						"header": [
 							{
@@ -451,16 +341,7 @@
 							"mode": "raw",
 							"raw": "{\n    \"transaction_id\": 1,\n    \"amount\": 20,\n    \"description\": \"Pago gas mes Julio\",\n    \"date\": \"2017-06-20 19:43:23\",\n    \"is_expense\": true,\n    \"category_id\": 1\n}"
 						},
-						"url": {
-							"raw": "{{url}}/transaction",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"transaction"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				}
@@ -492,6 +373,7 @@
 						}
 					],
 					"request": {
+						"url": "{{url}}/register",
 						"method": "POST",
 						"header": [
 							{
@@ -501,18 +383,9 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"test@gmail.com\",\n\t\"password\": \"abcxyz\"\n}"
+							"raw": "{\n  \"email\": \"test@gmail.com\",\n  \"password\": \"abcxyz\"\n}"
 						},
-						"url": {
-							"raw": "{{url}}/register",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"register"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
@@ -540,6 +413,7 @@
 						}
 					],
 					"request": {
+						"url": "{{url}}/login",
 						"method": "POST",
 						"header": [
 							{
@@ -549,24 +423,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"test@gmail.com\",\n\t\"password\": \"abcxyz\"\n}"
+							"raw": "{\n  \"email\": \"test@gmail.com\",\n  \"password\": \"abcxyz\"\n}"
 						},
-						"url": {
-							"raw": "{{url}}/login",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"login"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
 				{
 					"name": "/logout",
 					"request": {
+						"url": "{{url}}/logout",
 						"method": "POST",
 						"header": [
 							{
@@ -575,16 +441,7 @@
 							}
 						],
 						"body": {},
-						"url": {
-							"raw": "{{url}}/logout",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"logout"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
@@ -602,6 +459,7 @@
 						}
 					],
 					"request": {
+						"url": "{{url}}/refresh",
 						"method": "GET",
 						"header": [
 							{
@@ -610,22 +468,14 @@
 							}
 						],
 						"body": {},
-						"url": {
-							"raw": "{{url}}/refresh",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"refresh"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
 				{
 					"name": "/user",
 					"request": {
+						"url": "{{url}}/user",
 						"method": "GET",
 						"header": [
 							{
@@ -634,22 +484,14 @@
 							}
 						],
 						"body": {},
-						"url": {
-							"raw": "{{url}}/user",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"user"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
 				{
 					"name": "/user",
 					"request": {
+						"url": "{{url}}/user",
 						"method": "PUT",
 						"header": [
 							{
@@ -665,16 +507,7 @@
 							"mode": "raw",
 							"raw": "{\n    \"last_name\": \"new last name\",\n    \"email\": \"test@gmail.com\",\n    \"password\": \"password\",\n    \"first_name\": \"new first name\"\n}"
 						},
-						"url": {
-							"raw": "{{url}}/user",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"user"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				}
@@ -687,6 +520,7 @@
 				{
 					"name": "/sale",
 					"request": {
+						"url": "{{url}}/sale",
 						"method": "POST",
 						"header": [
 							{
@@ -702,22 +536,14 @@
 							"mode": "raw",
 							"raw": "{  \n   \"products\":[  \n      {  \n         \"product_id\":1,\n         \"price\":1000\n      },\n      {  \n         \"product_id\":2,\n         \"price\":1000\n      },\n      {  \n         \"product_id\":3,\n         \"price\":1000\n      }\n   ],\n   \"client_id\":5,\n   \"total\":4000\n}"
 						},
-						"url": {
-							"raw": "{{url}}/sale",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"sale"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
 				{
 					"name": "/sale/<sale_id>",
 					"request": {
+						"url": "{{url}}/sale/1",
 						"method": "GET",
 						"header": [
 							{
@@ -726,17 +552,7 @@
 							}
 						],
 						"body": {},
-						"url": {
-							"raw": "{{url}}/sale/1",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"sale",
-								"1"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				}
@@ -749,6 +565,7 @@
 				{
 					"name": "/promoter",
 					"request": {
+						"url": "{{url}}/promoter",
 						"method": "POST",
 						"header": [
 							{
@@ -762,24 +579,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"first_name\": \"Pepe\",\n\t\"last_name\": \"Tango\",\n\t\"email\": \"pepetango@gmail.com\"\n}"
+							"raw": "{\n  \"first_name\": \"Pepe\",\n  \"last_name\": \"Tango\",\n  \"email\": \"pepetango@gmail.com\"\n}"
 						},
-						"url": {
-							"raw": "{{url}}/promoter",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"promoter"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
 				{
 					"name": "/promoter",
 					"request": {
+						"url": "{{url}}/promoter",
 						"method": "PUT",
 						"header": [
 							{
@@ -793,24 +602,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"pepetango2\",\n\t\"first_name\": \"Pepe\",\n\t\"last_name\": \"Tango\",\n\t\"promoter_id\":1\n}"
+							"raw": "{\n  \"email\": \"pepetango2\",\n  \"first_name\": \"Pepe\",\n  \"last_name\": \"Tango\",\n  \"promoter_id\":1\n}"
 						},
-						"url": {
-							"raw": "{{url}}/promoter",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"promoter"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
 				{
 					"name": "/promoters",
 					"request": {
+						"url": "{{url}}/promoters",
 						"method": "GET",
 						"header": [
 							{
@@ -819,16 +620,7 @@
 							}
 						],
 						"body": {},
-						"url": {
-							"raw": "{{url}}/promoters",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"promoters"
-							]
-						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				}
