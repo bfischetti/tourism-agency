@@ -17,8 +17,10 @@ class SaleModel(db.Model):
     promoter_id = db.Column(db.Integer, db.ForeignKey('promoter.promoter_id'), nullable=True)
     promoter = db.relationship('PromoterModel')
     date = db.Column(db.DateTime, default=datetime.now())
+    promoter_commission = db.Column(db.Float(precision=2))
+    user_commission = db.Column(db.Float(precision=2))
 
-    def __init__(self, total, user_id, date, sale_id, client_id, promoter_id):
+    def __init__(self, total, user_id, date, sale_id, client_id, promoter_id, promoter_commission, user_commission):
         self.total = total
         if date is not None:
             formatted_date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
@@ -27,6 +29,8 @@ class SaleModel(db.Model):
         self.sale_id = sale_id
         self.client_id = client_id
         self.promoter_id = promoter_id
+        self.promoter_commission = promoter_commission
+        self.user_commission = user_commission
 
     def save_to_db(self):
         db.session.add(self)
@@ -45,4 +49,6 @@ class SaleModel(db.Model):
                 'total': self.total,
                 'billable': self.billable,
                 'user_id': self.user_id,
-                'promoter_id': self.promoter_id}
+                'promoter_id': self.promoter_id,
+                'promoter_commission': self.promoter_commission,
+                'user_commission': self.user_commission}

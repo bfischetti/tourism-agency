@@ -37,6 +37,12 @@ class Sale(Resource):
     parser.add_argument('promoter_id',
                         type=int,
                         required=False)
+    parser.add_argument('promoter_commission',
+                        type=float,
+                        required=False)
+    parser.add_argument('user_commission',
+                        type=float,
+                        required=False)
 
     @jwt_required
     def post(self):
@@ -48,7 +54,8 @@ class Sale(Resource):
             user_id = get_jwt_identity()
 
         sale = SaleModel(total=data['total'], user_id=user_id, date=data['date'],
-                         sale_id=data['sale_id'], client_id=data['client_id'], promoter_id=data['promoter_id'])
+                         sale_id=data['sale_id'], client_id=data['client_id'], promoter_id=data['promoter_id'],
+                         promoter_commission=data['promoter_commission'], user_commission=data['user_commission'])
 
         sale.save_to_db()
 
@@ -58,7 +65,6 @@ class Sale(Resource):
                                             children=product.product_id['children'],
                                             babies=product.product_id['babies'],
                                             sale_id=sale.sale_id)
-
             sold_product.save_to_db()
 
         transaction = TransactionModel(transaction_id=None, amount=sale.total, date=str(sale.date)[:19],
@@ -83,4 +89,6 @@ class Voucher(Resource):
         return {"sale_id": sale.sale_id,
                 "client": sale.client.json(),
                 "total": sale.total,
+                "user_commission": sale.user_commission,
+                "promoter_commission": sale.promoter_commission,
                 "products": [product.json() for product in products_from_sale]}, 200
