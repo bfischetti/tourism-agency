@@ -155,16 +155,18 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"description": ""
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
+								"value": "Bearer {{access_token}}",
+								"description": ""
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"sabado tango\",\n  \"price\": 450,\n  \"description\": \"lecciones tango sabado 10pm\",\n  \"provider_id\": 1\n}"
+							"raw": "{\n  \"name\": \"sabado tango\",\n  \"price\": 450,\n  \"description\": \"lecciones tango sabado 10pm\",\n  \"provider_id\": 1,\n  \"stock_price\": 1000,\n  \"selling_price\": 1500\n}"
 						},
 						"description": "  "
 					},
@@ -223,16 +225,18 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"description": ""
 							},
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
+								"value": "Bearer {{access_token}}",
+								"description": ""
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"testclient1@gmail.com\",\n  \"name\": \"Test Client\",\n  \"nationality\": \"Argentina\",\n  \"hotel\": \"Test Hotel\",\n  \"adults\": 2,\n  \"children\": 2,\n  \"babies\": 0\n}"
+							"raw": "{\n  \"email\": \"testclient12gmail.com\",\n  \"name\": \"Test Client\",\n  \"nationality\": \"Argentina\",\n  \"passport_number\": \"7383123\",\n  \"hotel\": \"Test Hotel\",\n  \"address\": \"Guardia Vieja 3123\",\n  \"room_number\": \"412\",\n  \"contact_number\": \"123123\"\n}"
 						},
 						"description": "  "
 					},
@@ -525,16 +529,18 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
+								"value": "Bearer {{access_token}}",
+								"description": ""
 							},
 							{
 								"key": "Content-Type",
-								"value": "application/json"
+								"value": "application/json",
+								"description": ""
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{  \n   \"products\":[  \n      {  \n         \"product_id\":1,\n         \"price\":1000\n      },\n      {  \n         \"product_id\":2,\n         \"price\":1000\n      },\n      {  \n         \"product_id\":3,\n         \"price\":1000\n      }\n   ],\n   \"client_id\":5,\n   \"total\":4000\n}"
+							"raw": "{  \n   \"products\":[  \n      {  \n         \"product_id\":1,\n         \"price\":1000,\n         \"adults\": 2,\n         \"children\": 1,\n         \"babies\":0\n      },\n      {  \n         \"product_id\":2,\n         \"price\":1000,\n         \"adults\": 2,\n         \"children\": 1,\n         \"babies\":0\n      },\n      {  \n         \"product_id\":3,\n         \"price\":2000,\n         \"adults\": 2,\n         \"children\": 1,\n         \"babies\":0\n      }\n   ],\n   \"client_id\":1,\n   \"promoter_id\":1,\n   \"promoter_commission\":400,\n   \"user_commission\":800,\n   \"total\":4000\n}"
 						},
 						"description": null
 					},
@@ -548,7 +554,8 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
+								"value": "Bearer {{access_token}}",
+								"description": ""
 							}
 						],
 						"body": {},
