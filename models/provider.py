@@ -27,7 +27,7 @@ class ProviderModel(db.Model):
             provider_to_update.name = self.name
         if self.url is not None:
             provider_to_update.url = self.url
-        if self.category_id is not None:
+        if self.email is not None:
             provider_to_update.email = self.email
         if self.phone is not None:
             provider_to_update.phone = self.phone
