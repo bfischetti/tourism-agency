@@ -1,4 +1,5 @@
 from db import db
+from datetime import datetime
 from models.product import ProductModel
 from models.sale import SaleModel
 
@@ -15,13 +16,20 @@ class SoldProductModel(db.Model):
     sale_id = db.Column(db.Integer, db.ForeignKey('sale.sale_id'))
     sale = db.relationship('SaleModel')
 
+    date = db.Column(db.DateTime, default=datetime.now())
+    transfer = db.Column(db.Boolean, default=False)
+
     adults = db.Column(db.Integer)
     children = db.Column(db.Integer)
     babies = db.Column(db.Integer)
 
-    def __init__(self, price, product_id, sale_id, adults, children, babies):
+    def __init__(self, price, product_id, date, transfer, sale_id, adults, children, babies):
         self.price = price
         self.product_id = product_id
+        self.transfer = transfer
+        if date is not None:
+            formatted_date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+            self.date = formatted_date
         self.sale_id = sale_id
         self.adults = adults
         self.children = children
@@ -42,6 +50,8 @@ class SoldProductModel(db.Model):
     def json(self):
         return {'sold_product_id': self.sold_product_id,
                 'price': self.price,
+                'date': str(self.date)[:19],
+                'transfer': self.transfer,
                 'product': self.product.json(),
                 'adults': self.adults,
                 'children': self.children,
