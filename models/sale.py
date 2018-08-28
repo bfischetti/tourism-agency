@@ -44,11 +44,16 @@ class SaleModel(db.Model):
     def find_by_id(cls, _id):
         return cls.query.filter_by(sale_id=_id).first()
 
+    @classmethod
+    def find_all(cls):
+        return cls.query.order_by(SaleModel.date.desc()).all()
+
     def json(self):
         return {'sale_id': self.sale_id,
                 'total': self.total,
-                'billable': self.billable,
-                'user_id': self.user_id,
-                'promoter_id': self.promoter_id,
+                'client': self.client.json(),
+                'user': self.user.json(),
+                'promoter': self.promoter.json(),
                 'promoter_commission': self.promoter_commission,
-                'user_commission': self.user_commission}
+                'user_commission': self.user_commission,
+                'date': str(self.date)[:19]}

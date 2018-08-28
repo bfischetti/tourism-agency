@@ -12,7 +12,7 @@ from resources.provider import Provider, ProviderList
 from resources.product import Product, ProductList
 from resources.category import Category, CategoryList
 from resources.transaction import TransactionList, Transaction
-from resources.sale import Sale, Voucher
+from resources.sale import Sale, Sales, Voucher
 from resources.client import Client, ClientList
 from resources.promoter import Promoter, PromoterList
 
@@ -88,6 +88,7 @@ api.add_resource(Category, '/category')
 api.add_resource(TransactionList, '/transactions')
 api.add_resource(Transaction, '/transaction')
 api.add_resource(Sale, '/sale')
+api.add_resource(Sales, '/sales')
 api.add_resource(Voucher, '/sale/<int:sale_id>')
 api.add_resource(Client, '/client')
 api.add_resource(ClientList, '/clients')
