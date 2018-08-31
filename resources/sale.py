@@ -76,6 +76,13 @@ class Sale(Resource):
         return transaction.json(), 201
 
 
+class Sales(Resource):
+
+    @jwt_required
+    def get(self):
+        return [sale.json() for sale in SaleModel.find_all()]
+
+
 class Voucher(Resource):
 
     @jwt_required
