@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Fontenay</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.9/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+        /* Mark input boxes that gets an error on validation: */
+        input.invalid {
+            background-color: #ffdddd;
+        }
+
+        /* Hide all steps by default: */
+        .tab {
+            display: none;
+        }
+
+        /* Make circles that indicate the steps of the form: */
+        .step {
+            height: 15px;
+            width: 15px;
+            margin: 0 2px;
+            background-color: #bbbbbb;
+            border: none;
+            border-radius: 50%;
+            display: inline-block;
+            opacity: 0.5;
+        }
+
+        /* Mark the active step: */
+        .step.active {
+            opacity: 1;
+        }
+
+        /* Mark the steps that are finished and valid: */
+        .step.finish {
+            background-color: #4CAF50;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Fontenay</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right" style="display: none">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                                </div>
+                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                                </div>
+                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>John Smith</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>Yesterday</em>
+                                    </span>
+                                </div>
+                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>Read All Messages</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-tasks">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <p>
+                                        <strong>Task 1</strong>
+                                        <span class="pull-right text-muted">40% Complete</span>
+                                    </p>
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                            <span class="sr-only">40% Complete (success)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <p>
+                                        <strong>Task 2</strong>
+                                        <span class="pull-right text-muted">20% Complete</span>
+                                    </p>
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
+                                            <span class="sr-only">20% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <p>
+                                        <strong>Task 3</strong>
+                                        <span class="pull-right text-muted">60% Complete</span>
+                                    </p>
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                            <span class="sr-only">60% Complete (warning)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <p>
+                                        <strong>Task 4</strong>
+                                        <span class="pull-right text-muted">80% Complete</span>
+                                    </p>
+                                    <div class="progress progress-striped active">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
+                                            <span class="sr-only">80% Complete (danger)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>See All Tasks</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-tasks -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-comment fa-fw"></i> New Comment
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                    <span class="pull-right text-muted small">12 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-envelope fa-fw"></i> Message Sent
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-tasks fa-fw"></i> New Task
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>See All Alerts</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-alerts -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="transactions.html"><i class="fa fa-table fa-fw"></i> Movimientos</a>
+                        </li>
+                        <li>
+                            <a href="sales.html"><i class="fa fa-table fa-fw"></i> Ventas</a>
+                        </li>
+                        <li>
+                            <a href="newsale.html"><i class="fa fa-edit fa-fw"></i> Nueva venta</a>
+                        </li>
+                        <li>
+                            <a href="login.html"><i class="fa fa-files-o fa-fw"></i> Login</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form id="regForm" role="form" action="">
+                        <!-- One "tab" for each step in the form: -->
+                        <div class="tab" class="form-group">
+                            <h2>Datos del cliente</h2>
+                            <div class="form-group col-lg-4">
+                                <label>Nombre y Apellido</label>
+                                <input class="form-control" id="clientname">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label>Identificador</label>
+                                <input class="form-control" id="passport">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label>Nacionalidad</label>
+                                <input class="form-control" id="nationality">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label>Hotel</label>
+                                <input class="form-control" id="hotel">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label>Dirección</label>
+                                <input class="form-control" id="address">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label>Habitación</label>
+                                <input class="form-control" id="room">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label>Número de contacto</label>
+                                <input class="form-control" id="phonenumber">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label>Email</label>
+                                <input class="form-control" id="email">
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <label>Promotor</label>
+                                <select class="form-control" id="promotorsel">
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-4">
+                                <!--<label>Vendedor</label>
+                                <select class="form-control" id="sellersel">
+                                    <option>Vendedor 1</option>
+                                    <option>Vendedor 2</option>
+                                    <option>Vendedor 3</option>
+                                </select>-->
+                            </div>
+                        </div>
+
+                        <div class="tab"  class="form-group">
+                            <h2>Productos</h2>
+                            <div id="listOfProducts">
+                                <div id="product-1" class="productPanel col-lg-3">
+                                    <div class="panel panel-default" >
+                                        <div class="panel-heading">
+                                            Producto
+                                            <button type="button" class="close deleteProduct">×</button>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Proveedor</label>
+                                                <select class="form-control" id="providersel"></select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Servicio</label>
+                                                <select class="form-control" id="servicesel"></select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Fecha</label>
+                                                <input class="form-control" id="date" type="date" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Traslado</label>
+                                                <select class="form-control" id="transfersel">
+                                                    <option value="true">Sí</option>
+                                                    <option value="false">No</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Adulto(s)</label>
+                                                <input id="adults" class="form-control" type="number" name="quantity" min="1">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Niño(s)</label>
+                                                <input id="children" class="form-control" type="number" name="quantity" min="0">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Bebé(s)</label>
+                                                <input id="babies" class="form-control" type="number" name="quantity" min="0">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Precio</label>
+                                                <div class=" input-group">
+                                                    <span class="input-group-addon">$</span>
+                                                    <input id="uprice" class="form-control" type="number" name="quantity" min="0">
+                                                    <span class="input-group-addon">.00</span>
+                                                </div>
+                                            </div>
+                                            <input id="stockprice" class="form-control-static" type="number" style="display: none">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <button id="addProduct" type="button" class="btn btn-success btn-lg btn-block" style='height: 425px;font-size: 40px;'>
+                                    Agregar<br>producto<br><br>
+                                    <span class="glyphicon glyphicon-plus" style='font-size: 75px;'></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="tab" class="form-group">
+                            <h2>Confirmación</h2>
+                            <h4>Datos del cliente</h4>
+                            <div class="form-group col-lg-3">
+                                <label>Nombre y Apellido</label>
+                                <p id="clientnameconf" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Identificador</label>
+                                <p  id="passportconf" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Nacionalidad</label>
+                                <p id="nationalityconf" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Hotel</label>
+                                <p id="hotelconf" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Dirección</label>
+                                <p id="addressconf" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Habitación</label>
+                                <p id="roomconf" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Número de contacto</label>
+                                <p id="phonenumberconf" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Email</label>
+                                <p id="emailconf" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Promotor</label>
+                                <p id="promotorconf" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Subtotal</label>
+                                <div class="form-control-static">
+                                    <div style="float: left;">$ </div>
+                                    <div id="productconftotal" style="float: left;"></div>
+                                    <div>.00</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Descuento</label>
+                                <div class=" input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input id="discountconf" class="form-control" type="number" name="quantity" min="0">
+                                    <span class="input-group-addon">.00</span>
+                                </div>
+                            </div>
+                            <input id="productstockprice" class="form-control-static" type="number" style="display:none">
+                            <!--<div class="form-group col-lg-3">-->
+                                <!--<label>Vendedor</label>-->
+                                <!--<p id="sellerconf" class="form-control-static"></p>-->
+                            <!--</div>-->
+
+                            <h4 class="col-lg-12">Productos</h4>
+                            <div class="table-responsive col-lg-12">
+                                <table class="table table-striped"id="productsconftable"></table>
+                            </div>
+                        </div>
+
+                        <div class="tab" class="form-group">
+                            <h2>Venta realizada</h2>
+                            <h4>Datos del cliente</h4>
+                            <div class="form-group col-lg-3">
+                                <label>Nombre y Apellido</label>
+                                <p id="clientnamefinish" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Hotel</label>
+                                <p id="hotelfinish" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Dirección</label>
+                                <p id="addressfinish" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Habitación</label>
+                                <p id="roomfinish" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Número de contacto</label>
+                                <p id="phonenumberfinish" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Email</label>
+                                <p id="emailfinish" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Promotor</label>
+                                <p id="promotorfinish" class="form-control-static"></p>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label>Total</label>
+                                <p id="productfinishtotal" class="form-control-static"></p>
+                            </div>
+                            <!--<div class="form-group col-lg-3">-->
+                                <!--<label>Vendedor</label>-->
+                                <!--<p id="sellerfinish" class="form-control-static"></p>-->
+                            <!--</div>-->
+
+                            <h4 class="col-lg-12">Productos</h4>
+                            <div class="table-responsive col-lg-12">
+                                <table class="table table-striped"id="productsfinishtable"></table>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-12" style="overflow:auto;">
+                            <div style="float:right;">
+                                <button type="button" class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Volver</button>
+                                <button type="button" class="btn btn-success" id="nextBtn" onclick="nextPrev(1)">Siguiente</button>
+                            </div>
+                        </div>
+
+                    <!-- Circles which indicates the steps of the form: -->
+                        <div class="col-lg-12" style="text-align:center;margin-top:40px;">
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                        <span class="step"></span>
+                    </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal fade" id="noProductsModal" tabindex="-1" role="dialog" aria-labelledby="noProductsModal" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">No hay productos</h4>
+                        </div>
+                        <div class="modal-body">
+                            No se ha seleccionado ningún producto. Agregue uno para continuar con el siguiente paso.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Entendido</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!--<div class="col-lg-6">-->
+                    <!--<form role="form">-->
+                        <!--<div class="form-group">-->
+                            <!--<label>Text Input</label>-->
+                            <!--<input class="form-control">-->
+                            <!--<p class="help-block">Example block-level help text here.</p>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label>Text Input with Placeholder</label>-->
+                            <!--<input class="form-control" placeholder="Enter text">-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label>Static Control</label>-->
+                            <!--<p class="form-control-static">email@example.com</p>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label>File input</label>-->
+                            <!--<input type="file">-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label>Text area</label>-->
+                            <!--<textarea class="form-control" rows="3"></textarea>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label>Checkboxes</label>-->
+                            <!--<div class="checkbox">-->
+                                <!--<label>-->
+                                    <!--<input type="checkbox" value="">Checkbox 1-->
+                                <!--</label>-->
+                            <!--</div>-->
+                            <!--<div class="checkbox">-->
+                                <!--<label>-->
+                                    <!--<input type="checkbox" value="">Checkbox 2-->
+                                <!--</label>-->
+                            <!--</div>-->
+                            <!--<div class="checkbox">-->
+                                <!--<label>-->
+                                    <!--<input type="checkbox" value="">Checkbox 3-->
+                                <!--</label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label>Inline Checkboxes</label>-->
+                            <!--<label class="checkbox-inline">-->
+                                <!--<input type="checkbox">1-->
+                            <!--</label>-->
+                            <!--<label class="checkbox-inline">-->
+                                <!--<input type="checkbox">2-->
+                            <!--</label>-->
+                            <!--<label class="checkbox-inline">-->
+                                <!--<input type="checkbox">3-->
+                            <!--</label>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label>Radio Buttons</label>-->
+                            <!--<div class="radio">-->
+                                <!--<label>-->
+                                    <!--<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>Radio 1-->
+                                <!--</label>-->
+                            <!--</div>-->
+                            <!--<div class="radio">-->
+                                <!--<label>-->
+                                    <!--<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Radio 2-->
+                                <!--</label>-->
+                            <!--</div>-->
+                            <!--<div class="radio">-->
+                                <!--<label>-->
+                                    <!--<input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">Radio 3-->
+                                <!--</label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label>Inline Radio Buttons</label>-->
+                            <!--<label class="radio-inline">-->
+                                <!--<input type="radio" name="optionsRadiosInline" id="optionsRadiosInline1" value="option1" checked>1-->
+                            <!--</label>-->
+                            <!--<label class="radio-inline">-->
+                                <!--<input type="radio" name="optionsRadiosInline" id="optionsRadiosInline2" value="option2">2-->
+                            <!--</label>-->
+                            <!--<label class="radio-inline">-->
+                                <!--<input type="radio" name="optionsRadiosInline" id="optionsRadiosInline3" value="option3">3-->
+                            <!--</label>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label>Selects</label>-->
+                            <!--<select class="form-control">-->
+                                <!--<option>1</option>-->
+                                <!--<option>2</option>-->
+                                <!--<option>3</option>-->
+                                <!--<option>4</option>-->
+                                <!--<option>5</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                            <!--<label>Multiple Selects</label>-->
+                            <!--<select multiple class="form-control">-->
+                                <!--<option>1</option>-->
+                                <!--<option>2</option>-->
+                                <!--<option>3</option>-->
+                                <!--<option>4</option>-->
+                                <!--<option>5</option>-->
+                            <!--</select>-->
+                        <!--</div>-->
+                        <!--<button type="submit" class="btn btn-default">Submit Button</button>-->
+                        <!--<button type="reset" class="btn btn-default">Reset Button</button>-->
+                    <!--</form>-->
+                <!--</div>-->
+                <!--/.col-lg-6 (nested) -->
+                <!--<div class="col-lg-6">-->
+                    <!--<h1>Disabled Form States</h1>-->
+                    <!--<form role="form">-->
+                        <!--<fieldset disabled>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="disabledSelect">Disabled input</label>-->
+                                <!--<input class="form-control" id="disabledInput" type="text" placeholder="Disabled input" disabled>-->
+                            <!--</div>-->
+                            <!--<div class="form-group">-->
+                                <!--<label for="disabledSelect">Disabled select menu</label>-->
+                                <!--<select id="disabledSelect" class="form-control">-->
+                                    <!--<option>Disabled select</option>-->
+                                <!--</select>-->
+                            <!--</div>-->
+                            <!--<div class="checkbox">-->
+                                <!--<label>-->
+                                    <!--<input type="checkbox">Disabled Checkbox-->
+                                <!--</label>-->
+                            <!--</div>-->
+                            <!--<button type="submit" class="btn btn-primary">Disabled Button</button>-->
+                        <!--</fieldset>-->
+                    <!--</form>-->
+                    <!--<h1>Form Validation States</h1>-->
+                    <!--<form role="form">-->
+                        <!--<div class="form-group has-success">-->
+                            <!--<label class="control-label" for="inputSuccess">Input with success</label>-->
+                            <!--<input type="text" class="form-control" id="inputSuccess">-->
+                        <!--</div>-->
+                        <!--<div class="form-group has-warning">-->
+                            <!--<label class="control-label" for="inputWarning">Input with warning</label>-->
+                            <!--<input type="text" class="form-control" id="inputWarning">-->
+                        <!--</div>-->
+                        <!--<div class="form-group has-error">-->
+                            <!--<label class="control-label" for="inputError">Input with error</label>-->
+                            <!--<input type="text" class="form-control" id="inputError">-->
+                        <!--</div>-->
+                    <!--</form>-->
+                    <!--<h1>Input Groups</h1>-->
+                    <!--<form role="form">-->
+                        <!--<div class="form-group input-group">-->
+                            <!--<span class="input-group-addon">@</span>-->
+                            <!--<input type="text" class="form-control" placeholder="Username">-->
+                        <!--</div>-->
+                        <!--<div class="form-group input-group">-->
+                            <!--<input type="text" class="form-control">-->
+                            <!--<span class="input-group-addon">.00</span>-->
+                        <!--</div>-->
+                        <!--<div class="form-group input-group">-->
+                            <!--<span class="input-group-addon"><i class="fa fa-eur"></i>-->
+                            <!--</span>-->
+                            <!--<input type="text" class="form-control" placeholder="Font Awesome Icon">-->
+                        <!--</div>-->
+                        <!--<div class="form-group input-group">-->
+                            <!--<span class="input-group-addon">$</span>-->
+                            <!--<input type="text" class="form-control">-->
+                            <!--<span class="input-group-addon">.00</span>-->
+                        <!--</div>-->
+                        <!--<div class="form-group input-group">-->
+                            <!--<input type="text" class="form-control">-->
+                            <!--<span class="input-group-btn">-->
+                                <!--<button class="btn btn-default" type="button"><i class="fa fa-search"></i>-->
+                                <!--</button>-->
+                            <!--</span>-->
+                        <!--</div>-->
+                    <!--</form>-->
+                <!--</div>-->
+                <!-- /.col-lg-6 (nested) -->
+        </div>
+        <!-- /.row (nested) -->
+    </div>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.9/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="../dist/js/fontenay.js"></script>
+    <script>
+        $(document).ready(function() {
+            _checkLogin();
+            $("#date").val(_getCurrentDate())
+            _loadPromotors();
+            /*_loadSellers();*/
+            _loadProviders();
+            $("#servicesel").change(_productChanged);
+        });
+
+        function _getCurrentDate(){
+            var t = new Date();
+            var month = t.getMonth()+1;
+            month = month > 9 ? month : "0"+month;
+            return t.getFullYear()+"-"+month+"-"+t.getDate();
+        }
+
+        var currentTab = 0; // Current tab is set to be the first tab (0)
+        showTab(currentTab); // Display the current tab
+
+        function showTab(n) {
+            // This function will display the specified tab of the form ...
+            var x = document.getElementsByClassName("tab");
+            x[n].style.display = "block";
+            // ... and fix the Previous/Next buttons:
+            if (n == 0) {
+                document.getElementById("prevBtn").style.display = "none";
+            } else {
+                document.getElementById("prevBtn").style.display = "inline";
+            }
+            if (n == (x.length - 1)) {
+                document.getElementById("nextBtn").innerHTML = "Imprimir";
+            } else if (n == (x.length - 2)) {
+                document.getElementById("nextBtn").innerHTML = "Confirmar";
+            } else {
+                document.getElementById("nextBtn").innerHTML = "Siguiente";
+            }
+            // ... and run a function that displays the correct step indicator:
+            fixStepIndicator(n)
+        }
+
+        function nextPrev(n) {
+            // This function will figure out which tab to display
+            var x = document.getElementsByClassName("tab");
+            // Exit the function if any field in the current tab is invalid:
+            if (n == 1 && !validateForm()) return false;
+            // Hide the current tab:
+            x[currentTab].style.display = "none";
+            // Increase or decrease the current tab by 1:
+            currentTab = currentTab + n;
+            // if you have reached the end of the form... :
+            if (currentTab - 1 >= x.length) {
+                //...the form gets submitted:
+                //document.getElementById("regForm").submit();
+                console.log("SUBMIT");
+                return false;
+            }
+            // Otherwise, display the correct tab:
+            if(currentTab == 2)
+                loadConfirmationTab();
+            else if (currentTab == 3) {
+                loadFinishTab();
+                _createClient();
+            }
+
+            showTab(currentTab);
+        }
+
+        function validateForm() {
+            // This function deals with validation of the form fields
+            var x, y, i, valid = true, productsList = true;
+            x = document.getElementsByClassName("tab");
+            y = x[currentTab].getElementsByTagName("input");
+            // A loop that checks every input field in the current tab:
+            for (i = 0; i < y.length; i++) {
+                // If a field is empty...
+                var elem = $(y[i]);
+                elem.removeClass("invalid").parent().removeClass("has-error");
+                if ("" == elem[0].value) {
+                    // add an "invalid" class to the field:
+                    elem.addClass("invalid").parent().addClass("has-error");
+                    // and set the current valid status to false:
+                    valid = false;
+                }
+            }
+
+            if(1 == currentTab && $(".productPanel").length < 1) {
+                $('#noProductsModal').modal('show');
+                productsList = false;
+            }
+            // If the valid status is true, mark the step as finished and valid:
+            if (valid && productsList) {
+                document.getElementsByClassName("step")[currentTab].className += " finish";
+            }
+            return valid && productsList; // return the valid status
+        }
+
+        function fixStepIndicator(n) {
+            // This function removes the "active" class of all steps...
+            var i, x = document.getElementsByClassName("step");
+            for (i = 0; i < x.length; i++) {
+                x[i].className = x[i].className.replace(" active", "");
+            }
+            //... and adds the "active" class to the current step:
+            x[n].className += " active";
+        }
+
+        function loadConfirmationTab() {
+            loadTab(3);
+        }
+
+        function loadFinishTab() {
+            loadTab(4);
+        }
+
+        function _loadPromotors() {
+            var promotorsPromise = new Promise(
+                function (resolve, reject) {
+                    _getPromotors(resolve, reject);
+                }
+            );
+
+            var load = function() {
+                promotorsPromise
+                .then(function (result) {
+                    _loadPromotorsSelect(result);
+                })
+                .catch(function (error) {
+                    console.log(error.message);
+                });
+            };
+            load();
+        }
+
+        function _loadProviders() {
+            var providersPromise = new Promise(
+                function (resolve, reject) {
+                    _getProviders(resolve, reject);
+                }
+            );
+
+            var load = function() {
+                providersPromise
+                    .then(function (result) {
+                        _loadProvidersSelect(result);
+                    })
+                    .catch(function (error) {
+                        console.log(error.message);
+                    });
+            };
+            load();
+        }
+
+        function _loadProducts() {
+            var productsPromise = new Promise(
+                function (resolve, reject) {
+                    _getProducts(resolve, reject);
+                }
+            );
+
+            var load = function() {
+                productsPromise
+                    .then(function (result) {
+                        _loadProductsSelect(result);
+                    })
+                    .catch(function (error) {
+                        console.log(error.message);
+                    });
+            };
+            load();
+        }
+
+        function _loadPromotorsSelect(result) {
+            var promSel = $("#promotorsel");
+            result.forEach(function(element,index){
+                var opt = $(document.createElement("option"));
+                opt.text(element.first_name + " "+ element.last_name);
+                opt.attr("value",element.promoter_id);
+                promSel.append(opt);
+            })
+        }
+
+        function _loadProvidersSelect(result) {
+            _refreshProvidersSelect($("#providersel"));
+            _loadProducts();
+        }
+
+        function _refreshProvidersSelect(select) {
+            var provSel = select ? select : $("#providersel");
+            Models["providers"].forEach(function(element, index){
+                var opt = $(document.createElement("option"));
+                opt.text(element.name);
+                opt.attr("value", element.provider_id);
+                provSel.append(opt);
+            });
+            provSel.change(_providerChanged);
+        }
+
+        function _loadProductsSelect(result) {
+            _refreshProductsSelect(1);
+        }
+
+        function _providerChanged(event) {
+            var currT = $(event.currentTarget);
+            var servSel = currT.closest(".productPanel").find("#servicesel");
+            servSel.empty();
+            _refreshProductsSelect(parseInt(currT.val()),servSel);
+        }
+
+        function _productChanged(event) {
+            var currP = $(event.currentTarget);
+            _updatePrice(parseInt(currP.val()), currP);
+        }
+
+        function _updatePrice(productID, select) {
+            var prod = Models["products"].find(function(element){
+                if(element.product_id === productID)
+                    return element;
+            });
+
+            var prodPrice = select.closest(".productPanel").find("#uprice");
+            var stockPrice = select.closest(".productPanel").find("#stockprice");
+            prodPrice.val(prod.selling_price);
+            stockPrice.val(prod.stock_price);
+        }
+
+        function _refreshProductsSelect(providerID, select) {
+            var prodSel = select ? select : $("#servicesel");
+            Models["products"].filter(function(element){
+                if(element.provider_id === providerID)
+                    return element;})
+                .forEach(function(element){
+                    var opt = $(document.createElement("option"));
+                    opt.text(element.name);
+                    opt.attr("value",element.product_id);
+                    prodSel.append(opt);
+            });
+            _updatePrice(parseInt(prodSel.val()), prodSel);
+        }
+
+
+        function loadTab(order) {
+            var clientname, passportid, nationality, hotel, address, room, phone, email, promotor/*, seller*/;
+            if(order === 3) {
+                clientname = $("#clientnameconf");
+                passportid = $("#passportconf");
+                nationality = $("#nationalityconf");
+                hotel = $("#hotelconf");
+                address = $("#addressconf");
+                room = $("#roomconf");
+                phone = $("#phonenumberconf");
+                email = $("#emailconf");
+                promotor = $("#promotorconf");
+                /*seller = $("#sellerconf");*/
+            } else if(order === 4) {
+                clientname = $("#clientnamefinish");
+                passportid = $("#passportfinish");
+                nationality = $("#nationalityfinish");
+                hotel = $("#hotelfinish");
+                address = $("#addressfinish");
+                room = $("#roomfinish");
+                phone = $("#phonenumberfinish");
+                email = $("#emailfinish");
+                promotor = $("#promotorfinish");
+                /*seller = $("#sellerfinish");*/
+
+            }
+            clientname.text($("#clientname").val());
+            passportid.text($("#passport").val());
+            nationality.text($("#nationality").val());
+            hotel.text($("#hotel").val());
+            address.text($("#address").val());
+            room.text($("#room").val());
+            phone.text($("#phonenumber").val());
+            email.text($("#email").val());
+            promotor.text($("#promotorsel option:selected").text());
+            /*seller.text($("#sellersel").val());*/
+
+            loadProductsTable(order);
+        }
+
+        function _getTotal() {}
+
+        function loadProductsTable(order) {
+            var prodList = $(".productPanel");
+            var prodTable;
+            var totalElem;
+            var stockPrice = $("#productstockprice");
+            var total = 0, cost = 0;
+
+            if(order === 3) {
+                prodTable = $("#productsconftable");
+                totalElem = $("#productconftotal");
+            } else {
+                prodTable = $("#productsfinishtable");
+                totalElem = $("#productfinishtotal");
+            }
+
+            prodTable.empty();
+
+            if(0 < prodList.length) {
+                loadProdTableHeader(prodTable, order);
+                prodList.each(function(index, el){
+                    var elem = $(el);
+                    total += parseInt(elem.find("#uprice").val());
+                    cost += parseInt(elem.find("#stockprice").val());
+                    loadProdTableRow(elem, order);
+                });
+
+                var finaltotal = order === 4? total - parseInt($("#discountconf").val()): total;
+                totalElem.text(finaltotal);
+                stockPrice.val(cost);
+            }
+        }
+
+        function loadProdTableHeader(prodTable, o) {
+            var th1 = $(document.createElement("th")).text("Proveedor");
+            var th2 = $(document.createElement("th")).text("Servicio");
+            var th3 = $(document.createElement("th")).text("Fecha");
+            var th4 = $(document.createElement("th")).text("Traslado");
+            var th5 = $(document.createElement("th")).text("Adulto(s)");
+            var th6 = $(document.createElement("th")).text("Niños(s)");
+            var th7 = $(document.createElement("th")).text("Bebé(s)");
+            var th8 = $(document.createElement("th")).text("Precio");
+            var tr1 = $(document.createElement("tr")).append(th1).append(th2).append(th3).append(th4).append(th5).append(th6).append(th7).append(th8);
+            var thd1 = $(document.createElement("thead")).append(tr1);
+            var clss = o === 3? "productConfTableBody" : "productFinishTableBody";
+            var tbody = $(document.createElement("tbody")).addClass(clss);
+            prodTable.append(thd1).append(tbody);
+        }
+
+        function loadProdTableRow(product, o) {
+            var td1 = $(document.createElement("td")).text(product.find("#providersel option:selected").text());
+            var td2 = $(document.createElement("td")).text(product.find("#servicesel option:selected").text());
+            var td3 = $(document.createElement("td")).text(product.find("#date").val());
+            var td4 = $(document.createElement("td")).text(product.find("#transfersel option:selected").text());
+            var td5 = $(document.createElement("td")).text(product.find("#adults").val());
+            var td6 = $(document.createElement("td")).text(product.find("#children").val());
+            var td7 = $(document.createElement("td")).text(product.find("#babies").val());
+            var td8 = $(document.createElement("td")).text(product.find("#uprice").val());
+            var tr1 = $(document.createElement("tr")).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
+            var clss = o === 3? ".productConfTableBody" : ".productFinishTableBody";
+            $(clss).append(tr1);
+        }
+
+
+        $(".deleteProduct").click(_deleteProductPanel);
+
+        function _deleteProductPanel(e) {
+            $(e.target).closest(".productPanel").remove();
+        }
+
+        $("#addProduct").click(function(){
+            //var = $("#listOfProducts").children().length;
+            var container = $("#listOfProducts");
+
+            var panelContainer = $(document.createElement('div')).addClass("col-lg-3 productPanel").attr("id","randomtimestamp");
+            var panel = $(document.createElement('div')).addClass("panel panel-default");
+            var panelHeader = $(document.createElement('div')).addClass("panel-heading").text("Producto");
+            var deleteButton = $(document.createElement('button')).attr("type","button").addClass("close deleteProduct").text("×").click(_deleteProductPanel);
+            var panelBody = $(document.createElement('div')).addClass("panel-body");
+            var lbl1 = $(document.createElement('label')).text("Proveedor");
+            var sel1 = $(document.createElement('select')).addClass("form-control").attr("id","providersel");
+            var lbl2 = $(document.createElement('label')).text("Servicio");
+            var sel2 = $(document.createElement('select')).addClass("form-control").attr("id","servicesel");
+            var lbl3 = $(document.createElement('label')).text("Fecha");
+            var fec3 = $(document.createElement('input')).addClass("form-control").attr("type","date").attr("id","date").val(_getCurrentDate());
+            var lbl4 = $(document.createElement('label')).text("Traslado");
+            var sel4 = $(document.createElement('select')).addClass("form-control").attr("id","transfersel");
+            var op41 = $(document.createElement('option')).text("Si").attr("value",true);
+            var op42 = $(document.createElement('option')).text("No").attr("value",false);
+            var lbl5 = $(document.createElement('label')).text("Adulto(s)");
+            var inp5 = $(document.createElement('input')).addClass("form-control").attr("type","number").attr("id","adults");
+            var lbl6 = $(document.createElement('label')).text("Niño(s)");
+            var inp6 = $(document.createElement('input')).addClass("form-control").attr("type","number").attr("id","children");
+            var lbl7 = $(document.createElement('label')).text("Bebé(s)");
+            var inp7 = $(document.createElement('input')).addClass("form-control").attr("type","number").attr("id","babies");
+            var lbl8 = $(document.createElement('label')).text("Precio");
+            var spn81 = $(document.createElement('span')).addClass("input-group-addon").text("$");
+            var spn82 = $(document.createElement('span')).addClass("input-group-addon").text(".00");
+            var ig8 = $(document.createElement('div')).addClass("input-group");
+            var inp8 = $(document.createElement('input')).addClass("form-control").attr("type","number").attr("id","uprice");
+            var inp9 = $(document.createElement('input')).addClass("form-control").attr("type","number").attr("id","stockprice").css("display","none");
+
+            var for1 = $(document.createElement('div')).addClass("form-group");
+            var for2 = $(document.createElement('div')).addClass("form-group");
+            var for3 = $(document.createElement('div')).addClass("form-group");
+            var for4 = $(document.createElement('div')).addClass("form-group");
+            var for5 = $(document.createElement('div')).addClass("form-group");
+            var for6 = $(document.createElement('div')).addClass("form-group");
+            var for7 = $(document.createElement('div')).addClass("form-group");
+            var for8 = $(document.createElement('div')).addClass("form-group");
+
+            panelHeader.append(deleteButton);
+            sel4.append(op41).append(op42);
+
+            for1.append(lbl1).append(sel1);
+            for2.append(lbl2).append(sel2);
+            for3.append(lbl3).append(fec3);
+            for4.append(lbl4).append(sel4);
+            for5.append(lbl5).append(inp5);
+            for6.append(lbl6).append(inp6);
+            for7.append(lbl7).append(inp7);
+            ig8.append(spn81).append(inp8).append(spn82);
+            for8.append(lbl8).append(ig8);
+            panelBody.append(for1).append(for2).append(for3).append(for4).append(for5).append(for6).append(for7).append(for8).append(inp9);
+            panel.append(panelHeader).append(panelBody);
+            panelContainer.append(panel);
+            container.append(panelContainer);
+            _refreshProvidersSelect(sel1);
+            _refreshProductsSelect(1,sel2);
+            sel2.change(_productChanged);
+        })
+
+    </script>
+</body>
+
+</html>
