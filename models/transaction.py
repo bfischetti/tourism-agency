@@ -19,7 +19,7 @@ class TransactionModel(db.Model):
     sale_id = db.Column(db.Integer, db.ForeignKey('sale.sale_id'), nullable=True)
     sale = db.relationship('SaleModel')
 
-    def __init__(self, transaction_id, amount, description, date, is_expense, category_id, sale_id):
+    def __init__(self, transaction_id, amount, description, date, is_expense, category_id, sale_id=None):
         self.transaction_id = transaction_id
         self.amount = amount
         self.description = description

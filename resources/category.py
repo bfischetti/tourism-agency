@@ -16,6 +16,9 @@ _category_parser.add_argument('description',
 _category_parser.add_argument('category_id',
                               type=int,
                               required=False)
+_category_parser.add_argument('label',
+                              type=str,
+                              required=True)
 
 
 class CategoryList(Resource):

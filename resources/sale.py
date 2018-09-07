@@ -65,7 +65,7 @@ class Sale(Resource):
                                             children=product.product_id['children'], date=product.product_id['date'],
                                             babies=product.product_id['babies'],
                                             transfer=product.product_id['transfer'],
-                                            sale_id=sale.sale_id)
+                                            sale_id=sale.sale_id, payment_pending=True)
             sold_product.save_to_db()
 
         transaction = TransactionModel(transaction_id=None, amount=sale.total, date=str(sale.date)[:19],
