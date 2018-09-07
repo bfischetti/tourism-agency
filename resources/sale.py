@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.sale import SaleModel
 from models.sold_product import SoldProductModel
 from models.transaction import TransactionModel
+from models.category import CategoryModel
 
 
 class Product(object):
@@ -68,9 +69,14 @@ class Sale(Resource):
                                             sale_id=sale.sale_id, payment_pending=True)
             sold_product.save_to_db()
 
+        category = CategoryModel.find_by_name('venta')
+
+        if not category:
+            category = CategoryModel.create_category('venta')
+
         transaction = TransactionModel(transaction_id=None, amount=sale.total, date=str(sale.date)[:19],
                                        description=None, is_expense=False,
-                                       category_id=1, sale_id=sale.sale_id)
+                                       category_id=category.category_id, sale_id=sale.sale_id)
         transaction.save_to_db()
 
         return transaction.json(), 201
