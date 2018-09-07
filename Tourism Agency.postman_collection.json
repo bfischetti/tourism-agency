@@ -48,7 +48,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"description\": \"Gas\",\n    \"name\": \"Metrogas\"\n}"
+							"raw": "{\n    \"description\": \"Gas\",\n    \"name\": \"metrogas\",\n    \"label\": \"Metrogas\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/category",
@@ -820,6 +820,64 @@
 							],
 							"path": [
 								"promoters"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payments",
+			"item": [
+				{
+					"name": "/pending",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{url}}/pending",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pending"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/pay",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\t\"total\":10000,\n\t\"products\":[{\"id\":1},{\"id\":2},{\"id\":3}],\n\t\"date\":\"2018-09-03 20:20:30\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/pay",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pay"
 							]
 						}
 					},
