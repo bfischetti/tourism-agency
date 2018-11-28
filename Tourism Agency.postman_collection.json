@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "2806bcaa-ffc6-57a3-0331-2ee3fd005809",
+		"_postman_id": "4664832b-eef8-4911-92b4-1d288624db7d",
 		"name": "Tourism Agency",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -18,7 +18,10 @@
 								"value": "Bearer {{access_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{url}}/categories",
 							"host": [
@@ -138,7 +141,10 @@
 								"value": "Bearer {{access_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{url}}/providers",
 							"host": [
@@ -227,7 +233,10 @@
 								"value": "Bearer {{access_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{url}}/products",
 							"host": [
@@ -316,7 +325,10 @@
 								"value": "Bearer {{access_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{url}}/clients",
 							"host": [
@@ -405,7 +417,10 @@
 								"value": "Bearer {{access_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{url}}/transactions",
 							"host": [
@@ -555,7 +570,10 @@
 								"value": "Bearer {{access_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{url}}/logout",
 							"host": [
@@ -589,7 +607,10 @@
 								"value": "Bearer {{refresh_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{url}}/refresh",
 							"host": [
@@ -612,7 +633,10 @@
 								"value": "Bearer {{access_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{url}}/user",
 							"host": [
@@ -700,7 +724,10 @@
 								"value": "Bearer {{access_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{url}}/sale/1",
 							"host": [
@@ -724,7 +751,10 @@
 								"value": "Bearer {{access_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{url}}/sales",
 							"host": [
@@ -812,7 +842,10 @@
 								"value": "Bearer {{access_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{url}}/promoters",
 							"host": [
@@ -840,7 +873,10 @@
 								"value": "Bearer {{access_token}}"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "{{url}}/pending",
 							"host": [
@@ -878,6 +914,71 @@
 							],
 							"path": [
 								"pay"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "currency",
+			"item": [
+				{
+					"name": "/currencies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/currencies",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"currencies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/currency",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\t\n\t\"code\":\"BRL\",\n\t\"exchange\": 45.5,\n\t\"date\":\"2018-08-28 20:20:30\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/currency",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"currency"
 							]
 						}
 					},
