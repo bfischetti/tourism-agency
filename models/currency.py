@@ -24,7 +24,7 @@ class CurrencyModel(db.Model):
 
     @classmethod
     def find_all(cls):
-        return cls.query.order_by(CurrencyModel.date.desc()).all()
+        return cls.query.order_by(CurrencyModel.date.desc()).group_by(CurrencyModel.code).all()
 
     def save_to_db(self):
         db.session.add(self)
