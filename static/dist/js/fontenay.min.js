@@ -1,4 +1,5 @@
 Models = [];
+Models["default"] = {exchangerates : [{"currency_id": 1000000, "code": "BRL", "date": "2018-12-01 00:00:00", "exchange": 10.0}, {"currency_id": 1000001, "code": "EUR", "date": "2018-12-01 00:00:00", "exchange": 45.5}, {"currency_id": 1000003, "code": "USD", "date": "2018-12-01 00:00:00", "exchange": 39.5}]};
 
 $(function() {
     $('#side-menu').metisMenu();
@@ -231,6 +232,21 @@ function _getSales(res, rej) {
     $.get(host+"/sales",
         function (result, error) {
             Models["sales"] = result;
+            res(result);
+        }).fail(function(error) {
+        if(error.status === 401 || error.status === 422) {
+            window.location = "/pages/login.html";
+        }
+        rej(error);
+    })
+}
+
+function _getExchangeRates(res, rej) {
+    _loadAjaxSetup();
+
+    $.get(host+"/currencies",
+        function (result, error) {
+            Models["exchangerates"] = result;
             res(result);
         }).fail(function(error) {
         if(error.status === 401 || error.status === 422) {
