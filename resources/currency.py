@@ -11,7 +11,7 @@ class Currency(Resource):
                         required=False)
     parser.add_argument('date',
                         type=str,
-                        required=True
+                        required=False
                         )
     parser.add_argument('code',
                         type=str,
@@ -40,6 +40,10 @@ class CurrencyList(Resource):
 
     @jwt_required
     def get(self):
-        print(CurrencyModel.find_all()[0])
-        return {}
+
+        usd = CurrencyModel.find_latest_by_code('USD')
+        brl = CurrencyModel.find_latest_by_code('BRL')
+        eur = CurrencyModel.find_latest_by_code('EUR')
+
+        return [usd.json(), brl.json(), eur.json()]
 
