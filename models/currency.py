@@ -24,14 +24,14 @@ class CurrencyModel(db.Model):
 
     @classmethod
     def find_all(cls):
-        return cls.query.order_by(CurrencyModel.date.desc()).group_by(CurrencyModel.code).all()
+        return cls.query.with_entities(CurrencyModel.code, CurrencyModel.date, CurrencyModel.exchange).order_by(
+            CurrencyModel.date.desc()).group_by(CurrencyModel.code).all()
 
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
     def json(self):
-        return {'currency_id': self.currency_id,
-                'code': self.code,
+        return {'code': self.code,
                 'date': str(self.date)[:19],
                 'exchange': self.exchange}

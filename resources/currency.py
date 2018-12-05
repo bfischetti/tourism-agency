@@ -40,4 +40,6 @@ class CurrencyList(Resource):
 
     @jwt_required
     def get(self):
-        return [product.json() for product in CurrencyModel.find_all()]
+        print(CurrencyModel.find_all()[0])
+        return {}
+
