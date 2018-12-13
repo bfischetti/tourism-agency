@@ -302,6 +302,17 @@
                             <a href="newsale.html"><i class="fa fa-edit fa-fw"></i> Nueva venta</a>
                         </li>
                         <li>
+                            <a href="#"><i class="fa fa-wrench fa-fw"></i> Configuración<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li>
+                                    <a href="exchange-rate.html">Cotización divisas</a>
+                                </li>
+                                <li>
+                                    <a href="products.html">Productos</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
                             <a href="login.html"><i class="fa fa-files-o fa-fw"></i> Login</a>
                         </li>
                     </ul>
@@ -617,50 +628,51 @@
                                     <div id="totalAmountPayment" style="float: left;"></div>
                                 </div>
                             </div>
-                            <div class="form-group col-lg-3">
-                                <label>Pesos</label>
-                                <div class=" input-group">
-                                    <span class="input-group-addon">$</span>
-                                    <input id="amountPesos" class="form-control" type="number" name="quantity" min="0">
-                                    <span class="input-group-addon">.00</span>
+                            <div class="col-lg-12 addPaymentControl">
+                                <div class="form-group col-lg-2">
+                                    <label>Método de pago</label>
+                                    <select class="form-control" id="paymentMethod">
+                                        <option value="cashP">Efectivo</option>
+                                        <option value="transferP">Transferencia</option>
+                                        <option value="cardP">Tarjeta</option>
+                                    </select>
                                 </div>
-                                <p id="exchangePesos" class="form-control-static"></p>
+                                <div class="form-group col-lg-2">
+                                    <label>Moneda</label>
+                                    <select class="form-control" id="paymentCurrency">
+                                        <option value="USD">Dólar</option>
+                                        <option value="BRL">Real</option>
+                                        <option value="EUR">Euro</option>
+                                        <option value="ARS">Peso</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label>Monto</label>
+                                    <div class=" input-group">
+                                        <span class="input-group-addon">$</span>
+                                        <input id="paymentAmountToAdd" class="form-control" step="0.01" type="number" min="0">
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <button type="button" class="btn btn-success" id="addPaymentRow" onclick="_addPaymentRow(event)">Agregar</button>
+                                </div>
                             </div>
-                            <div class="form-group col-lg-3">
-                                <label>Reales</label>
-                                <div class=" input-group">
-                                    <span class="input-group-addon">$</span>
-                                    <input id="amountReales" class="form-control" type="number" name="quantity" min="0">
-                                    <span class="input-group-addon">.00</span>
-                                </div>
-                                <p  id="exchangeReales" class="form-control-static"></p>
+
+                            <div class="table-responsive col-lg-7">
+                                <table class="table table-striped" id="paymentTable">
+                                    <thead class="paymentTableHead">
+                                        <tr><th>Modalidad</th><th>Moneda</th><th>Subtotal</th><th>Subtotal AR$</th><th>Eliminar</th></tr>
+                                    </thead>
+                                    <tbody class="paymentTableBody">
+                                    </tbody>
+                                </table>
                             </div>
-                            <div class="form-group col-lg-3">
-                                <label>Reales (transferencia)</label>
-                                <div class=" input-group">
-                                    <span class="input-group-addon">$</span>
-                                    <input id="amountRealesTransf" class="form-control" type="number" name="quantity" min="0">
-                                    <span class="input-group-addon">.00</span>
+                            <div class="col-lg-2 col-lg-offset-5">
+                                <label style="">Sumatoria parcial</label>
+                                <div class="input-group" style="">
+                                    <span class="input-group-addon">AR$</span>
+                                    <input id="totalSum" class="form-control" value="0" type="number" name="quantity" min="0" disabled="">
                                 </div>
-                                <p id="exchangeRealesTransf" class="form-control-static"></p>
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label>Dólares</label>
-                                <div class=" input-group">
-                                    <span class="input-group-addon">$</span>
-                                    <input id="amountDollars" class="form-control" type="number" name="quantity" min="0">
-                                    <span class="input-group-addon">.00</span>
-                                </div>
-                                <p id="exchangeDollars" class="form-control-static"></p>
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label>Euros</label>
-                                <div class=" input-group">
-                                    <span class="input-group-addon">$</span>
-                                    <input id="amountEuros" class="form-control" type="number" name="quantity" min="0">
-                                    <span class="input-group-addon">.00</span>
-                                </div>
-                                <p id="exchangeEuros" class="form-control-static"></p>
                             </div>
                         </div>
 
@@ -712,19 +724,22 @@
 
 
                         <div class="col-lg-12" style="overflow:auto;">
-                            <div style="float:right;">
+                            <div id="saleActionBtns" style="float:right;">
                                 <button type="button" class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Volver</button>
                                 <button type="button" class="btn btn-success" id="nextBtn" onclick="nextPrev(1)">Siguiente</button>
+                                <button type="button" class="btn btn-primary" id="printVoucherBtn" onclick="_printVoucher()" style="display: none">Voucher</button>
+                                <button type="button" class="btn btn-primary" id="printReceiptBtn" onclick="_printReceipt()" style="display: none">Recibo</button>
                             </div>
                         </div>
 
                     <!-- Circles which indicates the steps of the form: -->
                         <div class="col-lg-12" style="text-align:center;margin-top:40px;">
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                        <span class="step"></span>
-                    </div>
+                            <span class="step"></span>
+                            <span class="step"></span>
+                            <span class="step"></span>
+                            <span class="step"></span>
+                            <span class="step"></span>
+                        </div>
 
                     </form>
                 </div>
@@ -963,23 +978,10 @@
             $(".exchangeRate").blur(_calculateSubtotalAmount);
             $(".discount").blur(_calculateTotalAmount);
             $("#adults, #children, #babies").change(_peopleChanged);
+            paymentRows = [];
             //DELETE
             $("#nextBtn").focus();
         });
-
-        function _getCurrentDate(){
-            var today = new Date();
-            var dd = today.getDate();
-            var mm = today.getMonth() + 1; //January is 0!
-            var yyyy = today.getFullYear();
-            if (dd < 10) {
-                dd = '0' + dd;
-            }
-            if (mm < 10) {
-                mm = '0' + mm;
-            }
-            return yyyy+"-"+mm+"-"+dd;
-        }
 
         var currentTab = 0; // Current tab is set to be the first tab (0)
         showTab(currentTab); // Display the current tab
@@ -989,14 +991,15 @@
             var x = document.getElementsByClassName("tab");
             x[n].style.display = "block";
             // ... and fix the Previous/Next buttons:
-            if (n == 0) {
+            if (n === 0) {
+                document.getElementById("prevBtn").style.display = "none";
+            } if (n === 4) {
                 document.getElementById("prevBtn").style.display = "none";
             } else {
                 document.getElementById("prevBtn").style.display = "inline";
             }
-            if (n == (x.length - 1)) {
-                document.getElementById("nextBtn").innerHTML = "Imprimir";
-            } else if (n == (x.length - 2)) {
+
+            if (n === (x.length - 2)) {
                 document.getElementById("nextBtn").innerHTML = "Confirmar";
             } else {
                 document.getElementById("nextBtn").innerHTML = "Siguiente";
@@ -1163,7 +1166,6 @@
             var load = function() {
                 currenciesPromise
                     .then(function (result) {
-                        console.log("CURRENCIES: ", result);
                     })
                     .catch(function (error) {
                         console.log(error.message);
@@ -1220,7 +1222,6 @@
             $("#"+selected).show();
         }
 
-
         function _calculateSubtotalAmount(event) {
             var target = $(event.target);
             var currentTR = target.closest(".currtr");
@@ -1247,7 +1248,6 @@
             else
                 1;//ERROR
         }
-
 
         function _peopleChanged(event) {
             var currP = $(event.target).closest(".productPanel").find("#servicesel");
@@ -1291,7 +1291,6 @@
             _updatePrice(parseInt(prodSel.val()), prodSel);
         }
 
-
         function loadTab(order) {
             var clientname, passportid, nationality, hotel, address, room, phone, email, promotor/*, seller*/;
             if(order === 3) {
@@ -1318,6 +1317,7 @@
                 phone = $("#phonenumberfinish");
                 email = $("#emailfinish");
                 promotor = $("#promotorfinish");
+                _enablePrintBtns();
             }
             clientname.text($("#clientname").val());
             passportid.text($("#passport").val());
@@ -1333,13 +1333,27 @@
             loadProductsTable(order);
         }
 
-        function _getTotal() {}
+        function _enablePrintBtns() {
+            $("#prevBtn").hide();
+            $("#nextBtn").hide();
+            $("#printVoucherBtn").show();
+            $("#printReceiptBtn").show();
+        }
+
+        function _printVoucher() {
+            var win = window.open("", "_blank");
+            win.focus();
+        }
+
+        function _printReceipt() {
+            var win = window.open("", "_blank");
+            win.focus();
+        }
 
         function loadCurrencyValues() {
-            var exchangeRates = Models.exchangerates ? Models.exchangerates : Models.default.exchangerates;
-            $("#exchangeRateDollar").val((exchangeRates.find(function(el){return el.code === "USD"})).exchange);
-            $("#exchangeRateReal").val((exchangeRates.find(function(el){return el.code === "BRL"})).exchange);
-            $("#exchangeRateEuro").val((exchangeRates.find(function(el){return el.code === "EUR"})).exchange);
+            $("#exchangeRateDollar").val(_getExchangeRate("USD"));
+            $("#exchangeRateReal").val(_getExchangeRate("BRL"));
+            $("#exchangeRateEuro").val(_getExchangeRate("EUR"));
         }
 
         function calculateSubTotal() {
@@ -1354,11 +1368,10 @@
 
         function loadSubtotal() {
             var subTotal = calculateSubTotal() ;
-            var exchangeRates = Models.exchangerates ? Models.exchangerates : Models.default.exchangerates;
 
-            $("#subtotalDollarDiscount").val((subTotal/(exchangeRates.find(function(el){return el.code === "USD"})).exchange).toFixed(2));
-            $("#subtotalRealDiscount").val((subTotal/(exchangeRates.find(function(el){return el.code === "BRL"})).exchange).toFixed(2));
-            $("#subtotalEuroDiscount").val((subTotal/(exchangeRates.find(function(el){return el.code === "EUR"})).exchange).toFixed(2));
+            $("#subtotalDollarDiscount").val((subTotal/_getExchangeRate("USD")).toFixed(2));
+            $("#subtotalRealDiscount").val((subTotal/_getExchangeRate("BRL")).toFixed(2));
+            $("#subtotalEuroDiscount").val((subTotal/_getExchangeRate("EUR")).toFixed(2));
             $("#subtotalPesoDiscount").val((subTotal).toFixed(2));
         }
 
@@ -1430,7 +1443,6 @@
             $(clss).append(tr1);
         }
 
-
         $(".deleteProduct").click(_deleteProductPanel);
 
         function _deleteProductPanel(e) {
@@ -1500,7 +1512,57 @@
             inp5.change(_peopleChanged);
             inp6.change(_peopleChanged);
             inp7.change(_peopleChanged);
-        })
+        });
+
+        function _addPaymentRow(e) {
+            var elem = $(".addPaymentControl");
+            var paymentMethodOpt = elem.find("#paymentMethod option:selected");
+            var paymentCurrencyOpt = elem.find("#paymentCurrency option:selected");
+            var paymentAmountToAdd = elem.find("#paymentAmountToAdd").val();
+            var id = paymentMethodOpt.val() + paymentCurrencyOpt.val();
+            var paymentAmountARSToAdd = paymentAmountToAdd * _getExchangeRate(paymentCurrencyOpt.val());
+
+            if(_addPayment(id, paymentAmountToAdd, paymentAmountARSToAdd)) {
+                var td1 = $(document.createElement("td")).text(paymentMethodOpt.text());
+                var td2 = $(document.createElement("td")).text(paymentCurrencyOpt.text());
+                var td3 = $(document.createElement("td")).text(paymentAmountToAdd);
+                var td4 = $(document.createElement("td")).addClass("totalARRow").text(paymentAmountARSToAdd);
+                var i   = $(document.createElement("i")).addClass("fa fa-trash-o");
+                var btn = $(document.createElement("button")).attr("type","button").addClass("btn btn-danger btn-circle").append(i);
+                var td5 = $(document.createElement("td")).append(btn);
+                var tr1 = $(document.createElement("tr")).attr("id",id).addClass("paymentRow").append(td1).append(td2).append(td3).append(td4).append(td5);
+                $(".paymentTableBody").append(tr1);
+                $(btn).click(function(){
+                    _removePayment(id);
+                    $(btn).closest(".paymentRow").remove();
+                });
+            } else {
+                console.log("POPUP ERROR");
+            }
+        }
+
+        function _addPayment(id, val, arVal) {
+            var status = false;
+            if(!paymentRows[id] || paymentRows[id].length < 2) {
+                paymentRows[id] = [val, arVal];
+                _calculateTotalSum();
+                status = true;
+            }
+            return status;
+        }
+
+        function _removePayment(id) {
+            paymentRows[id] = [];
+            _calculateTotalSum();
+        }
+
+        function _calculateTotalSum() {
+            var partialSum = 0;
+            for (const key in paymentRows) {
+                partialSum += paymentRows[key][1] ? Number(paymentRows[key][1]) : 0;
+            }
+            $("#totalSum").val(partialSum);
+        }
 
     </script>
 </body>
