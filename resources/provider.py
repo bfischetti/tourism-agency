@@ -55,4 +55,4 @@ class Provider(Resource):
         except:
             return {"message": "An error occurred updating the operation"}, 500
 
-        return provider.json(), 204
+        return provider.json(), 200

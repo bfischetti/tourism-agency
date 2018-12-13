@@ -57,4 +57,4 @@ class Category(Resource):
         except:
             return {"message": "An error occurred updating the category"}, 500
 
-        return category.json(), 204
+        return category.json(), 200

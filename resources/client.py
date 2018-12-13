@@ -65,4 +65,4 @@ class Client(Resource):
         except:
             return {"message": "An error occurred updating the operation"}, 500
 
-        return client.json(), 204
+        return client.json(), 200

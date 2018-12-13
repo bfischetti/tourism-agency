@@ -52,4 +52,4 @@ class Promoter(Resource):
         except:
             return {"message": "An error occurred updating the promoter"}, 500
 
-        return promoter.json(), 204
+        return promoter.json(), 200

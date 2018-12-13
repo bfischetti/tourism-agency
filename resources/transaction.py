@@ -60,4 +60,4 @@ class Transaction(Resource):
         except:
             return {"message": "An error occurred updating the operation"}, 500
 
-        return product .json(), 204
+        return product .json(), 200
