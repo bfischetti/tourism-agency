@@ -44,6 +44,7 @@ class CurrencyList(Resource):
         usd = CurrencyModel.find_latest_by_code('USD')
         brl = CurrencyModel.find_latest_by_code('BRL')
         eur = CurrencyModel.find_latest_by_code('EUR')
+        ars = CurrencyModel.find_latest_by_code('ARS')
 
-        return [usd.json(), brl.json(), eur.json()]
+        return [usd.json(), brl.json(), eur.json(), ars.json()]
 

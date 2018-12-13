@@ -2,6 +2,7 @@ from db import db
 from datetime import datetime
 from models.sale import SaleModel
 from models.category import CategoryModel
+from models.currency import CurrencyModel
 
 
 class TransactionModel(db.Model):
@@ -9,9 +10,14 @@ class TransactionModel(db.Model):
 
     transaction_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     amount = db.Column(db.Float(precision=2))
+    exchange = db.Column(db.Float(precision=2))
+    method = db.Column(db.String(20))
     description = db.Column(db.String(200))
     date = db.Column(db.DateTime, default=datetime.now())
     is_expense = db.Column(db.Boolean)
+
+    currency_id = db.Column(db.Integer, db.ForeignKey('currency.currency_id'), nullable=True)
+    currency = db.relationship('CurrencyModel')
 
     category_id = db.Column(db.Integer, db.ForeignKey('category.category_id'), nullable=False)
     category = db.relationship('CategoryModel')
@@ -19,16 +25,22 @@ class TransactionModel(db.Model):
     sale_id = db.Column(db.Integer, db.ForeignKey('sale.sale_id'), nullable=True)
     sale = db.relationship('SaleModel')
 
-    def __init__(self, transaction_id, amount, description, date, is_expense, category_id, sale_id=None):
+    def __init__(self, transaction_id, amount, description, date, is_expense, category_id, method, sale_id=None,
+                 exchange=None, currency_id=None):
         self.transaction_id = transaction_id
         self.amount = amount
         self.description = description
+        self.method = method
         if date is not None:
             formatted_date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
             self.date = formatted_date
         self.is_expense = is_expense
         self.category_id = category_id
         self.sale_id = sale_id
+        if exchange is not None:
+            self.exchange = exchange
+        if currency_id is not None:
+            self.currency_id = currency_id
 
     @classmethod
     def find_by_id(cls, _id):
@@ -68,7 +80,9 @@ class TransactionModel(db.Model):
         return {'transaction_id': self.transaction_id,
                 'amount': self.amount,
                 'description': self.description,
+                'currency_id': self.currency_id,
                 'date': str(self.date)[:19],
                 'category_id': self.category_id,
                 'is_expense': self.is_expense,
+                'exchange': self.exchange,
                 'sale_id': self.sale_id}

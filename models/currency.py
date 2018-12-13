@@ -22,7 +22,6 @@ class CurrencyModel(db.Model):
     def find_by_code(cls, code):
         return cls.query.order_by(CurrencyModel.date.desc()).filter_by(code=code).first()
 
-
     @classmethod
     def find_latest_by_code(cls, code):
         return cls.query.filter_by(code=code).order_by(CurrencyModel.date.desc()).first()

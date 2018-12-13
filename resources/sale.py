@@ -1,4 +1,5 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
+from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.sale import SaleModel
 from models.sold_product import SoldProductModel
@@ -6,66 +7,39 @@ from models.transaction import TransactionModel
 from models.category import CategoryModel
 
 
-class Product(object):
-    def __init__(self, product_id, price):
-        self.product_id = product_id
-        self.price = price
-
-
 class Sale(Resource):
-    parser = reqparse.RequestParser()
-
-    parser.add_argument('products',
-                        type=Product,
-                        location='json',
-                        action='append',
-                        required=False)
-    parser.add_argument('total',
-                        type=float,
-                        required=True)
-    parser.add_argument('seller_id',
-                        type=int,
-                        required=False)
-    parser.add_argument('date',
-                        type=str,
-                        required=False)
-    parser.add_argument('sale_id',
-                        type=int,
-                        required=False)
-    parser.add_argument('client_id',
-                        type=int,
-                        required=False)
-    parser.add_argument('promoter_id',
-                        type=int,
-                        required=False)
-    parser.add_argument('promoter_commission',
-                        type=float,
-                        required=False)
-    parser.add_argument('seller_commission',
-                        type=float,
-                        required=False)
 
     @jwt_required
     def post(self):
-        data = Sale.parser.parse_args()
+        json_data = request.get_json(force=True)
 
-        if data['seller_id']:
-            user_id = data['seller_id']
+        total = 0
+        for payment in json_data.get('payments'):
+            total += payment.get('amount') * payment.get('exchange')
+
+        if not Sale.compare(total, json_data.get('total')):
+            return {'message': 'Amounts are not correct'}
+
+        if json_data.get('seller_id'):
+            user_id = json_data.get('seller_id')
         else:
             user_id = get_jwt_identity()
 
-        sale = SaleModel(total=data['total'], user_id=user_id, date=data['date'],
-                         sale_id=data['sale_id'], client_id=data['client_id'], promoter_id=data['promoter_id'],
-                         promoter_commission=data['promoter_commission'], user_commission=data['seller_commission'])
+        sale = SaleModel(total=json_data.get('total'), user_id=user_id, date=json_data.get('date'),
+                         sale_id=json_data.get('sale_id'), client_id=json_data.get('client_id'),
+                         promoter_id=json_data.get('promoter_id'),
+                         promoter_commission=json_data.get('promoter_commission'),
+                         user_commission=json_data.get('seller_commission'))
 
         sale.save_to_db()
 
-        for product in data['products']:
-            sold_product = SoldProductModel(product_id=product.product_id['product_id'],
-                                            price=product.product_id['price'], adults=product.product_id['adults'],
-                                            children=product.product_id['children'], date=product.product_id['date'],
-                                            babies=product.product_id['babies'],
-                                            transfer=product.product_id['transfer'],
+        for product in json_data.get('products'):
+            print(product)
+            sold_product = SoldProductModel(product_id=product.get('product_id'),
+                                            price=product.get('price'), adults=product.get('adults'),
+                                            children=product.get('children'), date=product.get('date'),
+                                            babies=product.get('babies'),
+                                            transfer=product.get('transfer'),
                                             sale_id=sale.sale_id, payment_pending=True)
             sold_product.save_to_db()
 
@@ -74,12 +48,21 @@ class Sale(Resource):
         if not category:
             category = CategoryModel.create_category('venta')
 
-        transaction = TransactionModel(transaction_id=None, amount=sale.total, date=str(sale.date)[:19],
-                                       description=None, is_expense=False,
-                                       category_id=category.category_id, sale_id=sale.sale_id)
-        transaction.save_to_db()
+        for payment in json_data.get('payments'):
+            transaction = TransactionModel(transaction_id=None, amount=payment.get('amount'), date=str(sale.date)[:19],
+                                           description=None, is_expense=False, category_id=category.category_id,
+                                           sale_id=sale.sale_id, exchange=payment.get('exchange'),
+                                           method=payment.get('method'), currency_id=payment.get('currency_id'))
+            transaction.save_to_db()
 
-        return transaction.json(), 201
+        return sale.json(), 201
+
+    @classmethod
+    def compare(cls, total_sum, total_sale):
+        if total_sum == total_sale:
+            return True
+        else:
+            return False
 
 
 class Sales(Resource):
