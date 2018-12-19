@@ -14,8 +14,15 @@ class Sale(Resource):
         json_data = request.get_json(force=True)
 
         total = 0
+
         for payment in json_data.get('payments'):
-            total += payment.get('amount') * payment.get('exchange')
+
+            if json_data.get('credit_charge'):
+                charge = json_data.get('credit_charge')
+            else:
+                charge = 1
+
+            total += payment.get('amount') * payment.get('exchange') * charge
 
         if not Sale.compare(total, json_data.get('total')):
             return {'message': 'Amounts are not correct'}
@@ -29,7 +36,7 @@ class Sale(Resource):
                          sale_id=json_data.get('sale_id'), client_id=json_data.get('client_id'),
                          promoter_id=json_data.get('promoter_id'),
                          promoter_commission=json_data.get('promoter_commission'),
-                         user_commission=json_data.get('seller_commission'))
+                         user_commission=json_data.get('seller_commission'), discount=json_data.get('discount'))
 
         sale.save_to_db()
 
@@ -86,6 +93,7 @@ class Voucher(Resource):
         return {"sale_id": sale.sale_id,
                 "client": sale.client.json(),
                 "total": sale.total,
+                "discount": sale.discount,
                 "user_commission": sale.user_commission,
                 "promoter_commission": sale.promoter_commission,
                 "products": [product.json() for product in products_from_sale]}, 200
