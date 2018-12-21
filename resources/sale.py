@@ -5,6 +5,7 @@ from models.sale import SaleModel
 from models.sold_product import SoldProductModel
 from models.transaction import TransactionModel
 from models.category import CategoryModel
+import math
 
 
 class Sale(Resource):
@@ -24,7 +25,7 @@ class Sale(Resource):
 
             total += payment.get('amount') * payment.get('exchange') * charge
 
-        if not Sale.compare(total, json_data.get('total')):
+        if not Sale.are_equal(total, json_data.get('total')):
             return {'message': 'Amounts are not correct'}
 
         if json_data.get('seller_id'):
@@ -65,11 +66,8 @@ class Sale(Resource):
         return sale.json(), 201
 
     @classmethod
-    def compare(cls, total_sum, total_sale):
-        if total_sum == total_sale:
-            return True
-        else:
-            return False
+    def are_equal(cls, total_sum, total_sale):
+        return not math.fabs(total_sum - total_sale) > 0.1
 
 
 class Sales(Resource):
