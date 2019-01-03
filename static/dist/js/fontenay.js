@@ -237,6 +237,21 @@ function _getSales(res, rej) {
     })
 }
 
+function _getSale(res, rej, id) {
+    _loadAjaxSetup();
+
+    $.get(host+"/sale/" + id,
+        function (result, error) {
+            Models["sale/"+id] = result;
+            res(result);
+        }).fail(function(error) {
+        if(error.status === 401 || error.status === 422) {
+            window.location = "/pages/login.html";
+        }
+        rej(error);
+    })
+}
+
 function _getExchangeRates(res, rej) {
     _loadAjaxSetup();
 
@@ -271,6 +286,7 @@ function  _parseCreatedSaleData(result) {
         currentTab -= 1;
         showTab(3);
     }
+    sale.success = result;
 }
 
 function  _parseCreatedCurrExchangeData(result) {
