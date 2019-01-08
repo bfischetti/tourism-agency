@@ -46,6 +46,10 @@ class TransactionModel(db.Model):
     def find_by_id(cls, _id):
         return cls.query.filter_by(transaction_id=_id).first()
 
+    @classmethod
+    def find_by_sale_id(cls, sale_id):
+        return cls.query.filter_by(sale_id=sale_id).all()
+
     def update_to_db(self):
         transaction_to_update = TransactionModel.find_by_id(self.transaction_id)
         if self.category_id is not None:

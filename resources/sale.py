@@ -87,6 +87,7 @@ class Voucher(Resource):
             return {"message": "no sale with that id"}, 404
 
         products_from_sale = SoldProductModel.find_by_sale_id(sale_id)
+        payments_from_sale = TransactionModel.find_by_sale_id(sale_id)
 
         return {"sale_id": sale.sale_id,
                 "client": sale.client.json(),
@@ -94,4 +95,5 @@ class Voucher(Resource):
                 "discount": sale.discount,
                 "user_commission": sale.user_commission,
                 "promoter_commission": sale.promoter_commission,
+                "payments": [payment.json() for payment in payments_from_sale],
                 "products": [product.json() for product in products_from_sale]}, 200
