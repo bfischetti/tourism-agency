@@ -67,7 +67,7 @@ class Sale(Resource):
 
     @classmethod
     def are_equal(cls, total_sum, total_sale):
-        return not math.fabs(total_sum - total_sale) > 0.1
+        return not math.fabs(total_sum - total_sale) >= 1
 
 
 class Sales(Resource):
