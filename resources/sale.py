@@ -90,6 +90,7 @@ class Voucher(Resource):
         payments_from_sale = TransactionModel.find_by_sale_id(sale_id)
 
         return {"sale_id": sale.sale_id,
+                "date": str(sale.date)[:19],
                 "client": sale.client.json(),
                 "total": sale.total,
                 "discount": sale.discount,
