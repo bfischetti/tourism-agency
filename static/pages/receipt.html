@@ -28,9 +28,9 @@
 </head>
 <body>
     <div id="wrapper">
-        <div id="page-wrapper" class="printPage">
+        <div id="page-wrapper" class="printPage" style="max-width: 1100px;">
             <div class="row">
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                     <h1 class="page-header">FONTENAY TOURS</h1>
                 </div>
             </div>
@@ -51,16 +51,8 @@
                         www.fontenaytours.com<br>
                     </p>
                 </div>
-
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
-                    <p>
-                        N° de formato: 123456789<br>
-                        Fecha del formato: 01/Ene/2018<br>
-                    </p>
-                    <div class="form-group col-md-3">
-                        <label>Total</label>
-                        <p class="productTotal form-control-static"></p>
-                    </div>
+                    <p class ="receiptInfo"></p>
                 </div>
             </div>
             <div class="row">
@@ -69,23 +61,27 @@
                         <thead>
                             <tr>
                                 <th>Descripción</th>
-                                <th>Cantidad</th>
-                                <th>Precio unitario</th>
+                                <th>Cant.</th>
+                                <th>Precio u.</th>
                                 <th>Importe</th>
                             </tr>
                         </thead>
-                        <tbody class="itemsTableBody"></tbody></table>
+                        <tbody class="itemsTableBody"></tbody>
+                    </table>
                 </div>
-                <div class="table-responsive col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                    <table class="table table-striped" id="paymentsTable">
-                        <thead>
-                        <tr>
-                            <th>Método de pago</th>
-                            <th>Moneda</th>
-                            <th>Importe</th>
-                        </tr>
-                        </thead>
-                        <tbody class="paymentsTableBody"></tbody></table>
+            </div>
+            <div class="row">
+                <div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xs-offset-3 col-sm-offset-3 col-md-offset-3 col-lg-offset-3">
+                    <label>Subtotal</label>
+                    <p class="productSubtotal form-control-static"></p>
+                </div>
+                <div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label>Descuento</label>
+                    <p class="discount form-control-static"></p>
+                </div>
+                <div class="form-group col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <label>TOTAL</label>
+                    <p class="productTotal form-control-static" style="font-weight: 700"></p>
                 </div>
             </div>
         </div>
@@ -96,12 +92,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <!-- Metis Menu Plugin JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.9/metisMenu.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/fontenay.js"></script>
 
     <script>
         $(document).ready(function() {
-            var myParam = location.search.split("saleid=")[1];
+            var myParam = location.search.split("saleid=")[1].split("&")[0];
             console.log(myParam);
             _loadSale(myParam);
         });
@@ -126,13 +126,19 @@
         }
 
         function  _fillInformation(sale) {
+            _fillReceiptInfo(sale);
+            var subtotal = (sale.total + sale.discount);
+            $(".productSubtotal").text("$ "+ subtotal + ".00");
+            $(".discount").text("$ "+sale.discount + ".00");
             $(".productTotal").text("$ "+sale.total + ".00");
             sale.products.forEach(function(el){
                 loadItemTableRow(el);
             });
-            sale.payments.forEach(function(el){
-                loadPaymentTableRow(el);
-            });
+
+            var myParams = location.search.split("download=");
+            if(myParams[1] !== undefined && myParams[1] === "true") {
+                _downloadPDF(sale.sale_id)
+            }
         }
 
         function loadItemTableRow(product) {
@@ -144,12 +150,26 @@
             $(".itemsTableBody").append(tr1);
         }
 
-        function loadPaymentTableRow(payment) {
-            var td1 = $(document.createElement("td")).text(payment.product.name);
-            var td2 = $(document.createElement("td")).text(payment);
-            var td3 = $(document.createElement("td")).text(payment);
-            var tr1 = $(document.createElement("tr")).append(td1).append(td2).append(td3);
-            $(".paymentsTableBody").append(tr1);
+        function _fillReceiptInfo(sale) {
+            //var saleDate = _getFormatDate(new Date(sale.date));
+            var saleDate = _getFormatDate(new Date());
+            var html = "N° de formato: " + sale.sale_id + "<br>Fecha del formato: " + saleDate +"<br>";
+            $(".receiptInfo").append(html);
+        }
+
+        function _downloadPDF(saleid) {
+            var w = document.getElementById("page-wrapper").offsetWidth;
+            var h = document.getElementById("wrapper").offsetHeight;
+            html2canvas(document.getElementById("page-wrapper"), {
+                dpi: 300, // Set to 300 DPI
+                scale: 3, // Adjusts your resolution
+                onrendered: function (canvas) {
+                    var img = canvas.toDataURL("image/jpeg", 1);
+                    var doc = new jsPDF('P', 'px', [h, w]);
+                    doc.addImage(img, 'JPEG', 0, 0);
+                    doc.save('RECIBO-N-' + saleid + '.pdf');
+                }
+            });
         }
     </script>
 </body>
