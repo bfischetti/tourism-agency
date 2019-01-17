@@ -67,4 +67,4 @@ class ProductModel(db.Model):
                 'stock_price': self.stock_price,
                 'selling_price': self.selling_price,
                 'description': self.description,
-                'provider_id': self.provider_id}
+                'provider': self.provider.json()}
