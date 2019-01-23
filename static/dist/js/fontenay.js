@@ -49,7 +49,7 @@ $(function() {
 
 
 /**************************************************************************/
-/***************               MODELS            **************************/
+/***************               CONFIG            **************************/
 /**************************************************************************/
 var host = "http://fontenay.herokuapp.com";
 // var host = "http://10.30.10.167:5000";
@@ -105,6 +105,12 @@ function _loadAjaxSetup() {
 }
 
 
+
+
+
+
+
+
 /*----------------------------------------------------------------------*/
 /*------------------------ POST ----------------------------------------*/
 /*----------------------------------------------------------------------*/
@@ -114,6 +120,18 @@ function _createClient(sale) {
         JSON.stringify(sale.client),
         function(result){
             _parseCreatedClientData(result, sale);
+        }
+    ).fail(function(error) {
+        _manageError(error);
+    });
+}
+
+function _createProduct(product) {
+    _loadAjaxSetup();
+    $.post(host+"/product",
+        JSON.stringify(product),
+        function(result){
+            _parseCreatedProductData(result);
         }
     ).fail(function(error) {
         _manageError(error);
@@ -138,13 +156,25 @@ function _createSale(client, sale) {
     });
 }
 
+function _createTransaction(tx) {
+    _loadAjaxSetup();
+    $.post(host+"/transaction",
+        JSON.stringify(tx),
+        function(result){
+            _parseCreatedTransactionData(result);
+        }
+    ).fail(function(error) {
+        _manageError(error);
+    });
+}
+
 function _saveExchangeRate(code, value) {
     var currencyCode = code;
     var exchangeRate = value;
     var currDate = _getLongCurrentDate();
 
     _loadAjaxSetup();
-        $.post(host+"/currency",
+    $.post(host+"/currency",
         JSON.stringify({
             code: currencyCode,
             exchange: exchangeRate,
@@ -157,6 +187,66 @@ function _saveExchangeRate(code, value) {
         _manageError(error);
     });
 }
+
+
+
+
+
+
+
+/*----------------------------------------------------------------------*/
+/*------------------------ PUT ----------------------------------------*/
+/*----------------------------------------------------------------------*/
+function _saveProductDetails(product) {
+    _loadAjaxSetup();
+
+    $.ajax({
+        url: host+"/product",
+        type: "PUT",
+        data: JSON.stringify(product),
+        success: function(result){
+            _parseEditedProduct(result);
+        },
+        fail: function(error) {
+            _manageError(error);
+        }
+    });
+    /*
+    $.put(host+"/product",
+        JSON.stringify({
+            code: currencyCode,
+            exchange: exchangeRate,
+            date: currDate
+        }),
+        function(result){
+            _parseEditedProduct(result);
+        }
+    ).fail(function(error) {
+        _manageError(error);
+    });
+    */
+}
+
+function _saveProviderDetails(providerEdited) {
+    _loadAjaxSetup();
+
+    $.ajax({
+        url: host+"/provider",
+        type: "PUT",
+        data: JSON.stringify(providerEdited),
+        success: function(result){
+            _parseEditedProvider(result);
+        },
+        fail: function(error) {
+            _manageError(error);
+        }
+    });
+}
+
+
+
+
+
 
 
 
@@ -268,11 +358,25 @@ function _getExchangeRates(res, rej) {
 }
 
 
+
+
+
+
+
+
 /*----------------------------------------------------------------------*/
 /*------------------------ PARSERS -------------------------------------*/
 /*----------------------------------------------------------------------*/
 function  _parseCreatedClientData(result, sale) {
     _createSale(result, sale);
+}
+
+function  _parseCreatedCurrExchangeData(result) {
+    _refreshCurrenciesForm(result);
+}
+
+function _parseCreatedProductData(result) {
+    _refreshCreateProductModal(result);
 }
 
 function  _parseCreatedSaleData(result) {
@@ -289,18 +393,86 @@ function  _parseCreatedSaleData(result) {
     sale.success = result;
 }
 
-function  _parseCreatedCurrExchangeData(result) {
-    _refreshCurrenciesForm(result);
+function  _parseCreatedTransactionData(result) {
+    Models["transactions"] = result;
+    _refreshCreateTransactionModal(result);
 }
+
+function  _parseEditedProduct(result) {
+    _refreshEditProductModal(result);
+}
+
+function  _parseEditedProvider(result) {
+    _refreshEditProviderModal(result);
+}
+
 
 /*----------------------------------------------------------------------*/
 /*------------------------ HELPERS -------------------------------------*/
 /*----------------------------------------------------------------------*/
+function _calculateProductsSubtotal(sale) {
+    var subtotal = 0;
+    var totalStock = 0;
+    sale.products.forEach(function(e) {
+        subtotal += e.price;
+        totalStock += e.stock_price;
+    });
+    sale.subtotalAR = subtotal;
+    sale.totalStockAR = totalStock;
+}
+
+function _enableEdit(e) {
+    $(".panel").removeClass("panel-green").addClass("panel-default");
+    $(e.target).closest(".input-group").find("input")[0].disabled = false;
+    $("form button.btn-success")[0].disabled = false;
+}
+
+function _findProduct(id) {
+    return Models.products.find(function(el){return el.product_id === Number(id)});
+}
+
+function _findPromoter(id) {
+    return Models.promoters.find(function(el){return el.promoter_id === Number(id)});
+}
+
+function _findProvider(id) {
+    return Models.providers.find(function(el){return el.provider_id === Number(id)});
+}
 
 function _fixFormat(result) {
     var list = $.extend(true, [], result);
     list.forEach(function(e) {
-        e.date = _getFormatDate(new Date(e.date));
+        e.date = _getFormatDateDDMMYYYY(new Date(e.date));
+    });
+    return list;
+}
+
+function _fixProductsFormat(result) {
+    var list = [];
+    result.forEach(function(e) {
+        var elem = {};
+        elem.id = e.product_id;
+        elem.providername = "TEST"; //e.provider.name;
+        elem.providerid = e.provider_id;
+        elem.description = e.description;
+        elem.name = e.name;
+        elem.sellingprice = e.selling_price;
+        elem.stockprice = e.stock_price;
+        list.push(elem);
+    });
+    return list;
+}
+
+function _fixProvidersFormat(result) {
+    var list = [];
+    result.forEach(function(e) {
+        var elem = {};
+        elem.id = e.provider_id;
+        elem.name = e.name;
+        elem.email = e.email;
+        elem.phone = e.phone;
+        elem.url = e.url;
+        list.push(elem);
     });
     return list;
 }
@@ -313,7 +485,7 @@ function _fixSalesFormat(result) {
         elem.id = e.sale_id;
         elem.clientname = e.client.name;
         elem.passport = e.client.passport_number;
-        elem.date = _getFormatDate(new Date(e.date));
+        elem.date = _getFormatDateDDMMYYYY(new Date(e.date));
         elem.seller = e.user.first_name + ' ' + e.user.last_name;
         elem.promoter = e.promoter.first_name + ' ' + e.promoter.last_name;
         elem.currency = e.currency || "N/A";
@@ -321,25 +493,6 @@ function _fixSalesFormat(result) {
         list.push(elem);
     });
     return list;
-}
-
-
-function _getFormatDate(dat){
-    var month = dat.getMonth()+1;
-    month = month > 9 ? month : "0"+month;
-    return dat.getDate()+"-"+month+"-"+dat.getFullYear();
-}
-
-
-function _getExchangeRate(currency) {
-    var exchRate = 1;
-    if("ARS" === currency)
-        exchRate = 1;
-    else {
-        var exchangeRates = Models.exchangerates ? Models.exchangerates : Models.default.exchangerates;
-        exchRate = exchangeRates.find(function(el){return el.code === currency}).exchange;
-    }
-    return exchRate;
 }
 
 function _getCurrencyID(currency) {
@@ -363,6 +516,43 @@ function _getCurrentDate(){
     return yyyy+"-"+mm+"-"+dd;
 }
 
+function _getExchangeRate(currency) {
+    var exchRate = 1;
+    if("ARS" === currency)
+        exchRate = 1;
+    else {
+        var exchangeRates = Models.exchangerates ? Models.exchangerates : Models.default.exchangerates;
+        exchRate = exchangeRates.find(function(el){return el.code === currency}).exchange;
+    }
+    return exchRate;
+}
+
+function _getFormatDateDDMMYYYY(dat){
+    if(undefined === dat) {
+        dat = new Date();
+    }
+    var month = dat.getMonth()+1;
+    month = month > 9 ? month : "0"+month;
+    return dat.getDate()+"-"+month+"-"+dat.getFullYear();
+}
+
+function _getFormatDateYYYYMMDDHHMMSS(dat){
+    if(undefined === dat) {
+        dat = new Date();
+    }
+    var day = dat.getDate();
+    var month = dat.getMonth()+1;
+    var hours = dat.getHours();
+    var minutes = dat.getMinutes();
+    var seconds = dat.getSeconds();
+
+    month = month > 9 ? month : "0"+month;
+    day = day > 9 ? day : "0"+day;
+    hours = hours > 9 ? hours : "0"+hours;
+    minutes = minutes > 9 ? minutes : "0"+minutes;
+    seconds = seconds > 9 ? seconds : "0"+seconds;
+    return dat.getFullYear()+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
+}
 
 function _getLongCurrentDate(){
     function addZero(i) {
@@ -377,15 +567,7 @@ function _getLongCurrentDate(){
     return _getCurrentDate() + " " + h + ":" + m + ":" + s;
 }
 
-
-function _enableEdit(e) {
-    $(".panel").removeClass("panel-green").addClass("panel-default");
-    $(e.target).closest(".input-group").find("input")[0].disabled = false;
-    $("form button.btn-success")[0].disabled = false;
-}
-
-
-function  _loadSaleProducts() {
+function _loadSaleProducts() {
     var list = [];
     var prodList = $(".productPanel");
     if(0 < prodList.length) {
@@ -413,32 +595,78 @@ function  _loadSaleProducts() {
     return list;
 }
 
-
-function _calculateProductsSubtotal(sale) {
-    var subtotal = 0;
-    var totalStock = 0;
-    sale.products.forEach(function(e) {
-        subtotal += e.price;
-        totalStock += e.stock_price;
-    });
-    sale.subtotalAR = subtotal;
-    sale.totalStockAR = totalStock;
+function _validateHTMLForm(form) {
+    var inputs, valid = true;
+    inputs = form.find("input");
+    for (i = 0; i < inputs.length; i++) {
+        var elem = $(inputs[i]);
+        elem.removeClass("invalid").parent().removeClass("has-error");
+        if ("" === elem[0].value) {
+            elem.addClass("invalid").parent().addClass("has-error");
+            valid = false;
+        }
+    }
+   return valid;
 }
 
 
-function _findPromoter(id) {
-    return Models.promoters.find(function(el){return el.promoter_id === Number(id)});
+
+
+
+
+
+
+
+
+
+
+
+/*----------------------------------------------------------------------*/
+/*------------------------ PROMISES ------------------------------------*/
+/*----------------------------------------------------------------------*/
+function _loadCurrencies() {
+    var currenciesPromise = new Promise(
+        function (resolve, reject) {
+            _getExchangeRates(resolve, reject);
+        }
+    );
+
+    var load = function() {
+        currenciesPromise
+            .then(function (result) {
+                _loadCurrenciesHandler(result);
+            })
+            .catch(function (error) {
+                console.log(error.message);
+            });
+    };
+    load();
 }
 
 
-function _findProduct(id) {
-    return Models.products.find(function(el){return el.product_id === Number(id)});
+function _loadProviders() {
+    var providersPromise = new Promise(
+        function (resolve, reject) {
+            _getProviders(resolve, reject);
+        }
+    );
+
+    var load = function() {
+        providersPromise
+            .then(function (result) {
+                _loadProvidersSelect(result);
+            })
+            .catch(function (error) {
+                console.log(error.message);
+            });
+    };
+    load();
 }
 
 
-function _findProvider(id) {
-    return Models.providers.find(function(el){return el.provider_id === Number(id)});
-}
+
+
+
 
 
 
@@ -481,221 +709,4 @@ function checkCookie() {
 
 function deleteCookie(cname) {
     document.cookie = cname+'=; Max-Age=-99999999;';
-}
-
-
-
-
-
-
-
-
-
-/*-----------------------------------------------------------------------------*/
-function _getUser(FBID) {
-    $("body").LoadingOverlay('show');
-    $.get("/users/"+ FBID, function(result){
-        _parseGetUserData(result);
-    });
-}
-
-function _createUser(FBID, Name, Surname) {
-    $.post("/users",
-        {
-            fbID: FBID,
-            firstName: Name,
-            lastName: Surname
-        },
-        function(result){
-            _parseCreateUserData(result);
-        });
-}
-
-function _getUserDetails(FBID) {
-    $.get("/users/"+ FBID, function(result){
-        _parseGetUserDetailData(result);
-    });
-}
-
-function _getAllTravels() {
-    $.ajax({url: "/travels", success: function(result){
-        _parseGetAllTravelsData(result);
-    }});
-}
-
-function _getAllPassengersByTravel(travelID) {
-    $.ajax({url: "/travels/" + travelID + "/passengers", success: function(result){
-        _parseGetAllPassengersByTravelData(result);
-    }});
-}
-
-function _createTravel(distance) {
-    var seats = $('#selectNumberOfSeats').val();
-    var category = $('#selectTravelCategory').val();
-    var origin = $('#originPlaceID').val();
-    var from = $('#autocompleteOrigin').val();
-    //from = from.slice(0, from.lastIndexOf(','));
-    var destination = $('#destinationPlaceID').val();
-    var to = $('#autocompleteDestination').val();
-    // to = to.slice(0, to.lastIndexOf(','));
-    const date = $('#datepicker').data("DateTimePicker").date();
-    const time = $('#timepicker').data("DateTimePicker").date();
-    var datetime = new Date(
-        date._d.getFullYear(),
-        date._d.getMonth(),
-        date._d.getDate(),
-        time._d.getHours(),
-        time._d.getMinutes(),
-        time._d.getSeconds()
-    );
-    var tolls = $('#selectTolls').val();
-    var mate = $('#selectMate').val();
-    var pet = $('#selectPet').val();
-    var description = $('#travelDescription').val();
-    var carBrand = $('#carBrand').val();
-    var carColor = $('#carColor').val();
-    var carLicensePlate = $('#carLicensePlate').val();
-    var fbid = Models.myuser.fbid;
-
-    $.post("/travels",
-        {
-            fbid: fbid,
-            type: category,
-            numberofseats: seats,
-            origin: origin,
-            from: from,
-            destination: destination,
-            to: to,
-            departuredate: datetime,
-            mate: mate,
-            pet: pet,
-            description: description,
-            tolls: tolls,
-            distance: distance,
-            carbrand: carBrand,
-            carcolor: carColor,
-            carlicenseplate: carLicensePlate
-        },
-        function(result){
-            _parseCreatedTravelData(result);
-        }
-    );
-
-}
-
-function _deleteATravel(travelId) {
-    $.ajax({
-        url: '/travels/' + travelId,
-        type: 'DELETE',
-        success: function(result){
-            _parseDeleteTravel(result);
-        }
-    });
-}
-
-
-function _editTravel(idTravel, dist) {
-    var seats = $('#selectNumberOfSeats').val();
-    var category = $('#selectTravelCategory').val();
-    var origin = $('#originPlaceID').val();
-    var from = $('#autocompleteOrigin').val();
-    //from = from.slice(0, from.lastIndexOf(','));
-    var destination = $('#destinationPlaceID').val();
-    var to = $('#autocompleteDestination').val();
-    // to = to.slice(0, to.lastIndexOf(','));
-    const date = $('#datepicker').data("DateTimePicker").date();
-    const time = $('#timepicker').data("DateTimePicker").date();
-    var datetime = new Date(
-        date._d.getFullYear(),
-        date._d.getMonth(),
-        date._d.getDate(),
-        time._d.getHours(),
-        time._d.getMinutes(),
-        time._d.getSeconds()
-    );
-    var tolls = $('#selectTolls').val();
-    var mate = $('#selectMate').val();
-    var pet = $('#selectPet').val();
-    var description = $('#travelDescription').val();
-    var carBrand = $('#carBrand').val();
-    var carColor = $('#carColor').val();
-    var carLicensePlate = $('#carLicensePlate').val();
-    var userid = Models.myuser.id;
-    var dataObj = {
-        userid: userid,
-        type: category,
-        numberofseats: seats,
-        origin: origin,
-        from: from,
-        destination: destination,
-        to: to,
-        departuredate: datetime,
-        mate: mate,
-        pet: pet,
-        description: description,
-        tolls: tolls,
-        carbrand: carBrand,
-        carcolor: carColor,
-        carlicenseplate: carLicensePlate
-    };
-
-    if(0 !== dist)
-        dataObj.distance = dist;
-
-    $.ajax({
-        url: '/travels/' + idTravel,
-        type: 'PUT',
-        data: dataObj,
-        success: function(result){
-            _parseEditTravelData(result);
-        }
-    });
-}
-
-
-function _addPassengerToTravel(travelId) {
-    var passengerfbid = Models.myuser.fbid;
-    $.post("/passengers",
-        {
-            fbid: passengerfbid,
-            travelid: travelId
-        },
-        function(result){
-            _parseAddPassengerToTravel(result);
-        });
-
-}
-
-function _deletePassengerFromATravel(passengerId) {
-    $.ajax({
-        url: '/passengers/' + passengerId,
-        type: 'DELETE',
-        success: function(result){
-            _parseDeletePassengerFromTravel(result);
-        }
-    });
-}
-
-function _editPassenger(data) {
-    var dataObj = {
-        travelid: data.travelid,
-        state: data.state
-    };
-
-    $.ajax({
-        url: '/passengers/' + data.passengerid,
-        type: 'PUT',
-        data: dataObj,
-        success: function(result){
-            _parseEditPassengersData(result);
-        }
-    });
-
-}
-
-
-function _getConfigurations(FBID) {
-    $.get("/configurations", function (result) {
-        _parseGetConfigurations(result);
-    });
 }
