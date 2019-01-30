@@ -35,7 +35,9 @@ class Product(Resource):
                         )
     parser.add_argument('provider_id',
                         type=int,
-                        required=False)
+                        required=True,
+                        help="This field cannot be left blank!"
+                        )
     parser.add_argument('billable',
                         type=bool,
                         required=False)
@@ -64,4 +66,4 @@ class Product(Resource):
         except:
             return {"message": "An error occurred updating the operation"}, 500
 
-        return product.json(), 200
+        return {"message": "update OK"}, 200
