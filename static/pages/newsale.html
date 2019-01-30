@@ -310,10 +310,16 @@
                                 <li>
                                     <a href="products.html">Productos</a>
                                 </li>
+                                <li>
+                                    <a href="providers.html">Proveedores</a>
+                                </li>
                             </ul>
                         </li>
                         <li>
                             <a href="login.html"><i class="fa fa-files-o fa-fw"></i> Login</a>
+                        </li>
+                        <li>
+                            <a href="reports.html"><i class="fa fa-bar-chart-o fa-fw"></i> Reportes</a>
                         </li>
                     </ul>
                 </div>
@@ -388,7 +394,7 @@
                                         <div class="panel-body">
                                             <div class="form-group">
                                                 <label>Proveedor</label>
-                                                <select class="form-control" id="providersel"></select>
+                                                <select class="form-control" id="providerSel"></select>
                                             </div>
                                             <div class="form-group">
                                                 <label>Servicio</label>
@@ -477,7 +483,7 @@
                                 <label>Promotor</label>
                                 <p class="promoterlabel form-control-static"></p>
                             </div>
-                            <div class="form-group col-xs-6 col-sm-6 col-md-3 col-lg-1">
+                            <div class="form-group col-xs-6 col-sm-6 col-md-3 col-lg-1 col-lg-1-5">
                                 <label>Subtotal</label>
                                 <div class="form-control-static">
                                     <div style="float: left;">AR$</div>
@@ -489,7 +495,7 @@
                             <!--<label>Vendedor</label>-->
                             <!--<p id="sellerconf" class="form-control-static"></p>-->
                             <!--</div>-->
-                            <div class="form-group col-xs-6 col-sm-6 col-md-3 col-lg-1">
+                            <div class="form-group col-xs-6 col-sm-6 col-md-3 col-lg-1 col-lg-1-5">
                                 <label>Moneda descuento</label>
                                 <select class="form-control" id="discountcurrencysel">
                                     <option value="dollarstr" curr="USD">Dólar</option>
@@ -498,7 +504,7 @@
                                     <option value="pesostr" curr="ARS">Peso</option>
                                 </select>
                             </div>
-                            <div class="table-responsive col-xs-12 col-sm-12 col-md-6 col-lg-7">
+                            <div class="table-responsive col-xs-12 col-sm-12 col-md-6 col-lg-9">
                                 <table class="table" id="discountstable">
                                     <thead>
                                         <tr><th>Cotización</th><th>Subtotal convertido</th><th>Descuento</th><th>Total a cobrar</th></tr>
@@ -1083,25 +1089,6 @@
             load();
         }
 
-        function _loadProviders() {
-            var providersPromise = new Promise(
-                function (resolve, reject) {
-                    _getProviders(resolve, reject);
-                }
-            );
-
-            var load = function() {
-                providersPromise
-                    .then(function (result) {
-                        _loadProvidersSelect(result);
-                    })
-                    .catch(function (error) {
-                        console.log(error.message);
-                    });
-            };
-            load();
-        }
-
         function _loadProducts() {
             var productsPromise = new Promise(
                 function (resolve, reject) {
@@ -1121,24 +1108,6 @@
             load();
         }
 
-        function _loadCurrencies() {
-            var currenciesPromise = new Promise(
-                function (resolve, reject) {
-                    _getExchangeRates(resolve, reject);
-                }
-            );
-
-            var load = function() {
-                currenciesPromise
-                    .then(function (result) {
-                    })
-                    .catch(function (error) {
-                        console.log(error.message);
-                    });
-            };
-            load();
-        }
-
         function _loadPromotorsSelect(result) {
             var promSel = $("#promotorsel");
             result.forEach(function(element,index){
@@ -1150,12 +1119,12 @@
         }
 
         function _loadProvidersSelect(result) {
-            _refreshProvidersSelect($("#providersel"));
+            _refreshProvidersSelect($("#providerSel"));
             _loadProducts();
         }
 
         function _refreshProvidersSelect(select) {
-            var provSel = select ? select : $("#providersel");
+            var provSel = select ? select : $("#providerSel");
             Models["providers"].forEach(function(element, index){
                 var opt = $(document.createElement("option"));
                 opt.text(element.name);
@@ -1245,7 +1214,7 @@
         function _refreshProductsSelect(providerID, select) {
             var prodSel = select ? select : $("#servicesel");
             Models["products"].filter(function(element){
-                if(element.provider_id === providerID)
+                if(element.provider.provider_id === providerID)
                     return element;})
                 .forEach(function(element){
                     var opt = $(document.createElement("option"));
@@ -1365,13 +1334,13 @@
         }
 
         function loadProdTableRow(product, o) {
-            var td1 = $(document.createElement("td")).addClass("increaseWidth").text(product.provider.name);
+            var td1 = $(document.createElement("td")).addClass("increaseWidth").text(product.product.provider.name);
             var td2 = $(document.createElement("td")).addClass("increaseWidth").text(product.product.name);
             var td3 = $(document.createElement("td")).addClass("increaseWidth").text(product.date);
-            var td4 = $(document.createElement("td")).addClass("increaseWidth").text(product.transfer ? "Sí" : "No");
-            var td5 = $(document.createElement("td")).addClass("increaseWidth").text(product.adults);
-            var td6 = $(document.createElement("td")).addClass("increaseWidth").text(product.children);
-            var td7 = $(document.createElement("td")).addClass("increaseWidth").text(product.babies);
+            var td4 = $(document.createElement("td")).text(product.transfer ? "Sí" : "No");
+            var td5 = $(document.createElement("td")).text(product.adults);
+            var td6 = $(document.createElement("td")).text(product.children);
+            var td7 = $(document.createElement("td")).text(product.babies);
             var td8 = $(document.createElement("td")).addClass("increaseWidth").text(product.price);
             var tr1 = $(document.createElement("tr")).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
             var clss = o === 3? ".productConfTableBody" : ".productFinishTableBody";
@@ -1394,7 +1363,7 @@
             var deleteButton = $(document.createElement('button')).attr("type","button").addClass("close deleteProduct").text("×").click(_deleteProductPanel);
             var panelBody = $(document.createElement('div')).addClass("panel-body");
             var lbl1 = $(document.createElement('label')).text("Proveedor");
-            var sel1 = $(document.createElement('select')).addClass("form-control").attr("id","providersel");
+            var sel1 = $(document.createElement('select')).addClass("form-control").attr("id","providerSel");
             var lbl2 = $(document.createElement('label')).text("Servicio");
             var sel2 = $(document.createElement('select')).addClass("form-control").attr("id","servicesel");
             var lbl3 = $(document.createElement('label')).text("Fecha");
@@ -1572,6 +1541,8 @@
             //sale.products = prodList;
         }
 
+        function _loadCurrenciesHandler(result) {
+        }
     </script>
 </body>
 

@@ -59,10 +59,16 @@
                                 <li>
                                     <a href="products.html">Productos</a>
                                 </li>
+                                <li>
+                                    <a href="providers.html">Proveedores</a>
+                                </li>
                             </ul>
                         </li>
                         <li>
                             <a href="login.html"><i class="fa fa-files-o fa-fw"></i> Login</a>
+                        </li>
+                        <li>
+                            <a href="reports.html"><i class="fa fa-bar-chart-o fa-fw"></i> Reportes</a>
                         </li>
                     </ul>
                 </div>
@@ -135,23 +141,8 @@
             _loadCurrencies();
         });
 
-        function _loadCurrencies() {
-            var currenciesPromise = new Promise(
-                function (resolve, reject) {
-                    _getExchangeRates(resolve, reject);
-                }
-            );
-
-            var load = function() {
-                currenciesPromise
-                    .then(function (result) {
-                        _fillExchangesValues();
-                    })
-                    .catch(function (error) {
-                        console.log(error.message);
-                    });
-            };
-            load();
+        function _loadCurrenciesHandler(result) {
+            _fillExchangesValues();
         }
 
         function _fillExchangesValues() {
