@@ -17,7 +17,8 @@ class Provider(Resource):
                         required=False)
     parser.add_argument('name',
                         type=str,
-                        required=True
+                        required=True,
+                        help="This field cannot be left blank!"
                         )
     parser.add_argument('url',
                         type=str,
@@ -25,7 +26,8 @@ class Provider(Resource):
                         )
     parser.add_argument('phone',
                         type=str,
-                        required=True
+                        required=True,
+                        help="This field cannot be left blank!"
                         )
     parser.add_argument('email',
                         type=str,
