@@ -17,11 +17,13 @@ class Promoter(Resource):
                         required=False)
     parser.add_argument('first_name',
                         type=str,
-                        required=True
+                        required=True,
+                        help="This field cannot be left blank!"
                         )
     parser.add_argument('last_name',
                         type=str,
-                        required=True
+                        required=True,
+                        help="This field cannot be left blank!"
                         )
     parser.add_argument('email',
                         type=str,

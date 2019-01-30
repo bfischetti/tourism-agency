@@ -15,7 +15,8 @@ class Currency(Resource):
                         )
     parser.add_argument('code',
                         type=str,
-                        required=True
+                        required=True,
+                        help="This field cannot be left blank!"
                         )
     parser.add_argument('exchange',
                         type=float,

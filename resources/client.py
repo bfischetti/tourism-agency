@@ -20,7 +20,8 @@ class Client(Resource):
                         required=True)
     parser.add_argument('email',
                         type=str,
-                        required=True)
+                        required=True,
+                        help="This field cannot be left blank!")
     parser.add_argument('passport_number',
                         type=str,
                         required=False)

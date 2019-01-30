@@ -17,7 +17,8 @@ class Product(Resource):
                         required=False)
     parser.add_argument('name',
                         type=str,
-                        required=True
+                        required=True,
+                        help="This field cannot be left blank!"
                         )
     parser.add_argument('selling_price',
                         type=float,
@@ -29,7 +30,8 @@ class Product(Resource):
                         )
     parser.add_argument('description',
                         type=str,
-                        required=True
+                        required=True,
+                        help="This field cannot be left blank!"
                         )
     parser.add_argument('provider_id',
                         type=int,

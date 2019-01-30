@@ -27,10 +27,12 @@ class PayProducts(Resource):
                         required=False)
     parser.add_argument('total',
                         type=float,
-                        required=True)
+                        required=True,
+                        help="This field cannot be left blank!")
     parser.add_argument('date',
                         type=str,
-                        required=True)
+                        required=True,
+                        help="This field cannot be left blank!")
 
     @jwt_required
     def post(self):

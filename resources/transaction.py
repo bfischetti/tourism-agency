@@ -21,17 +21,20 @@ class Transaction(Resource):
                         )
     parser.add_argument('is_expense',
                         type=bool,
-                        required=True)
+                        required=True,
+                        help="This field cannot be left blank!")
     parser.add_argument('description',
                         type=str,
-                        required=True
+                        required=True,
+                        help="This field cannot be left blank!"
                         )
     parser.add_argument('date',
                         type=str,
                         required=False)
     parser.add_argument('category_id',
                         type=int,
-                        required=True)
+                        required=True,
+                        help="This field cannot be left blank!")
     parser.add_argument('sale_id',
                         type=int,
                         required=False)
