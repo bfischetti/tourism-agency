@@ -38,6 +38,8 @@ class ProductModel(db.Model):
             product_to_update.selling_price = self.selling_price
         if self.description is not None:
             product_to_update.description = self.description
+        if self.provider_id is not None:
+            product_to_update.provider_id = self.provider_id
 
         product_to_update.save_to_db()
 
