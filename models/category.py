@@ -22,6 +22,8 @@ class CategoryModel(db.Model):
 
     def update_to_db(self):
         category_to_update = CategoryModel.find_by_id(self.category_id)
+        if self.name is not None:
+            category_to_update.name = self.name
         if self.label is not None:
             category_to_update.label = self.label
         if self.description is not None:

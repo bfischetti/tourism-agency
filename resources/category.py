@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required
 
 from models.category import CategoryModel
 
@@ -18,7 +18,8 @@ _category_parser.add_argument('category_id',
                               required=False)
 _category_parser.add_argument('label',
                               type=str,
-                              required=True)
+                              required=True,
+                              help="This field cannot be left blank!")
 
 
 class CategoryList(Resource):
