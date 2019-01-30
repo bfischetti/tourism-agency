@@ -65,6 +65,8 @@ class TransactionModel(db.Model):
             transaction_to_update.is_expense = self.is_expense
         if self.category_id is not None:
             transaction_to_update.category_id = self.category_id
+        if self.method is not None:
+            transaction_to_update.method = self.method
 
         transaction_to_update.save_to_db()
 
@@ -85,6 +87,7 @@ class TransactionModel(db.Model):
                 'amount': self.amount,
                 'description': self.description,
                 'currency_id': self.currency_id,
+                'method': self.method,
                 'date': str(self.date)[:19],
                 'category_id': self.category_id,
                 'is_expense': self.is_expense,

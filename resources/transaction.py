@@ -35,6 +35,9 @@ class Transaction(Resource):
     parser.add_argument('sale_id',
                         type=int,
                         required=False)
+    parser.add_argument('method',
+                        type=str,
+                        required=False)
 
     @jwt_required
     def post(self):
@@ -60,4 +63,4 @@ class Transaction(Resource):
         except:
             return {"message": "An error occurred updating the operation"}, 500
 
-        return product .json(), 200
+        return product.json(), 200
