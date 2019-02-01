@@ -41,29 +41,40 @@ class Transaction(Resource):
     parser.add_argument('method',
                         type=str,
                         required=False)
+    parser.add_argument('exchange',
+                        type=str,
+                        required=True,
+                        help="This field cannot be left blank!"
+                        )
+    parser.add_argument('currency_id',
+                        type=str,
+                        required=True,
+                        help="This field cannot be left blank!"
+                        )
+
 
     @jwt_required
     def post(self):
         data = Transaction.parser.parse_args()
 
-        product = TransactionModel(**data)
+        transaction = TransactionModel(**data)
 
         try:
-            product.save_to_db()
+            transaction.save_to_db()
         except:
-            return {"message": "An error occurred creating the operation"}, 500
+            return {"message": "An error occurred creating the transaction"}, 500
 
-        return product.json(), 201
+        return transaction.json(), 201
 
     @jwt_required
     def put(self):
         data = Transaction.parser.parse_args()
 
-        product = TransactionModel(**data)
+        transaction = TransactionModel(**data)
 
         try:
-            product.update_to_db()
+            transaction.update_to_db()
         except:
-            return {"message": "An error occurred updating the operation"}, 500
+            return {"message": "An error occurred updating the transaction"}, 500
 
-        return product.json(), 200
+        return transaction.json(), 200
