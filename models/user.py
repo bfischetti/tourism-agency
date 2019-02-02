@@ -9,6 +9,7 @@ class UserModel(db.Model):
     password = db.Column(db.String(255), nullable=False)
     first_name = db.Column(db.String(80))
     last_name = db.Column(db.String(80))
+    role = db.Column(db.Integer)
 
     def __repr__(self):
         return '<User %r>' % self.email
@@ -21,6 +22,8 @@ class UserModel(db.Model):
             user_to_update.last_name = self.last_name
         if self.password is not None:
             user_to_update.password = self.password
+        if self.role is not None:
+            user_to_update.role = self.role
 
         user_to_update.save_to_db()
 
@@ -40,4 +43,5 @@ class UserModel(db.Model):
         return {'user_id': self.user_id,
                 'email': self.email,
                 'first_name': self.first_name,
-                'last_name': self.last_name}
+                'last_name': self.last_name,
+                'role': self.role}
