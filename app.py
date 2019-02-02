@@ -16,7 +16,7 @@ from resources.sale import Sale, Sales, Voucher
 from resources.client import Client, ClientList
 from resources.promoter import Promoter, PromoterList
 from resources.sold_products import PendingProducts, PayProducts
-from resources.currency import Currency, CurrencyList
+from resources.currency import Currency, CurrencyList, CurrencyId
 
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
 app = Flask(__name__)
@@ -99,6 +99,7 @@ api.add_resource(PromoterList, '/promoters')
 api.add_resource(PendingProducts, '/pending')
 api.add_resource(PayProducts, '/pay')
 api.add_resource(Currency, '/currency')
+api.add_resource(CurrencyId, '/currency/<int:currency_id>')
 api.add_resource(CurrencyList, '/currencies')
 
 if __name__ == '__main__':

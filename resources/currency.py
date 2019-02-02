@@ -37,6 +37,18 @@ class Currency(Resource):
         return currency.json(), 201
 
 
+class CurrencyId(Resource):
+
+    @jwt_required
+    def get(self, currency_id):
+        currency = CurrencyModel.find_by_id(currency_id)
+
+        if not currency:
+            return {"message": "no currency with that id"}, 404
+
+        return currency.json(), 200
+
+
 class CurrencyList(Resource):
 
     @jwt_required
