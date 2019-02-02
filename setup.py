@@ -42,7 +42,7 @@ setup(name='tourism-agency',
           'pytz==2017.3',
           'six==1.10.0',
           'SQLAlchemy==1.1.11',
-          'urllib3==1.21.1',
+          'urllib3==1.24.1',
           'uWSGI==2.0.15',
           'Werkzeug==0.14.1'
       ],
