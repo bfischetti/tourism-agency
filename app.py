@@ -4,6 +4,9 @@ from flask import Flask, send_from_directory
 from flask.json import jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate, MigrateCommand
+from flask_script import Manager
+from db import db
 
 from blacklist import BLACKLIST
 
@@ -31,6 +34,12 @@ app.secret_key = 'bruno'
 api = Api(app)
 
 jwt = JWTManager(app)
+db.init_app(app)
+
+migrate = Migrate(app, db)
+manager = Manager(app)
+
+manager.add_command('db', MigrateCommand)
 
 
 @jwt.expired_token_loader
@@ -103,13 +112,4 @@ api.add_resource(CurrencyId, '/currency/<int:currency_id>')
 api.add_resource(CurrencyList, '/currencies')
 
 if __name__ == '__main__':
-
-    from db import db
-    db.init_app(app)
-
-    if app.config['DEBUG']:
-        @app.before_first_request
-        def create_tables():
-            db.create_all()
-
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    manager.run()
