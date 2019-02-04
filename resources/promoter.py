@@ -6,8 +6,8 @@ from models.user import UserModel
 class PromoterList(Resource):
 
     @jwt_required
-    def get(self, role):
-        return [promoter.json() for promoter in UserModel.find_by_role(role)]
+    def get(self):
+        return [promoter.json() for promoter in UserModel.find_all()]
 
 
 class Promoter(Resource):

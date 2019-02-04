@@ -56,8 +56,8 @@ class UserModel(db.Model):
         return cls.query.filter_by(user_id=_id).first()
 
     @classmethod
-    def find_by_role(cls, role):
-        return cls.query.filter_by(role=role).all()
+    def find_all(cls):
+        return cls.query.order_by(UserModel.last_name).all()
 
     def json(self):
         return {'user_id': self.user_id,
