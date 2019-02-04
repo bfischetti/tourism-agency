@@ -13,13 +13,15 @@ class SaleModel(db.Model):
     discount = db.Column(db.Float(precision=2))
     client_id = db.Column(db.Integer, db.ForeignKey('client.client_id'), nullable=False)
     client = db.relationship('ClientModel')
-    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-    user = db.relationship('UserModel')
-    promoter_id = db.Column(db.Integer, db.ForeignKey('promoter.promoter_id'), nullable=True)
-    promoter = db.relationship('PromoterModel')
     date = db.Column(db.DateTime, default=datetime.now())
     promoter_commission = db.Column(db.Float(precision=2))
     user_commission = db.Column(db.Float(precision=2))
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    user = db.relationship('UserModel',  foreign_keys=[user_id])
+
+    promoter_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=True)
+    promoter = db.relationship('UserModel', foreign_keys=[promoter_id])
 
     def __init__(self, total, user_id, date, sale_id, client_id, promoter_id, promoter_commission, user_commission,
                  discount):
@@ -56,7 +58,7 @@ class SaleModel(db.Model):
                 'total': self.total,
                 'discount': self.discount,
                 'client': self.client.json(),
-                'user': self.user.json(),
+                'seller': self.user.json(),
                 'promoter': self.promoter.json(),
                 'promoter_commission': self.promoter_commission,
                 'user_commission': self.user_commission,

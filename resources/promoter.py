@@ -1,18 +1,18 @@
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required
-from models.promoter import PromoterModel
+from models.user import UserModel
 
 
 class PromoterList(Resource):
 
     @jwt_required
-    def get(self):
-        return [promoter.json() for promoter in PromoterModel.find_all()]
+    def get(self, role):
+        return [promoter.json() for promoter in UserModel.find_by_role(role)]
 
 
 class Promoter(Resource):
     parser = reqparse.RequestParser()
-    parser.add_argument('promoter_id',
+    parser.add_argument('user_id',
                         type=int,
                         required=False)
     parser.add_argument('first_name',
@@ -34,7 +34,7 @@ class Promoter(Resource):
     def post(self):
         data = Promoter.parser.parse_args()
 
-        promoter = PromoterModel(**data)
+        promoter = UserModel(**data)
 
         try:
             promoter.save_to_db()
@@ -47,7 +47,7 @@ class Promoter(Resource):
     def put(self):
         data = Promoter.parser.parse_args()
 
-        promoter = PromoterModel(**data)
+        promoter = UserModel(**data)
 
         try:
             promoter.update_to_db()
