@@ -1,6 +1,7 @@
 from db import db
 import json
 
+
 class UserModel(db.Model):
     __tablename__ = 'users'
 
@@ -11,16 +12,9 @@ class UserModel(db.Model):
     last_name = db.Column(db.String(80))
     role = db.Column(db.Integer, default=2)  # 1:admin, 2: seller/promoter
 
-    def __init__(self, email, password, first_name, last_name, role):
-        with open('./config.json', 'r') as f:
-            config = json.load(f)
-            admins = config["admins"]
-        for admin in admins:
-            if email == admin["email"]:
-                role = 1
-                break
-            else:
-                role = 2
+    def __init__(self, email, password, first_name, last_name):
+
+        role = UserModel.check_if_admin(email)
         self.email = email
         self.password = password
         self.first_name = first_name
@@ -38,10 +32,23 @@ class UserModel(db.Model):
             user_to_update.last_name = self.last_name
         if self.password is not None:
             user_to_update.password = self.password
-        if self.role is not None:
-            user_to_update.role = self.role
+
+        user_to_update.role = UserModel.check_if_admin(user_to_update.email)
 
         user_to_update.save_to_db()
+
+    @classmethod
+    def check_if_admin(cls, email):
+        role = 2
+        with open('./config.json', 'r') as f:
+            config = json.load(f)
+            admins = config["admins"]
+
+        for admin in admins:
+            if email == admin["email"]:
+                role = 1
+
+        return role
 
     def save_to_db(self):
         db.session.add(self)
@@ -54,6 +61,13 @@ class UserModel(db.Model):
     @classmethod
     def find_by_id(cls, _id):
         return cls.query.filter_by(user_id=_id).first()
+
+    @classmethod
+    def delete_by_id(cls, _id):
+        user = cls.find_by_id(_id)
+        db.session.delete(user)
+        db.session.commit()
+        return
 
     @classmethod
     def find_all(cls):

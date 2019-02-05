@@ -25,9 +25,6 @@ _user_parser.add_argument('first_name',
 _user_parser.add_argument('last_name',
                           type=str,
                           required=False)
-_user_parser.add_argument('role',
-                          type=int,
-                          required=False)
 
 
 class User(Resource):
@@ -43,9 +40,6 @@ class User(Resource):
                         required=False)
     parser.add_argument('last_name',
                         type=str,
-                        required=False)
-    parser.add_argument('role',
-                        type=int,
                         required=False)
 
     @jwt_required
@@ -66,6 +60,13 @@ class User(Resource):
 
         return {"message": "User updated successfully."}, 200
 
+    @fresh_jwt_required
+    def delete(self):
+        user_id = get_jwt_identity()
+        UserModel.delete_by_id(user_id)
+
+        return {"message": "user deleted"}, 200
+
 
 class UserRegister(Resource):
 
@@ -75,8 +76,6 @@ class UserRegister(Resource):
 
         if UserModel.find_by_mail(data['email']):
             return {"message": "A user with that email already exists"}, 400
-
-
 
         user = UserModel(**data)
         user.save_to_db()
