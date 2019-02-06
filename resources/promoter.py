@@ -29,6 +29,10 @@ class Promoter(Resource):
                         type=str,
                         required=True
                         )
+    parser.add_argument('salary',
+                        type=float,
+                        required=False
+                        )
 
     @jwt_required
     def post(self):

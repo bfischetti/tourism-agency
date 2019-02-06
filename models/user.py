@@ -11,6 +11,7 @@ class UserModel(db.Model):
     first_name = db.Column(db.String(80))
     last_name = db.Column(db.String(80))
     role = db.Column(db.Integer, default=2)  # 1:admin, 2: seller/promoter
+    salary = db.Column(db.Float(precision=2), default=0.00)
 
     def __init__(self, email, password, first_name, last_name):
 
@@ -32,6 +33,8 @@ class UserModel(db.Model):
             user_to_update.last_name = self.last_name
         if self.password is not None:
             user_to_update.password = self.password
+        if self.salary is not None:
+            user_to_update.salary = self.salary
 
         user_to_update.role = UserModel.check_if_admin(user_to_update.email)
 
