@@ -140,7 +140,7 @@ function _createProduct(product) {
 
 function _createSale(client, sale) {
     sale.client_id = client.client_id;
-    sale.promoter_id = sale.promoter.promoter_id;
+    sale.promoter_id = sale.promoter.user_id;
     sale.total = sale.totalAR;
     sale.promoter_commission = sale.total*0.1;
     sale.seller_commission = Number(((sale.total*0.9 - Number(sale.totalStockAR))*0.1625).toFixed(2));
@@ -253,7 +253,37 @@ function _saveProviderDetails(providerEdited) {
 /*----------------------------------------------------------------------*/
 /*------------------------ GET -----------------------------------------*/
 /*----------------------------------------------------------------------*/
-function _getpromoters(res, rej) {
+function _getExchangeRates(res, rej) {
+    _loadAjaxSetup();
+
+    $.get(host+"/currencies",
+        function (result, error) {
+            Models["exchangerates"] = result;
+            res(result);
+        }).fail(function(error) {
+        if(error.status === 401 || error.status === 422) {
+            window.location = "/pages/login.html";
+        }
+        rej(error);
+    })
+}
+
+function _getProducts(res, rej) {
+    _loadAjaxSetup();
+
+    $.get(host+"/products",
+        function (result, error) {
+            Models["products"] = result;
+            res(result);
+        }).fail(function(error) {
+        if(error.status === 401 || error.status === 422) {
+            window.location = "/pages/login.html";
+        }
+        rej(error);
+    })
+}
+
+function _getPromoters(res, rej) {
     _loadAjaxSetup();
 
     $.get(host+"/promoters",
@@ -283,26 +313,12 @@ function _getProviders(res, rej) {
     })
 }
 
-function _getProducts(res, rej) {
+function _getSale(res, rej, id) {
     _loadAjaxSetup();
 
-    $.get(host+"/products",
+    $.get(host+"/sale/" + id,
         function (result, error) {
-            Models["products"] = result;
-            res(result);
-        }).fail(function(error) {
-        if(error.status === 401 || error.status === 422) {
-            window.location = "/pages/login.html";
-        }
-        rej(error);
-    })
-}
-
-function _getTransactions(res, rej) {
-    _loadAjaxSetup();
-
-    $.get(host+"/transactions",
-        function (result, error) {
+            Models["sale/"+id] = result;
             res(result);
         }).fail(function(error) {
         if(error.status === 401 || error.status === 422) {
@@ -327,12 +343,11 @@ function _getSales(res, rej) {
     })
 }
 
-function _getSale(res, rej, id) {
+function _getTransactions(res, rej) {
     _loadAjaxSetup();
 
-    $.get(host+"/sale/" + id,
+    $.get(host+"/transactions",
         function (result, error) {
-            Models["sale/"+id] = result;
             res(result);
         }).fail(function(error) {
         if(error.status === 401 || error.status === 422) {
@@ -342,12 +357,12 @@ function _getSale(res, rej, id) {
     })
 }
 
-function _getExchangeRates(res, rej) {
+function _getUsers(res, rej) {
     _loadAjaxSetup();
 
-    $.get(host+"/currencies",
+    $.get(host+"/users",
         function (result, error) {
-            Models["exchangerates"] = result;
+            Models["users"] = result;
             res(result);
         }).fail(function(error) {
         if(error.status === 401 || error.status === 422) {
@@ -356,9 +371,6 @@ function _getExchangeRates(res, rej) {
         rej(error);
     })
 }
-
-
-
 
 
 
@@ -432,7 +444,7 @@ function _findProduct(id) {
 }
 
 function _findPromoter(id) {
-    return Models.promoters.find(function(el){return el.promoter_id === Number(id)});
+    return Models.promoters.find(function(el){return el.user_id === Number(id)});
 }
 
 function _findProvider(id) {
@@ -501,10 +513,10 @@ function _fixReportsFormat(result) {
     result.forEach(function(e) {
         var elem = {};
         elem.saleid = e.sale_id;
-        elem.userid = e.user.user_id;
-        elem.promoterid = e.promoter.promoter_id;
+        elem.userid = e.seller.user_id;
+        elem.promoterid = e.promoter.user_id;
         elem.date = _getFormatDateDDMMYYYY(new Date(e.date));
-        elem.seller = e.user.first_name + " " + e.user.last_name;
+        elem.seller = e.seller.first_name + " " + e.seller.last_name;
         elem.sellercommission = e.user_commission;
         elem.promoter = e.promoter.first_name + " " + e.promoter.last_name;
         elem.promotercommission = e.promoter_commission;
@@ -604,13 +616,12 @@ function _getLongCurrentDate(){
     return _getCurrentDate() + " " + h + ":" + m + ":" + s;
 }
 
-function _loadpromotersSelect(result) {
-    var promSel = $("#promotersel");
+function _loadUserSelect(result, select) {
     result.forEach(function(element,index){
         var opt = $(document.createElement("option"));
         opt.text(element.first_name + " "+ element.last_name);
-        opt.attr("value",element.promoter_id);
-        promSel.append(opt);
+        opt.attr("value",element.user_id);
+        select.append(opt);
     })
 }
 
@@ -690,17 +701,17 @@ function _loadCurrencies() {
     load();
 }
 
-function _loadpromoters() {
+function _loadPromoters() {
     var promotersPromise = new Promise(
         function (resolve, reject) {
-            _getpromoters(resolve, reject);
+            _getPromoters(resolve, reject);
         }
     );
 
     var load = function() {
         promotersPromise
             .then(function (result) {
-                _loadpromotersHandler(result);
+                _loadPromotersHandler(result);
             })
             .catch(function (error) {
                 console.log(error.message);
@@ -728,6 +739,24 @@ function _loadProviders() {
     load();
 }
 
+function _loadUsers() {
+    var usersPromise = new Promise(
+        function (resolve, reject) {
+            _getUsers(resolve, reject);
+        }
+    );
+
+    var load = function(usersPromise) {
+        usersPromise
+            .then(function (result) {
+                _loadUsersHandler(result);
+            })
+            .catch(function (error) {
+                console.log(error.message);
+            });
+    };
+    load(usersPromise);
+}
 
 
 
