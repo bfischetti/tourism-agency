@@ -281,6 +281,21 @@ function _getExchangeRates(res, rej) {
     })
 }
 
+function _getPendings(res, rej) {
+    _loadAjaxSetup();
+
+    $.get(host+"/pending",
+        function (result, error) {
+            Models["pending"] = result;
+            res(result);
+        }).fail(function(error) {
+        if(error.status === 401 || error.status === 422) {
+            window.location = "/pages/login.html";
+        }
+        rej(error);
+    })
+}
+
 function _getProducts(res, rej) {
     _loadAjaxSetup();
 
@@ -548,6 +563,23 @@ function _fixReportsFormat(result) {
     return list;
 }
 
+function _fixReportsPendingFormat(result) {
+    var list = [];
+    result.forEach(function(e) {
+        var elem = {};
+        elem.pendingid = e.sold_product_id;
+        elem.date = _getFormatDateDDMMYYYY(new Date(e.date));
+        elem.productname = e.product.name;
+        elem.numbersold = e.adults + e.children + e.babies;
+        elem.saleid = 101010;
+        elem.providerid = e.product.provider.provider_id;
+        elem.totalsold = e.price;
+        elem.amounttopay = e.product.stock_price * elem.numbersold;
+        list.push(elem);
+    });
+    return list;
+}
+
 function _getCurrencyID(currency) {
     var id = 0;
     var exchangeRates = Models.exchangerates ? Models.exchangerates : Models.default.exchangerates;
@@ -651,6 +683,15 @@ function _getLongCurrentDate(){
     var m = addZero(d.getMinutes());
     var s = addZero(d.getSeconds());
     return _getCurrentDate() + " " + h + ":" + m + ":" + s;
+}
+
+function _loadProviderSelect(result, select) {
+    result.forEach(function(element,index){
+        var opt = $(document.createElement("option"));
+        opt.text(element.name);
+        opt.attr("value",element.provider_id);
+        select.append(opt);
+    })
 }
 
 function _loadUserSelect(result, select) {
