@@ -42,7 +42,7 @@
                         Ciudad Autónoma de Buenos Aires, Argentina.
                     </p>
                     <p>
-                       Número de identificación fiscal:
+                       Número de identificación fiscal: 16.426
                     </p>
                     <p>
                         Teléfono: +54 11 68388892<br>
@@ -62,7 +62,6 @@
                             <tr>
                                 <th>Descripción</th>
                                 <th>Cantidad personas</th>
-                                <th>Importe</th>
                             </tr>
                         </thead>
                         <tbody class="itemsTableBody"></tbody>
@@ -126,9 +125,9 @@
         function  _fillInformation(sale) {
             _fillReceiptInfo(sale);
             var subtotal = (sale.total + sale.discount);
-            $(".productSubtotal").text("$ "+ subtotal + ".00");
-            $(".discount").text("$ "+sale.discount + ".00");
-            $(".productTotal").text("$ "+sale.total + ".00");
+            $(".productSubtotal").text("ARS "+ subtotal + ".00");
+            $(".discount").text("ARS "+sale.discount + ".00");
+            $(".productTotal").text("ARS "+sale.total + ".00");
             sale.products.forEach(function(el){
                 loadItemTableRow(el);
             });
@@ -142,27 +141,27 @@
         function loadItemTableRow(product) {
             var td1 = $(document.createElement("td")).text(product.product.name);
             var td2 = $(document.createElement("td")).text(product.adults + product.children + product.babies);
-            var td3 = $(document.createElement("td")).text("$ " + product.price +".00");
-            var tr1 = $(document.createElement("tr")).append(td1).append(td2).append(td3);
+            var tr1 = $(document.createElement("tr")).append(td1).append(td2);
             $(".itemsTableBody").append(tr1);
         }
 
         function _fillReceiptInfo(sale) {
-            //var saleDate = _getFormatDateDDMMYYYY(new Date(sale.date));
-            var saleDate = _getFormatDateDDMMYYYY(new Date());
+            var saleDate = _getFormatDateDDMMYYYY(new Date(sale.date));
             var html = "N° de formato: " + sale.sale_id + "<br>Fecha del formato: " + saleDate +"<br>";
             $(".receiptInfo").append(html);
         }
 
         function _downloadPDF(saleid) {
-            var w = document.getElementById("page-wrapper").offsetWidth;
+            var w = 1100;
             var h = document.getElementById("wrapper").offsetHeight;
+            $("#wrapper").width(w);
+            $("#page-wrapper").width(w);
             html2canvas(document.getElementById("page-wrapper"), {
                 dpi: 300, // Set to 300 DPI
                 scale: 3, // Adjusts your resolution
                 onrendered: function (canvas) {
                     var img = canvas.toDataURL("image/jpeg", 1);
-                    var doc = new jsPDF('P', 'px', [h, w]);
+                    var doc = new jsPDF('P', 'px', [h, 850]);
                     doc.addImage(img, 'JPEG', 0, 0);
                     doc.save('RECIBO-N-' + saleid + '.pdf');
                 }

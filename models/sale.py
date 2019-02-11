@@ -18,7 +18,7 @@ class SaleModel(db.Model):
     user_commission = db.Column(db.Float(precision=2))
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-    user = db.relationship('UserModel',  foreign_keys=[user_id])
+    user = db.relationship('UserModel', foreign_keys=[user_id])
 
     promoter_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=True)
     promoter = db.relationship('UserModel', foreign_keys=[promoter_id])
@@ -54,12 +54,15 @@ class SaleModel(db.Model):
         return cls.query.order_by(SaleModel.date.desc()).all()
 
     def json(self):
-        return {'sale_id': self.sale_id,
-                'total': self.total,
-                'discount': self.discount,
-                'client': self.client.json(),
-                'seller': self.user.json(),
-                'promoter': self.promoter.json(),
-                'promoter_commission': self.promoter_commission,
-                'user_commission': self.user_commission,
-                'date': str(self.date)[:19]}
+        response = {'sale_id': self.sale_id,
+                    'total': self.total,
+                    'discount': self.discount,
+                    'client': self.client.json(),
+                    'seller': self.user.json(),
+                    'promoter_commission': self.promoter_commission,
+                    'user_commission': self.user_commission,
+                    'date': str(self.date)[:19]}
+        if self.promoter:
+            response["promoter"] = self.promoter.json()
+
+        return response

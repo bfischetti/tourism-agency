@@ -58,7 +58,8 @@ class Sale(Resource):
 
         for payment in json_data.get('payments'):
             transaction = TransactionModel(transaction_id=None, amount=payment.get('amount'), date=str(sale.date)[:19],
-                                           description=None, is_expense=False, category_id=category.category_id,
+                                           description=payment.get('description'), is_expense=False,
+                                           category_id=category.category_id,
                                            sale_id=sale.sale_id, exchange=payment.get('exchange'),
                                            method=payment.get('method'), currency_id=payment.get('currency_id'))
             transaction.save_to_db()

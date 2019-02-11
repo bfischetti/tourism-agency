@@ -138,6 +138,19 @@ function _createProduct(product) {
     });
 }
 
+function _createProvider(provider) {
+    _loadAjaxSetup();
+    $.post(host+"/provider",
+        JSON.stringify(provider),
+        function(result){
+            _parseCreatedProviderData(result);
+        }
+    ).fail(function(error) {
+        _manageError(error);
+    });
+}
+
+
 function _createSale(client, sale) {
     sale.client_id = client.client_id;
     sale.promoter_id = sale.promoter.user_id;
@@ -259,6 +272,21 @@ function _getExchangeRates(res, rej) {
     $.get(host+"/currencies",
         function (result, error) {
             Models["exchangerates"] = result;
+            res(result);
+        }).fail(function(error) {
+        if(error.status === 401 || error.status === 422) {
+            window.location = "/pages/login.html";
+        }
+        rej(error);
+    })
+}
+
+function _getPendings(res, rej) {
+    _loadAjaxSetup();
+
+    $.get(host+"/pending",
+        function (result, error) {
+            Models["pending"] = result;
             res(result);
         }).fail(function(error) {
         if(error.status === 401 || error.status === 422) {
@@ -391,6 +419,11 @@ function  _parseCreatedProductData(result) {
     _refreshCreateProductModal(result);
 }
 
+function  _parseCreatedProviderData(result) {
+    _refreshCreateProviderModal(result);
+}
+
+
 function  _parseCreatedSaleData(result) {
     $("#wrapper").removeClass("mask");
     var noerror = true;
@@ -455,8 +488,9 @@ function _fixFormat(result) {
     var list = $.extend(true, [], result);
     list.forEach(function(e) {
         e.date = _getFormatDateDDMMYYYY(new Date(e.date));
-        e.is_expense = e.is_expense ? "Sí" : "No";
+        e.expenseText = e.is_expense ? "Si" : "No";
         e.method = _getMethodString(e.method);
+        e.amountARS = (e.amount * e.exchange).toFixed("2");
     });
     return list;
 }
@@ -466,7 +500,7 @@ function _fixProductsFormat(result) {
     result.forEach(function(e) {
         var elem = {};
         elem.id = e.product_id;
-        elem.providername = "TEST"; //e.provider.name;
+        elem.providername = e.provider.name; //e.provider.name;
         elem.providerid = e.provider_id;
         elem.description = e.description;
         elem.name = e.name;
@@ -495,12 +529,14 @@ function _fixSalesFormat(result) {
     var list = [];
     result.forEach(function(e) {
         var elem = {};
+        elem.promoter = e.promoter ? e.promoter : e.seller;
         elem.id = e.sale_id;
+        elem.email = e.client.email;
         elem.clientname = e.client.name;
         elem.passport = e.client.passport_number;
         elem.date = _getFormatDateDDMMYYYY(new Date(e.date));
-        elem.seller = e.user.first_name + ' ' + e.user.last_name;
-        elem.promoter = e.promoter.first_name + ' ' + e.promoter.last_name;
+        elem.seller = e.seller.first_name + ' ' + e.seller.last_name;
+        elem.promoter = elem.promoter.first_name + ' ' + elem.promoter.last_name;
         elem.currency = e.currency || "N/A";
         elem.total = e.total;
         list.push(elem);
@@ -512,15 +548,33 @@ function _fixReportsFormat(result) {
     var list = [];
     result.forEach(function(e) {
         var elem = {};
+        elem.promoter = e.promoter ? e.promoter : e.seller;
         elem.saleid = e.sale_id;
         elem.userid = e.seller.user_id;
-        elem.promoterid = e.promoter.user_id;
+        elem.promoterid = elem.promoter.user_id;
         elem.date = _getFormatDateDDMMYYYY(new Date(e.date));
         elem.seller = e.seller.first_name + " " + e.seller.last_name;
         elem.sellercommission = e.user_commission;
-        elem.promoter = e.promoter.first_name + " " + e.promoter.last_name;
+        elem.promoter = elem.promoter.first_name + " " + elem.promoter.last_name;
         elem.promotercommission = e.promoter_commission;
         elem.total = e.total;
+        list.push(elem);
+    });
+    return list;
+}
+
+function _fixReportsPendingFormat(result) {
+    var list = [];
+    result.forEach(function(e) {
+        var elem = {};
+        elem.pendingid = e.sold_product_id;
+        elem.date = _getFormatDateDDMMYYYY(new Date(e.date));
+        elem.productname = e.product.name;
+        elem.numbersold = e.adults + e.children + e.babies;
+        elem.saleid = 101010;
+        elem.providerid = e.product.provider.provider_id;
+        elem.totalsold = e.price;
+        elem.amounttopay = e.product.stock_price * elem.numbersold;
         list.push(elem);
     });
     return list;
@@ -562,9 +616,11 @@ function _getFormatDateDDMMYYYY(dat){
     if(undefined === dat) {
         dat = new Date();
     }
+    var day = dat.getDate();
     var month = dat.getMonth()+1;
+    day = day > 9 ? day : "0"+day;
     month = month > 9 ? month : "0"+month;
-    return dat.getDate()+"-"+month+"-"+dat.getFullYear();
+    return day+"-"+month+"-"+dat.getFullYear();
 }
 
 function _getFormatDateYYYYMMDDHHMMSS(dat){
@@ -583,6 +639,19 @@ function _getFormatDateYYYYMMDDHHMMSS(dat){
     minutes = minutes > 9 ? minutes : "0"+minutes;
     seconds = seconds > 9 ? seconds : "0"+seconds;
     return dat.getFullYear()+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
+}
+
+function _getFormatDateDDMMYYYYHHMM(dat){
+    if(undefined === dat) {
+        dat = new Date();
+    }
+    var dateStr = _getFormatDateDDMMYYYY(dat);
+    var hours = dat.getHours();
+    var minutes = dat.getMinutes();
+
+    hours = hours > 9 ? hours : "0"+hours;
+    minutes = minutes > 9 ? minutes : "0"+minutes;
+    return dateStr + " " +hours+":"+minutes;
 }
 
 function _getMethodString(method) {
@@ -616,6 +685,15 @@ function _getLongCurrentDate(){
     return _getCurrentDate() + " " + h + ":" + m + ":" + s;
 }
 
+function _loadProviderSelect(result, select) {
+    result.forEach(function(element,index){
+        var opt = $(document.createElement("option"));
+        opt.text(element.name);
+        opt.attr("value",element.provider_id);
+        select.append(opt);
+    })
+}
+
 function _loadUserSelect(result, select) {
     result.forEach(function(element,index){
         var opt = $(document.createElement("option"));
@@ -639,7 +717,7 @@ function _loadSaleProducts() {
                 product_id: prodID,
                 product: product,
                 provider: provider,
-                date: elem.find("#date").val() + " 00:00:00",
+                date: elem.find("#date").val() + ":00",
                 transfer: elem.find("#transfersel").val(),
                 price: Number(elem.find("#uprice").val()),
                 adults: Number(elem.find("#adults").val()),
