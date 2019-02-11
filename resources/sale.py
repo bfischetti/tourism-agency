@@ -78,7 +78,7 @@ class Sales(Resource):
 
         for sale in SaleModel.find_all():
             products_from_sale = SoldProductModel.find_by_sale_id(sale.sale_id)
-            payments_from_sale = TransactionModel.find_by_sale_id(sale.sale_id)
+            # payments_from_sale = TransactionModel.find_by_sale_id(sale.sale_id)
 
             sale_element = {"sale_id": sale.sale_id,
                             "date": str(sale.date)[:19],
@@ -87,7 +87,7 @@ class Sales(Resource):
                             "discount": sale.discount,
                             "user_commission": sale.user_commission,
                             "promoter_commission": sale.promoter_commission,
-                            "payments": [payment.json() for payment in payments_from_sale],
+                            # "payments": [payment.json() for payment in payments_from_sale],
                             "products": [product.json() for product in products_from_sale]}
 
             response.append(sale_element)
