@@ -93,7 +93,7 @@ class Sales(Resource):
             if sale.promoter:
                 sale_element["promoter"] = sale.promoter.json()
             if sale.user:
-                sale_element["user"] = sale.user.json()
+                sale_element["seller"] = sale.user.json()
 
             response.append(sale_element)
 
