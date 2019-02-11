@@ -42,7 +42,6 @@ class Sale(Resource):
         sale.save_to_db()
 
         for product in json_data.get('products'):
-            print(product)
             sold_product = SoldProductModel(product_id=product.get('product_id'),
                                             price=product.get('price'), adults=product.get('adults'),
                                             children=product.get('children'), date=product.get('date'),

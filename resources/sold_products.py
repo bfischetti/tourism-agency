@@ -33,6 +33,21 @@ class PayProducts(Resource):
                         type=str,
                         required=True,
                         help="This field cannot be left blank!")
+    parser.add_argument('method',
+                        type=str,
+                        required=True,
+                        help="This field cannot be left blank!")
+    parser.add_argument('description',
+                        type=str,
+                        required=False)
+    parser.add_argument('currency_id',
+                        type=int,
+                        required=True,
+                        help="This field cannot be left blank!")
+    parser.add_argument('exchange',
+                        type=float,
+                        required=True,
+                        help="This field cannot be left blank!")
 
     @jwt_required
     def post(self):
@@ -40,7 +55,7 @@ class PayProducts(Resource):
 
         try:
 
-            for payed_product in data['products']:
+            for payed_product in data.get('products'):
                 sold_product = SoldProductModel.find_by_id(payed_product.id['id'])
                 sold_product.payment_pending = False
                 sold_product.update_to_db()
@@ -53,9 +68,10 @@ class PayProducts(Resource):
         if not category:
             category = CategoryModel.create_category('pago_provedor')
 
-        transaction = TransactionModel(transaction_id=None, amount=data['total'], date=str(data['date'])[:19],
-                                       description=None, is_expense=True,
-                                       category_id=category.category_id)
+        transaction = TransactionModel(transaction_id=None, amount=data.get('total'), date=str(data.get('date'))[:19],
+                                       description=data.get('description'), is_expense=True,
+                                       currency_id=data.get('currency_id'), category_id=category.category_id,
+                                       method=data.get('method'), exchange=data.get('exchange'))
         transaction.save_to_db()
 
         return transaction.json(), 201
