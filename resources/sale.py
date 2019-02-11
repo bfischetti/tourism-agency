@@ -87,10 +87,13 @@ class Sales(Resource):
                             "discount": sale.discount,
                             "user_commission": sale.user_commission,
                             "promoter_commission": sale.promoter_commission,
-                            "user": sale.user.json(),
-                            "promoter": sale.promoter.json(),
                             # "payments": [payment.json() for payment in payments_from_sale],
                             "products": [product.json() for product in products_from_sale]}
+
+            if sale.promoter:
+                sale_element["promoter"] = sale.promoter.json()
+            if sale.user:
+                sale_element["user"] = sale.user.json()
 
             response.append(sale_element)
 
