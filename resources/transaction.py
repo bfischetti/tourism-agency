@@ -52,7 +52,6 @@ class Transaction(Resource):
                         help="This field cannot be left blank!"
                         )
 
-
     @jwt_required
     def post(self):
         data = Transaction.parser.parse_args()
