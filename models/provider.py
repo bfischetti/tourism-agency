@@ -9,13 +9,15 @@ class ProviderModel(db.Model):
     url = db.Column(db.String(200))
     email = db.Column(db.String(100))
     phone = db.Column(db.String(80))
+    commission_rate = db.Column(db.Float(precision=2), default=100)
 
-    def __init__(self, provider_id, name, url, email, phone):
+    def __init__(self, provider_id, name, url, email, phone, commission_rate):
         self.provider_id = provider_id
         self.name = name
         self.url = url
         self.email = email
         self.phone = phone
+        self.commission_rate = commission_rate
 
     @classmethod
     def find_by_id(cls, _id):
@@ -31,6 +33,8 @@ class ProviderModel(db.Model):
             provider_to_update.email = self.email
         if self.phone is not None:
             provider_to_update.phone = self.phone
+        if self.commission_rate is not None:
+            provider_to_update.commission_rate = self.commission_rate
 
         provider_to_update.save_to_db()
 
@@ -55,4 +59,5 @@ class ProviderModel(db.Model):
                 'name': self.name,
                 'url': self.url,
                 'email': self.email,
-                'phone': self.phone}
+                'phone': self.phone,
+                'commission_rate': self.commission_rate }

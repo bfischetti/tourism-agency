@@ -32,6 +32,9 @@ class Provider(Resource):
     parser.add_argument('email',
                         type=str,
                         required=False)
+    parser.add_argument('commission_rate',
+                        type=float,
+                        required=False)
 
     @jwt_required
     def post(self):
