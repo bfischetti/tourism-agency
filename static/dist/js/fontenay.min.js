@@ -51,9 +51,9 @@ $(function() {
 /**************************************************************************/
 /***************               CONFIG            **************************/
 /**************************************************************************/
-var host = "http://fontenay.herokuapp.com";
-// var host = "http://10.30.10.167:5000";
-
+var host = "https://fontenay.herokuapp.com";
+// var host = "https://fontenay-staging.herokuapp.com";
+// var host = "https://192.168.1.111:5000";
 
 /*FORCED LOGIN*/
 function _login() {
@@ -376,6 +376,7 @@ function _getTransactions(res, rej) {
 
     $.get(host+"/transactions",
         function (result, error) {
+            Models["transactions"] = result;
             res(result);
         }).fail(function(error) {
         if(error.status === 401 || error.status === 422) {
@@ -470,6 +471,14 @@ function _enableEdit(e) {
     $(".panel").removeClass("panel-green").addClass("panel-default");
     $(e.target).closest(".input-group").find("input")[0].disabled = false;
     $("form button.btn-success")[0].disabled = false;
+}
+
+function _fillProductsTable(sale) {
+    var prodTableBody = $("#productsSoldTableBody");
+    prodTableBody.empty();
+    sale.products.forEach(function(el){
+        loadProdTableRow(el, prodTableBody);
+    });
 }
 
 function _findProduct(id) {
@@ -683,6 +692,19 @@ function _getLongCurrentDate(){
     var m = addZero(d.getMinutes());
     var s = addZero(d.getSeconds());
     return _getCurrentDate() + " " + h + ":" + m + ":" + s;
+}
+
+function loadProdTableRow(product, tableBody) {
+    var td1 = $(document.createElement("td")).text(product.product.provider.name);
+    var td2 = $(document.createElement("td")).text(product.product.name);
+    var td3 = $(document.createElement("td")).text(_getFormatDateDDMMYYYY(new Date(product.date)));
+    var td4 = $(document.createElement("td")).text(product.transfer ? "Sí" : "No");
+    var td5 = $(document.createElement("td")).text(product.adults);
+    var td6 = $(document.createElement("td")).text(product.children);
+    var td7 = $(document.createElement("td")).text(product.babies);
+    var td8 = $(document.createElement("td")).text(product.price);
+    var tr1 = $(document.createElement("tr")).append(td1).append(td2).append(td3).append(td4).append(td5).append(td6).append(td7).append(td8);
+    tableBody.append(tr1);
 }
 
 function _loadProviderSelect(result, select) {
