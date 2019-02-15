@@ -51,7 +51,7 @@ $(function() {
 /**************************************************************************/
 /***************               CONFIG            **************************/
 /**************************************************************************/
-var host = "https://fontenay.herokuapp.com";
+var host = "https://fontenay.herokuapp.com" ;
 // var host = "https://fontenay-staging.herokuapp.com";
 // var host = "https://192.168.1.111:5000";
 
