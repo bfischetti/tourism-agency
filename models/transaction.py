@@ -15,6 +15,7 @@ class TransactionModel(db.Model):
     description = db.Column(db.String(200))
     date = db.Column(db.DateTime, default=datetime.now())
     is_expense = db.Column(db.Boolean)
+    deleted = db.Column(db.Boolean, default=False)
 
     currency_id = db.Column(db.Integer, db.ForeignKey('currency.currency_id'), nullable=True)
     currency = db.relationship('CurrencyModel')
@@ -26,7 +27,7 @@ class TransactionModel(db.Model):
     sale = db.relationship('SaleModel')
 
     def __init__(self, transaction_id, amount, description, date, is_expense, category_id, method, sale_id=None,
-                 exchange=None, currency_id=None):
+                 exchange=None, currency_id=None, deleted=None):
         self.transaction_id = transaction_id
         self.amount = amount
         self.description = description
@@ -41,6 +42,8 @@ class TransactionModel(db.Model):
             self.exchange = exchange
         if currency_id is not None:
             self.currency_id = currency_id
+        if deleted is not None:
+            self.deleted = deleted
 
     @classmethod
     def find_by_id(cls, _id):
@@ -78,9 +81,11 @@ class TransactionModel(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
-        db.session.delete(self)
-        db.session.commit()
+    @classmethod
+    def delete_from_db(cls, transaction_id):
+        transaction_to_delete = cls.find_by_id(transaction_id)
+        transaction_to_delete.deleted = True
+        transaction_to_delete.save_to_db()
 
     def json(self):
         return {'transaction_id': self.transaction_id,
@@ -92,4 +97,5 @@ class TransactionModel(db.Model):
                 'category_id': self.category_id,
                 'is_expense': self.is_expense,
                 'exchange': self.exchange,
-                'sale_id': self.sale_id}
+                'sale_id': self.sale_id,
+                'deleted': self.deleted}
