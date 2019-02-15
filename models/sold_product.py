@@ -24,7 +24,10 @@ class SoldProductModel(db.Model):
     children = db.Column(db.Integer)
     babies = db.Column(db.Integer)
 
-    def __init__(self, price, product_id, date, transfer, sale_id, adults, children, babies, payment_pending):
+    deleted = db.Column(db.Boolean, default=False)
+
+    def __init__(self, price, product_id, date, transfer, sale_id, adults, children, babies, payment_pending,
+                 deleted=None):
         self.price = price
         self.product_id = product_id
         self.transfer = transfer
@@ -36,14 +39,18 @@ class SoldProductModel(db.Model):
         self.children = children
         self.babies = babies
         self.payment_pending = payment_pending
+        if deleted:
+            self.deleted = deleted
 
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
-        db.session.delete(self)
-        db.session.commit()
+    @classmethod
+    def delete_from_db(cls, sold_product_id):
+        sold_product_to_delete = cls.find_by_id(sold_product_id)
+        sold_product_to_delete.deleted = True
+        sold_product_to_delete.save_to_db()
 
     def update_to_db(self):
         sold_product_to_update = SoldProductModel.find_by_id(self.sold_product_id)
@@ -74,4 +81,5 @@ class SoldProductModel(db.Model):
                 'children': self.children,
                 'babies': self.babies,
                 'sale_id': self.sale_id,
-                'payment_pending': self.payment_pending}
+                'payment_pending': self.payment_pending,
+                'deleted': self.deleted}

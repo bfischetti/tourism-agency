@@ -77,3 +77,16 @@ class Transaction(Resource):
             return {"message": "An error occurred updating the transaction"}, 500
 
         return transaction.json(), 200
+
+
+class TransactionId(Resource):
+
+    @jwt_required
+    def delete(self, transaction_id):
+
+        try:
+            TransactionModel.delete_from_db(transaction_id)
+        except:
+            return {"message": "An error occurred deleting the transaction"}, 500
+
+        return {"message": "Transaction deleted"}, 200
