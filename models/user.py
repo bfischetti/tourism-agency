@@ -12,6 +12,7 @@ class UserModel(db.Model):
     last_name = db.Column(db.String(80))
     role = db.Column(db.Integer, default=2)  # 1:admin, 2: seller/promoter
     salary = db.Column(db.Float(precision=2), default=0.00)
+    seller_commissions = db.Column(db.Float(precision=2), default=0.00)
 
     def __init__(self, email, password, first_name, last_name):
 

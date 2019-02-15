@@ -70,7 +70,7 @@ class Sale(Resource):
         return not math.fabs(total_sum - total_sale) >= 1
 
 
-class Sales(Resource):
+class SaleList(Resource):
 
     @jwt_required
     def get(self):
@@ -100,7 +100,7 @@ class Sales(Resource):
         return response
 
 
-class Voucher(Resource):
+class SaleId(Resource):
 
     @jwt_required
     def get(self, sale_id):
@@ -120,4 +120,25 @@ class Voucher(Resource):
                 "user_commission": sale.user_commission,
                 "promoter_commission": sale.promoter_commission,
                 "payments": [payment.json() for payment in payments_from_sale],
-                "products": [product.json() for product in products_from_sale]}, 200
+                "products": [product.json() for product in products_from_sale],
+                "deleted": sale.deleted}, 200
+
+    @jwt_required
+    def delete(self, sale_id):
+
+        try:
+            products_from_sale = SoldProductModel.find_by_sale_id(sale_id)
+            payments_from_sale = TransactionModel.find_by_sale_id(sale_id)
+
+            for sold_product in products_from_sale:
+                SoldProductModel.delete_from_db(sold_product.sold_product_id)
+
+            for payment in payments_from_sale:
+                TransactionModel.delete_from_db(payment.transaction_id)
+
+            SaleModel.delete_from_db(sale_id)
+
+        except:
+            return {"message": "An error occurred deleting the sale"}, 500
+
+        return {"message": "Sale deleted"}, 200
