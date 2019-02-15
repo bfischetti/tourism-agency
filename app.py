@@ -6,6 +6,7 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
+from flask_cors import CORS
 from db import db
 
 from blacklist import BLACKLIST
@@ -23,7 +24,7 @@ from resources.currency import Currency, CurrencyList, CurrencyId
 
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
 app = Flask(__name__)
-
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['DEBUG'] = True
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',
@@ -73,7 +74,6 @@ def check_if_token_in_blacklist(decrypted_token):
 
 @app.route('/')
 def hello_world():
-    new_line = 1
     return send_from_directory(static_file_dir, 'index.html')
 
 
@@ -113,3 +113,4 @@ api.add_resource(CurrencyList, '/currencies')
 
 if __name__ == '__main__':
     manager.run()
+    # app.run(host='0.0.0.0', port=5000, debug=True)
