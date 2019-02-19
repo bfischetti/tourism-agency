@@ -40,11 +40,11 @@
             </div>
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li>
+                    <ul class="nav in" id="side-menu">
+                        <li class="forbidden">
                             <a href="transactions.html"><i class="fa fa-table fa-fw"></i> Movimientos</a>
                         </li>
-                        <li>
+                        <li class="forbidden">
                             <a href="sales.html"><i class="fa fa-table fa-fw"></i> Ventas</a>
                         </li>
                         <li>
@@ -53,13 +53,13 @@
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Configuración<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                <li>
+                                <li class="forbidden">
                                     <a href="exchange-rate.html">Cotización divisas</a>
                                 </li>
                                 <li>
                                     <a href="products.html">Productos</a>
                                 </li>
-                                <li>
+                                <li class="forbidden">
                                     <a href="providers.html">Proveedores</a>
                                 </li>
                             </ul>
@@ -76,7 +76,7 @@
                                 <li>
                                     <a href="reportpromoter.html">Comisión promotores</a>
                                 </li>
-                                <li>
+                                <li class="forbidden">
                                     <a href="reportprovider.html">Pagos pendientes</a>
                                 </li>
                             </ul>
@@ -121,6 +121,16 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label>Real Transf.</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">&nbsp;RT$</span>
+                                        <input id="BRT" class="form-control" step="0.1" type="number" min="0" disabled required>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" onclick= "_enableEdit(event)"><i class="fa fa-edit"></i></button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label>Euro</label>
                                     <div class="input-group">
                                         <span class="input-group-addon">&nbsp;€&nbsp;</span>
@@ -149,6 +159,7 @@
 
     <script>
         $(document).ready(function() {
+            _checkLogin(true);
             _loadCurrencies();
         });
 
@@ -159,6 +170,7 @@
         function _fillExchangesValues() {
             $("#USD").val(_getExchangeRate("USD"));
             $("#BRL").val(_getExchangeRate("BRL"));
+            $("#BRT").val(_getExchangeRate("BRT"));
             $("#EUR").val(_getExchangeRate("EUR"));
         }
 

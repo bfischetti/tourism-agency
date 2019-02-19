@@ -268,10 +268,10 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav in" id="side-menu">
-                        <li>
+                        <li class="forbidden">
                             <a href="transactions.html"><i class="fa fa-table fa-fw"></i> Movimientos</a>
                         </li>
-                        <li>
+                        <li class="forbidden">
                             <a href="sales.html"><i class="fa fa-table fa-fw"></i> Ventas</a>
                         </li>
                         <li>
@@ -280,13 +280,13 @@
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Configuración<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                <li>
+                                <li class="forbidden">
                                     <a href="exchange-rate.html">Cotización divisas</a>
                                 </li>
                                 <li>
                                     <a href="products.html">Productos</a>
                                 </li>
-                                <li>
+                                <li class="forbidden">
                                     <a href="providers.html">Proveedores</a>
                                 </li>
                             </ul>
@@ -303,7 +303,7 @@
                                 <li>
                                     <a href="reportpromoter.html">Comisión promotores</a>
                                 </li>
-                                <li>
+                                <li class="forbidden">
                                     <a href="reportprovider.html">Pagos pendientes</a>
                                 </li>
                             </ul>
@@ -485,6 +485,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row form-group" id="paymentForm">
+                        <input class="form-control" id="paymentID" style="display: none">
                         <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                             <label>Descripción</label>
                             <input class="form-control" id="paymentDescription" value="" required>
@@ -523,7 +524,7 @@
                         <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-6">
                             <label>Monto</label>
                             <div class=" input-group">
-                                <span class="input-group-addon">$</span>
+                                <span class="input-group-addon">ARS</span>
                                 <input id="paymentAmount" class="form-control" type="number" min="1" step="0.01" value="0">
                             </div>
                         </div>
@@ -573,17 +574,17 @@
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
         $(document).ready(function() {
-            _loadProviders();
-            _loadPendings();
+            _checkLogin(true);
             _loadSales();
+            _loadProviders();
             _loadCurrencies();
             $("#paymentCurrency").change(_currencyChanged);
             var maxDate = _getCurrentDate();
             document.getElementById("maxDate").setAttribute("max", maxDate);
             $("#maxDate").val(maxDate).keyup(refreshField).blur(refreshField);
-            var weekAgo = new Date();
-            weekAgo = new Date(weekAgo.setDate(weekAgo.getDate() - 7));
-            $("#minDate").val(_getFormatDateYYYYMMDDHHMMSS(weekAgo).split(" ")[0]).keyup(refreshField).blur(refreshField);
+            var yearAgo = new Date();
+            yearAgo = new Date(yearAgo.setDate(yearAgo.getDate() - 365));
+            $("#minDate").val(_getFormatDateYYYYMMDDHHMMSS(yearAgo).split(" ")[0]).keyup(refreshField).blur(refreshField);
             $("#providersel").change(refreshField);
 
             $("#pendingTable").on("search.dt", function () {
@@ -635,6 +636,11 @@
             });
         }
 
+        function _parseCreatedPaymentData(result) {
+            $("#paymentModal").modal('hide');
+            _refreshModal();
+        }
+
         function _loadPendings() {
             var pendingsPromise = new Promise(
                 function (resolve, reject) {
@@ -655,10 +661,10 @@
                             columns: [
                                 { title: "ID Pago", data: "pendingid"},
                                 { title: "Fecha",data: "date"},
-                                { title: "Producto", data: "productname"},
+                                { title: "ID Proveedor",data: "providerid"},
+                                { title: "Servicio", data: "productname"},
+                                { title: "Cliente", data: "clientname"},
                                 { title: "Cantidad", data: "numbersold"},
-                                { title: "ID Proveedor", data: "providerid"},
-                                { title: "Precio Venta", data: "totalsold"},
                                 { title: "Monto a pagar (ARS)",data: "amounttopay"},
                                 { title: "Acciones", data: null }
                             ],
@@ -696,13 +702,17 @@
                                     type: 'date'
                                 },
                                 {
+                                    visible: false,
+                                    targets: [2,3,4]
+                                },
+                                {
                                     targets: -1, //-1 es la ultima columna y 0 la primera
                                     data: null,
                                     defaultContent: buttonsHTML
                                 },
                                 { orderable: false, searchable: false, targets: -1 } //Ultima columna no ordenable para botones
                             ]
-                        });
+                        }).column(2).visible(false);
                     })
                     .catch(function (error) {
                         console.log(error.message);
@@ -745,6 +755,7 @@
 
         function _preparePaymentInformation(event) {
             var pending = _getPaymentByTr(event);
+            $("#paymentID").val(pending.sold_product_id);
             $("#paymentAmount").val(_getTotalStockPrice(pending));
             $("#paymentDescription").val("Pago Proveedor " + pending.product.provider.name + ". Venta ID: " + pending.sale_id);
         }
@@ -763,6 +774,7 @@
                 salesPromise
                     .then(function (result) {
                         Models["sales"] = result;
+                        _loadPendings();
                     })
                     .catch(function (error) {
                         console.log(error.message);
@@ -797,7 +809,7 @@
                     }
                 }
 
-                if (providerID !== aData[4]) {
+                if (Number(providerID) !== Number(aData[2])) {
                     return false;
                 }
 
@@ -810,26 +822,21 @@
             if(!validateModal()) {
                 return;
             }
-            var transactionCreated = {
-                category_id: 1,
-                amount: $("#paymentAmount").val(),
-                is_expense: true,
-                currency_id: _getCurrencyID("ARS"),
+            var paymentProduct = {
+                total: $("#paymentAmount").val(),
+                products: [{ id : $("#paymentID").val()}],
                 date: _getFormatDateYYYYMMDDHHMMSS(),
                 description: $("#paymentDescription").val(),
+                is_expense: true,
                 method: $("#paymentMethod").val(),
+                currency_id: _getCurrencyID("ARS"),
                 exchange: 1
             };
-            _createTransaction(transactionCreated);
-        }
-
-        function _refreshCreateTransactionModal(result) {
-            $("#paymentModal").modal('hide');
-            _refreshModal();
+            _payPendingProduct(paymentProduct);
         }
 
         function _refreshModal() {
-            $("#paymentsTable").dataTable().fnDestroy();
+            $("#pendingTable").dataTable().fnDestroy();
             $("#successFinishModal").modal('show');
             _loadPendings();
         }
