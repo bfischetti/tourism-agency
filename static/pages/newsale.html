@@ -292,10 +292,10 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li>
+                        <li class="forbidden">
                             <a href="transactions.html"><i class="fa fa-table fa-fw"></i> Movimientos</a>
                         </li>
-                        <li>
+                        <li class="forbidden">
                             <a href="sales.html"><i class="fa fa-table fa-fw"></i> Ventas</a>
                         </li>
                         <li>
@@ -304,13 +304,13 @@
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Configuración<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                <li>
+                                <li class="forbidden">
                                     <a href="exchange-rate.html">Cotización divisas</a>
                                 </li>
                                 <li>
                                     <a href="products.html">Productos</a>
                                 </li>
-                                <li>
+                                <li class="forbidden">
                                     <a href="providers.html">Proveedores</a>
                                 </li>
                             </ul>
@@ -327,7 +327,7 @@
                                 <li>
                                     <a href="reportpromoter.html">Comisión promotores</a>
                                 </li>
-                                <li>
+                                <li class="forbidden">
                                     <a href="reportprovider.html">Pagos pendientes</a>
                                 </li>
                             </ul>
@@ -505,6 +505,7 @@
                                 <select class="form-control" id="discountcurrencysel">
                                     <option value="dollarstr" curr="USD">Dólar</option>
                                     <option value="realstr" curr="BRL">Real</option>
+                                    <option value="realtstr" curr="BRL">Real T.</option>
                                     <option value="eurostr" curr="EUR">Euro</option>
                                     <option value="pesostr" curr="ARS">Peso</option>
                                 </select>
@@ -543,54 +544,66 @@
                                     <input id="totalDiscount" class="form-control" value="0" type="number" name="quantity" min="0" disabled>
                                 </div>
                             </div>
-                                        <tr id="dollarstr" class="currtr">
-                                            <td class="subtotalColumn ">
-                                            </td>
-                                            <td class="">
-                                            </td>
-                                            <td class="totalColumn ">
-                                            </td>
-                                        </tr>
-                                        <tr id="realstr" style="display: none;" class="currtr">
-                                            <td class="">
-                                            </td>
-                                            <td class="subtotalColumn ">
-                                            </td>
-                                            <td class="">
+                                <tr id="dollarstr" class="currtr">
+                                    <td class="subtotalColumn ">
+                                    </td>
+                                    <td class="">
+                                    </td>
+                                    <td class="totalColumn ">
+                                    </td>
+                                </tr>
+                                <tr id="realstr" style="display: none;" class="currtr">
+                                    <td class="">
+                                    </td>
+                                    <td class="subtotalColumn ">
+                                    </td>
+                                    <td class="">
 
-                                            </td>
-                                            <td class="totalColumn ">
+                                    </td>
+                                    <td class="totalColumn ">
 
-                                            </td>
-                                        </tr>
-                                        <tr id="eurostr" style="display: none;" class="currtr">
-                                            <td class="">
+                                    </td>
+                                </tr>
+                                <tr id="realtstr" style="display: none;" class="currtr">
+                                    <td class="">
+                                    </td>
+                                    <td class="subtotalColumn ">
+                                    </td>
+                                    <td class="">
 
-                                            </td>
-                                            <td class="subtotalColumn ">
+                                    </td>
+                                    <td class="totalColumn ">
 
-                                            </td>
-                                            <td class="">
+                                    </td>
+                                </tr>
+                                <tr id="eurostr" style="display: none;" class="currtr">
+                                    <td class="">
 
-                                            </td>
-                                            <td class="totalColumn ">
+                                    </td>
+                                    <td class="subtotalColumn ">
 
-                                            </td>
-                                        </tr>
-                                        <tr id="pesostr" style="display: none;" class="currtr">
-                                            <td class="">
+                                    </td>
+                                    <td class="">
 
-                                            </td>
-                                            <td class="subtotalColumn ">
+                                    </td>
+                                    <td class="totalColumn ">
 
-                                            </td>
-                                            <td class="">
+                                    </td>
+                                </tr>
+                                <tr id="pesostr" style="display: none;" class="currtr">
+                                    <td class="">
 
-                                            </td>
-                                            <td class="totalColumn ">
+                                    </td>
+                                    <td class="subtotalColumn ">
 
-                                            </td>
-                                        </tr>
+                                    </td>
+                                    <td class="">
+
+                                    </td>
+                                    <td class="totalColumn ">
+
+                                    </td>
+                                </tr>
                             <h4 class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">Productos</h4>
                             <div class="table-responsive col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <table class="table table-striped"id="productsconftable"></table>
@@ -621,6 +634,7 @@
                                     <select class="form-control" id="paymentCurrency">
                                         <option value="USD">Dólar</option>
                                         <option value="BRL">Real</option>
+                                        <option value="BRT">Real</option>
                                         <option value="EUR">Euro</option>
                                         <option value="ARS">Peso</option>
                                     </select>
@@ -1092,6 +1106,9 @@
                     break;
                 case "BRL":
                     text = "R$";
+                    break;
+                case "BRT":
+                    text = "RT$";
                     break;
                 case "EUR":
                     text = "€";

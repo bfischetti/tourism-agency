@@ -267,11 +267,11 @@
 
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav in" id="side-menu">
-                        <li>
+                    <ul class="nav" id="side-menu">
+                        <li class="forbidden">
                             <a href="transactions.html"><i class="fa fa-table fa-fw"></i> Movimientos</a>
                         </li>
-                        <li>
+                        <li class="forbidden">
                             <a href="sales.html"><i class="fa fa-table fa-fw"></i> Ventas</a>
                         </li>
                         <li>
@@ -280,13 +280,13 @@
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Configuración<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level collapse">
-                                <li>
+                                <li class="forbidden">
                                     <a href="exchange-rate.html">Cotización divisas</a>
                                 </li>
                                 <li>
                                     <a href="products.html">Productos</a>
                                 </li>
-                                <li>
+                                <li class="forbidden">
                                     <a href="providers.html">Proveedores</a>
                                 </li>
                             </ul>
@@ -303,7 +303,7 @@
                                 <li>
                                     <a href="reportpromoter.html">Comisión promotores</a>
                                 </li>
-                                <li>
+                                <li class="forbidden">
                                     <a href="reportprovider.html">Pagos pendientes</a>
                                 </li>
                             </ul>
@@ -455,7 +455,7 @@
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
         $(document).ready(function() {
-            _checkLogin();
+            _checkLogin(true);
             _loadProviders();
 
             $("#salesTable").on("draw.dt", function () {
@@ -494,10 +494,24 @@
                 return e.sale_id === parseInt(saleId);
             });
             if(undefined === sale) {
-                $("#saleDetailsModal").find(".modal-body").text("Un error ha ocurrido. La venta no fue encontrada. Recargue la página y reintente, por favor.")
+                //$("#saleDetailsModal").find(".modal-body").text("Un error ha ocurrido. La venta no fue encontrada. Recargue la página y reintente, por favor.")
             } else {
                 sale.products ? loadInformation(sale) : _loadSaleProducts(saleId);
             }
+        }
+
+        function _openPrintSale() {
+            var tr = $(event.target).closest("tr");
+            var saleId = tr.find(".saleid").length !== 0 ? tr.find(".saleid").text() : tr.prev().find(".saleid").text();
+            window.open("receipt.html?saleid=" + saleId, "_blank");
+            window.open("voucher.html?saleid=" + saleId, "_blank");
+        }
+
+        function _openDownloadSale() {
+            var tr = $(event.target).closest("tr");
+            var saleId = tr.find(".saleid").length !== 0 ? tr.find(".saleid").text() : tr.prev().find(".saleid").text();
+            window.open("receipt.html?saleid=" + saleId+"&download=true", "_blank");
+            window.open("voucher.html?saleid=" + saleId+"&download=true", "_blank");
         }
 
         function _loadSales() {
@@ -512,7 +526,8 @@
                     .then(function (result) {
                         var listado = _fixSalesFormat(result);
                         var buttonsHTML = '<button type="button" onclick="_openDetailsModal()" class="btn btn-primary btn-circle"><i class="fa fa-eye"></i></button>'
-                            +'<button type="button" class="btn btn-info btn-circle"><i class="fa fa-edit"></i></button>'
+                            +'<button type="button" onclick="_openPrintSale()" class="btn btn-info btn-circle"><i class="fa fa-print"></i></button>'
+                            +'<button type="button" onclick="_openDownloadSale()" class="btn btn-info btn-circle"><i class="fa fa-download"></i></button>'
                             +'<button type="button" class="btn btn-danger btn-circle"><i class="fa fa-trash-o"></i></button>';
                         $('#salesTable').DataTable({
                             responsive: true,
