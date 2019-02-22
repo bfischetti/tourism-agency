@@ -54,10 +54,24 @@ class CurrencyList(Resource):
     @jwt_required
     def get(self):
 
+        currencies = []
+
         usd = CurrencyModel.find_latest_by_code('USD')
         brl = CurrencyModel.find_latest_by_code('BRL')
         eur = CurrencyModel.find_latest_by_code('EUR')
         ars = CurrencyModel.find_latest_by_code('ARS')
+        brt = CurrencyModel.find_latest_by_code('BRT')
 
-        return [usd.json(), brl.json(), eur.json(), ars.json()]
+        if usd:
+            currencies.append(usd.json())
+        if brl:
+            currencies.append(brl.json())
+        if eur:
+            currencies.append(eur.json())
+        if ars:
+            currencies.append(ars.json())
+        if brt:
+            currencies.append(brt.json())
+
+        return currencies
 

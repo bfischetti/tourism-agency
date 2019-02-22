@@ -7,20 +7,29 @@ class ProductModel(db.Model):
 
     product_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(80))
-    stock_price = db.Column(db.Float(precision=2))
-    selling_price = db.Column(db.Float(precision=2))
+    stock_price_adult = db.Column(db.Float(precision=2))
+    stock_price_child = db.Column(db.Float(precision=2))
+    stock_price_baby = db.Column(db.Float(precision=2))
+    selling_price_adult = db.Column(db.Float(precision=2))
+    selling_price_child = db.Column(db.Float(precision=2))
+    selling_price_baby = db.Column(db.Float(precision=2))
     description = db.Column(db.String(200))
     billable = db.Column(db.Boolean, default=False)
 
     provider_id = db.Column(db.Integer, db.ForeignKey('provider.provider_id'))
     provider = db.relationship('ProviderModel')
 
-    def __init__(self, product_id, billable, name, stock_price, selling_price, description, provider_id):
+    def __init__(self, product_id, billable, name, stock_price_adult, selling_price_adult, stock_price_child,
+                 selling_price_child, stock_price_baby, selling_price_baby, description, provider_id):
         self.product_id = product_id
         self.billable = billable
         self.name = name
-        self.stock_price = stock_price
-        self.selling_price = selling_price
+        self.stock_price_adult = stock_price_adult
+        self.selling_price_adult = selling_price_adult
+        self.stock_price_child = stock_price_child
+        self.selling_price_child = selling_price_child
+        self.stock_price_baby = stock_price_baby
+        self.selling_price_baby = selling_price_baby
         self.description = description
         self.provider_id = provider_id
 
@@ -32,10 +41,18 @@ class ProductModel(db.Model):
         product_to_update = ProductModel.find_by_id(self.product_id)
         if self.name is not None:
             product_to_update.name = self.name
-        if self.stock_price is not None:
-            product_to_update.stock_price = self.stock_price
-        if self.selling_price is not None:
-            product_to_update.selling_price = self.selling_price
+        if self.stock_price_adult is not None:
+            product_to_update.stock_price_adult = self.stock_price_adult
+        if self.selling_price_adult is not None:
+            product_to_update.selling_price_adult = self.selling_price_adult
+        if self.stock_price_child is not None:
+            product_to_update.stock_price_child = self.stock_price_child
+        if self.selling_price_child is not None:
+            product_to_update.selling_price_child = self.selling_price_child
+        if self.stock_price_baby is not None:
+            product_to_update.stock_price_baby = self.stock_price_baby
+        if self.selling_price_baby is not None:
+            product_to_update.selling_price_baby = self.selling_price_baby
         if self.description is not None:
             product_to_update.description = self.description
         if self.provider_id is not None:
@@ -66,7 +83,11 @@ class ProductModel(db.Model):
     def json(self):
         return {'product_id': self.product_id,
                 'name': self.name,
-                'stock_price': self.stock_price,
-                'selling_price': self.selling_price,
+                'stock_price_adult': self.stock_price_adult,
+                'stock_price_child': self.stock_price_child,
+                'stock_price_baby': self.stock_price_baby,
+                'selling_price_adult': self.selling_price_adult,
+                'selling_price_child': self.selling_price_child,
+                'selling_price_baby': self.selling_price_baby,
                 'description': self.description,
                 'provider': self.provider.json()}
