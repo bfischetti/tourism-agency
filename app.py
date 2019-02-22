@@ -24,7 +24,9 @@ from resources.currency import Currency, CurrencyList, CurrencyId
 
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
 app = Flask(__name__)
+
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
 app.config['DEBUG'] = True
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',
