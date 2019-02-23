@@ -51,7 +51,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"description\": \"Gas\",\n    \"name\": \"metrogas\",\n    \"label\": \"Metrogas\"\n}"
+							"raw": "{\n    \"description\": \"Internet/Cable\",\n    \"name\": \"fibertel\",\n    \"label\": \"Fibertel/Cablevision\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/category",
@@ -81,7 +81,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n        \"name\": \"Edesur\",\n        \"description\": \"Luz\",\n        \"category_id\": 2\n    }"
+							"raw": "{\n        \"name\": \"cablevision\",\n        \"label\": \"Fibertel/Cablevision\",\n        \"description\": \"Internet/Cable\",\n        \"category_id\": 5\n    }"
 						},
 						"url": {
 							"raw": "{{url}}/category",
@@ -90,190 +90,6 @@
 							],
 							"path": [
 								"category"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "provider",
-			"item": [
-				{
-					"name": "/provider",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"tango buenos aires\",\n  \"url\": \"http://tuvieja.com\",\n  \"phone\":\"0810 122 2222\",\n  \"email\": \"tangobaires@gmail.com\"\n}"
-						},
-						"url": {
-							"raw": "{{url}}/provider",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"provider"
-							]
-						},
-						"description": "  "
-					},
-					"response": []
-				},
-				{
-					"name": "/providers",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{url}}/providers",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"providers"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/provider",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"sabado tango\",\n  \"price\": 450,\n  \"description\": \"lecciones tango sabado 11pm\",\n  \"provider_id\": 2\n}"
-						},
-						"url": {
-							"raw": "{{url}}/provider",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"provider"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "product",
-			"item": [
-				{
-					"name": "/product",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"name\": \"sabado tango\",\n  \"price\": 450,\n  \"description\": \"lecciones tango sabado 10pm\",\n  \"provider_id\": 1,\n  \"stock_price\": 1000,\n  \"selling_price\": 1500\n}"
-						},
-						"url": {
-							"raw": "{{url}}/product",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"product"
-							]
-						},
-						"description": "  "
-					},
-					"response": []
-				},
-				{
-					"name": "/products",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{url}}/products",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"products"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/product",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"product_id\": 1,\n  \"name\": \"sabado tango\",\n  \"price\": 45123,\n  \"description\": \"lecciones tango sabado 11pm\",\n  \"provider_id\": 1\n}"
-						},
-						"url": {
-							"raw": "{{url}}/product",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"product"
 							]
 						}
 					},
@@ -374,6 +190,538 @@
 			]
 		},
 		{
+			"name": "currency",
+			"item": [
+				{
+					"name": "/currencies",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/currencies",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"currencies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/currency/<currency_id>",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/currency/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"currency",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/currency",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n  \"code\":\"ARS\",\n  \"exchange\": 1,\n  \"date\":\"2018-08-28 20:20:30\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/currency",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"currency"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payments",
+			"item": [
+				{
+					"name": "/pending",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/pending",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pending"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/pay",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\t\"total\":10000,\n\t\"products\":[{\"id\":1},{\"id\":2},{\"id\":3}],\n\t\"date\":\"2018-09-03 20:20:30\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/pay",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"pay"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product",
+			"item": [
+				{
+					"name": "/product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"sabado tango\",\n  \"price\": 450,\n  \"description\": \"lecciones tango sabado 10pm\",\n  \"provider_id\": 1,\n  \"stock_price_adult\": 1000,\n  \"selling_price_adult\": 1500,\n  \"stock_price_child\": 1000,\n  \"selling_price_child\": 1500,\n  \"stock_price_baby\": 1000,\n  \"selling_price_baby\": 1500\n}"
+						},
+						"url": {
+							"raw": "{{url}}/product",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"product"
+							]
+						},
+						"description": "  "
+					},
+					"response": []
+				},
+				{
+					"name": "/products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/products",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_id\": 1,\n    \"provider_id\": 1,\n    \"name\": \"sabado tango\",\n    \"stock_price_adult\": 2000,\n    \"stock_price_child\": 1000,\n    \"stock_price_baby\": 900,\n    \"selling_price_adult\": 3000,\n    \"selling_price_child\": 2000,\n    \"selling_price_baby\": 1500,\n    \"description\": \"lecciones tango sabado 10pm\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/product",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"product"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "employees",
+			"item": [
+				{
+					"name": "/promoters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/promoters",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"promoters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/sellers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/promoters",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"promoters"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "1a1be042-9680-4b10-b9c7-c95c046c9571",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ced7abe7-c1e1-485a-93cd-20a9fb5d1f59",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "provider",
+			"item": [
+				{
+					"name": "/provider",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Tango buenos aires\",\n  \"url\": \"http://tango.com\",\n  \"phone\":\"0810 122 2222\",\n  \"email\": \"tangobaires@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/provider",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"provider"
+							]
+						},
+						"description": "  "
+					},
+					"response": []
+				},
+				{
+					"name": "/providers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/providers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"providers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/provider",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"provider_id\": 4,\n    \"name\": \"tango buenos aires\",\n    \"url\": \"http://tuvieja.com\",\n    \"email\": \"tangobaires@gmail.com\",\n    \"phone\": \"0810 122 2222\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/provider",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"provider"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "sale",
+			"item": [
+				{
+					"name": "/sale",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n   \"products\":[  \n      {  \n         \"product_id\":1,\n         \"date\":\"2018-08-28 20:20:30\",\n         \"transfer\":true,\n         \"price\":1000,\n         \"adults\": 2,\n         \"children\": 1,\n         \"babies\":0\n      },\n      {  \n         \"product_id\":2,\n         \"date\":\"2018-08-28 20:20:30\",\n         \"transfer\":false,\n         \"price\":1000,\n         \"adults\": 2,\n         \"children\": 1,\n         \"babies\":0\n      },\n      {  \n         \"product_id\":3,\n         \"date\":\"2018-08-28 20:20:30\",\n         \"transfer\":false,\n         \"price\":2000,\n         \"adults\": \"2\",\n         \"children\": 1,\n         \"babies\":0\n      }\n   ],\n   \"client_id\":1,\n   \"promoter_id\":1,\n   \"promoter_commission\":400,\n   \"seller_commission\":800,\n   \"total\":4000,\n   \"discount\":100,\n   \"payments\": [\n   \t\t{\n   \t\t\t\"method\":\"card\",\n   \t\t\t\"currency_id\":1,\n   \t\t\t\"amount\":3000, \n   \t\t\t\"exchange\":1,\n   \t\t\t\"credit_charge\": 1.21,\n   \t\t\t\"description\": \"test postman desc\"\n   \t\t},\n  \t\t{\n   \t\t\t\"method\":\"cash\",\n   \t\t\t\"currency_id\":2,\n   \t\t\t\"amount\":50,\n   \t\t\t\"exchange\":20\n   \t\t}\n   \t]\n}"
+						},
+						"url": {
+							"raw": "{{url}}/sale",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sale"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/sale/<sale_id>",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/sale/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sale",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/sales",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/sales",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sales"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/sale/<sale_id>",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/sale/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"sale",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "transaction",
 			"item": [
 				{
@@ -392,7 +740,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"category_id\": 1,\n  \"amount\":2000,\n  \"is_expense\": true,\n  \"date\": \"2016-06-20 19:46:02\",\n  \"description\": \"Pago gas mes Julio\"\n}"
+							"raw": "{\n  \"category_id\": 1,\n  \"amount\":2000,\n  \"exchange\":1,\n  \"currency_id\":2,\n  \"is_expense\": true,\n  \"date\": \"2016-06-20 19:46:02\",\n  \"description\": \"Pago gas mes Julio\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/transaction",
@@ -462,6 +810,36 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "/transaction/<transaction_id>",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"transaction_id\": 7,\n    \"amount\": 3000,\n    \"description\": \"test postman desc\",\n    \"currency_id\": 1,\n    \"method\": \"card\",\n    \"date\": \"2019-02-14 23:07:55\",\n    \"category_id\": 1,\n    \"is_expense\": false,\n    \"exchange\": 1,\n    \"sale_id\": 3,\n    \"deleted\": false\n}"
+						},
+						"url": {
+							"raw": "{{url}}/transaction",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"transaction"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -469,57 +847,12 @@
 			"name": "user",
 			"item": [
 				{
-					"name": "/register",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"postman.clearEnvironmentVariable(\"access_token\");",
-									"",
-									"var jsonData = JSON.parse(responseBody);",
-									"tests[\"User created successfully\"] = jsonData.message === 'User created successfully.';",
-									"",
-									"tests[\"Response time is less than 200ms\"] = responseTime < 200;",
-									"",
-									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
-									"tests[\"Content-Type is 'application/json'\"] = postman.getResponseHeader(\"Content-Type\") === 'application/json';"
-								]
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"email\": \"test@gmail.com\",\n\t\"password\": \"abcxyz\"\n}"
-						},
-						"url": {
-							"raw": "{{url}}/register",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"register"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "/login",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
-								"type": "text/javascript",
+								"id": "5feafdfa-76e9-4a18-9a28-14d11ddbb1d4",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"",
@@ -532,7 +865,8 @@
 									"",
 									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
 									"tests[\"Content-Type is 'application/json'\"] = postman.getResponseHeader(\"Content-Type\") === 'application/json';"
-								]
+								],
+								"type": "text/javascript"
 							}
 						}
 					],
@@ -546,7 +880,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\": \"test@gmail.com\",\n\t\"password\": \"abcxyz\"\n}"
+							"raw": "{\n  \"email\": \"q\",\n  \"password\": \"q\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/login",
@@ -555,6 +889,52 @@
 							],
 							"path": [
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f29e33fb-3239-419d-818e-c54ada6429a9",
+								"exec": [
+									"postman.clearEnvironmentVariable(\"access_token\");",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"User created successfully\"] = jsonData.message === 'User created successfully.';",
+									"",
+									"tests[\"Response time is less than 200ms\"] = responseTime < 200;",
+									"",
+									"tests[\"Content-Type is present\"] = postman.getResponseHeader(\"Content-Type\");",
+									"tests[\"Content-Type is 'application/json'\"] = postman.getResponseHeader(\"Content-Type\") === 'application/json';"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"test@gmail.com\",\n  \"password\": \"abcxyz\",\n  \"first_name\": \"Pablo\",\n  \"last_name\": \"Gonzales\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"register"
 							]
 						}
 					},
@@ -678,166 +1058,17 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "sale",
-			"item": [
+				},
 				{
-					"name": "/sale",
+					"name": "/user",
 					"request": {
-						"method": "POST",
+						"method": "DELETE",
 						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							},
 							{
 								"key": "Content-Type",
 								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{  \n   \"products\":[  \n      {  \n         \"product_id\":1,\n         \"date\":\"2018-08-28 20:20:30\",\n         \"transfer\":true,\n         \"price\":1000,\n         \"adults\": 2,\n         \"children\": 1,\n         \"babies\":0\n      },\n      {  \n         \"product_id\":2,\n         \"date\":\"2018-08-28 20:20:30\",\n         \"transfer\":false,\n         \"price\":1000,\n         \"adults\": 2,\n         \"children\": 1,\n         \"babies\":0\n      },\n      {  \n         \"product_id\":3,\n         \"date\":\"2018-08-28 20:20:30\",\n         \"transfer\":false,\n         \"price\":2000,\n         \"adults\": \"2\",\n         \"children\": 1,\n         \"babies\":0\n      }\n   ],\n   \"client_id\":1,\n   \"promoter_id\":1,\n   \"promoter_commission\":400,\n   \"seller_commission\":800,\n   \"total\":4000\n}"
-						},
-						"url": {
-							"raw": "{{url}}/sale",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"sale"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/sale/<sale_id>",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{url}}/sale/1",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"sale",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/sales",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{url}}/sales",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"sales"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "promoter",
-			"item": [
-				{
-					"name": "/promoter",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
 							},
 							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"first_name\": \"Pepe\",\n\t\"last_name\": \"Tango\",\n\t\"email\": \"pepetango@gmail.com\"\n}"
-						},
-						"url": {
-							"raw": "{{url}}/promoter",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"promoter"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/promoter",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"email\": \"pepetango2\",\n\t\"first_name\": \"Pepe\",\n\t\"last_name\": \"Tango\",\n\t\"promoter_id\":1\n}"
-						},
-						"url": {
-							"raw": "{{url}}/promoter",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"promoter"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/promoters",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
 								"key": "Authorization",
 								"value": "Bearer {{access_token}}"
 							}
@@ -847,138 +1078,12 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{url}}/promoters",
+							"raw": "{{url}}/user",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"promoters"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "payments",
-			"item": [
-				{
-					"name": "/pending",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{url}}/pending",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"pending"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/pay",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\t\"total\":10000,\n\t\"products\":[{\"id\":1},{\"id\":2},{\"id\":3}],\n\t\"date\":\"2018-09-03 20:20:30\"\n}"
-						},
-						"url": {
-							"raw": "{{url}}/pay",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"pay"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "currency",
-			"item": [
-				{
-					"name": "/currencies",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{url}}/currencies",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"currencies"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "/currency",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{access_token}}",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\t\n\t\"code\":\"BRL\",\n\t\"exchange\": 45.5,\n\t\"date\":\"2018-08-28 20:20:30\"\n}"
-						},
-						"url": {
-							"raw": "{{url}}/currency",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"currency"
+								"user"
 							]
 						}
 					},
