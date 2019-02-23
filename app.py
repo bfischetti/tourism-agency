@@ -18,7 +18,7 @@ from resources.category import Category, CategoryList
 from resources.transaction import TransactionList, Transaction, TransactionId
 from resources.sale import Sale, SaleList, SaleId
 from resources.client import Client, ClientList
-from resources.promoter import Promoter, PromoterList
+from resources.employees import SellerList, PromoterList
 from resources.sold_products import PendingProducts, PayProducts
 from resources.currency import Currency, CurrencyList, CurrencyId
 
@@ -108,8 +108,8 @@ api.add_resource(SaleList, '/sales')
 api.add_resource(SaleId, '/sale/<int:sale_id>')
 api.add_resource(Client, '/client')
 api.add_resource(ClientList, '/clients')
-api.add_resource(Promoter, '/promoter')
 api.add_resource(PromoterList, '/promoters')
+api.add_resource(SellerList, '/sellers')
 api.add_resource(PendingProducts, '/pending')
 api.add_resource(PayProducts, '/pay')
 api.add_resource(Currency, '/currency')

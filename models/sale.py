@@ -2,7 +2,6 @@ from db import db
 from datetime import datetime
 from models.client import ClientModel
 from models.user import UserModel
-from models.promoter import PromoterModel
 
 
 class SaleModel(db.Model):
