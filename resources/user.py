@@ -46,8 +46,8 @@ class User(Resource):
                         type=str,
                         required=False)
     parser.add_argument('role',
-                              type=int,
-                              required=False)
+                        type=int,
+                        required=False)
 
     @jwt_required
     def get(self):
