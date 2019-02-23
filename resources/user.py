@@ -26,6 +26,9 @@ _user_parser.add_argument('first_name',
 _user_parser.add_argument('last_name',
                           type=str,
                           required=False)
+_user_parser.add_argument('role',
+                          type=int,
+                          required=False)
 
 
 class User(Resource):
@@ -42,6 +45,9 @@ class User(Resource):
     parser.add_argument('last_name',
                         type=str,
                         required=False)
+    parser.add_argument('role',
+                              type=int,
+                              required=False)
 
     @jwt_required
     def get(self):

@@ -10,18 +10,19 @@ class UserModel(db.Model):
     password = db.Column(db.String(255), nullable=False)
     first_name = db.Column(db.String(80))
     last_name = db.Column(db.String(80))
-    role = db.Column(db.Integer, default=2)  # 1:admin, 2: seller/promoter
+    role = db.Column(db.Integer, default=2)  # 1:admin, 2: seller, 3:promoter
     salary = db.Column(db.Float(precision=2), default=0.00)
     seller_commissions = db.Column(db.Float(precision=2), default=0.00)
 
-    def __init__(self, email, password, first_name, last_name):
+    def __init__(self, email, password, first_name, last_name, role=None):
 
-        role = UserModel.check_if_admin(email)
+        if not(role and role != 1):
+            role = UserModel.check_if_admin(email)
+        self.role = role
         self.email = email
         self.password = password
         self.first_name = first_name
         self.last_name = last_name
-        self.role = role
 
     def __repr__(self):
         return '<User %r>' % self.email
@@ -37,7 +38,10 @@ class UserModel(db.Model):
         if self.salary is not None:
             user_to_update.salary = self.salary
 
-        user_to_update.role = UserModel.check_if_admin(user_to_update.email)
+        if not(self.role and self.role != 1):
+            user_to_update.role = UserModel.check_if_admin(user_to_update.email)
+        else:
+            user_to_update.role = self.role
 
         user_to_update.save_to_db()
 
@@ -76,6 +80,14 @@ class UserModel(db.Model):
     @classmethod
     def find_all(cls):
         return cls.query.order_by(UserModel.last_name).all()
+
+    @classmethod
+    def find_promoters(cls):
+        return cls.query.filter_by(role=3).all()
+
+    @classmethod
+    def find_sellers(cls):
+        return cls.query.filter_by(role=2).all()
 
     def json(self):
         return {'user_id': self.user_id,
