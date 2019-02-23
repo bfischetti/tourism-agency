@@ -28,6 +28,8 @@ app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 app.config['DEBUG'] = True
+app.config['JWT_BLACKLIST_ENABLED'] = True
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL',
                                                        'sqlite:///data.db')
@@ -71,7 +73,7 @@ def revoked_token_callback():
 
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
-    return decrypted_token['identity'] in BLACKLIST
+    return decrypted_token['jti'] in BLACKLIST
 
 
 @app.route('/')
