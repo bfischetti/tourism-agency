@@ -387,7 +387,14 @@
 
                         <div class="tab" class="form-group">
                             <h2>Productos</h2>
-                            <div id="listOfProducts">
+                            <div class="row">
+                                <div class="form-group col-xs-6 col-sm-6 col-md-4 col-lg-2">
+                                    <button id="addProduct" type="button" class="btn btn-success">
+                                        Agregar producto  <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="listOfProducts" class="row">
                                 <div id="product-1" class="productPanel col-xs-12 col-sm-12 col-md-6 col-lg-3">
                                     <div class="panel panel-default" >
                                         <div class="panel-heading">
@@ -404,7 +411,7 @@
                                                 <select class="form-control" id="servicesel"></select>
                                             </div>
                                             <div class="form-group">
-                                                <label>Fecha</label>
+                                                <label>Fecha/Hora pick-up (Si aplica)</label>
                                                 <input class="form-control" id="date" type="datetime-local" value="" step="300">
                                             </div>
                                             <div class="form-group">
@@ -427,7 +434,7 @@
                                                 <input id="babies" class="form-control" type="number" name="quantity" value="0" min="0">
                                             </div>
                                             <div class="form-group">
-                                                <label>Precio lista</label>
+                                                <label>Subtotal producto</label>
                                                 <div class=" input-group">
                                                     <span class="input-group-addon">$</span>
                                                     <input id="uprice" class="form-control" type="number" name="quantity" min="0" disabled>
@@ -438,12 +445,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
-                                <button id="addProduct" type="button" class="btn btn-success btn-lg btn-block" style='height: 425px;font-size: 40px;'>
-                                    Agregar<br>producto<br><br>
-                                    <span class="glyphicon glyphicon-plus" style='font-size: 75px;'></span>
-                                </button>
                             </div>
                         </div>
 
@@ -505,7 +506,7 @@
                                 <select class="form-control" id="discountcurrencysel">
                                     <option value="dollarstr" curr="USD">Dólar</option>
                                     <option value="realstr" curr="BRL">Real</option>
-                                    <option value="realtstr" curr="BRL">Real T.</option>
+                                    <option value="realtstr" curr="BRT">Real T.</option>
                                     <option value="eurostr" curr="EUR">Euro</option>
                                     <option value="pesostr" curr="ARS">Peso</option>
                                 </select>
@@ -632,11 +633,11 @@
                                 <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-2">
                                     <label>Moneda</label>
                                     <select class="form-control" id="paymentCurrency">
-                                        <option value="USD">Dólar</option>
-                                        <option value="BRL">Real</option>
-                                        <option value="BRT">Real</option>
-                                        <option value="EUR">Euro</option>
-                                        <option value="ARS">Peso</option>
+                                        <option class="paymentN" value="USD">Dólar</option>
+                                        <option class="paymentN" value="BRL">Real</option>
+                                        <option class="paymentT" value="BRT" style="display:none">Real transf</option>
+                                        <option class="paymentN" value="EUR">Euro</option>
+                                        <option class="paymentN" value="ARS">Peso</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-xs-6 col-sm-6 col-md-6 col-lg-2">
@@ -785,6 +786,21 @@
                     </div>
                 </div>
             </div>
+            <div class="modal fade" id="invalidExchangeModal" tabindex="-1" role="dialog" aria-labelledby="invalidExchangeModal" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Cotización inválida</h4>
+                        </div>
+                        <div class="modal-body" id="invalidExchangeModalText">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Entendido</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="modal fade" id="noPeopleModal" tabindex="-1" role="dialog" aria-labelledby="noPeopleModal" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -839,9 +855,10 @@
             _loadCurrencies();
             $("#servicesel").change(_productChanged);
             $("#discountcurrencysel").change(_currencyChanged);
-            $("#exchangeRate").blur(_calculateSubtotalAmount);
+            $("#exchangeRate").blur(_validateExchangeRate);
             $("#discount").blur(_calculateTotalAmount);
             $("#adults, #children, #babies").change(_peopleChanged);
+            $("#paymentMethod").change(_refreshPaymentCurrency);
             $("#paymentCurrency").change(_refreshPaymentAmountToAdd);
             $("#remainingAmount").change(_refreshPaymentAmountToAdd);
 
@@ -1024,6 +1041,10 @@
             $("#remainingAmount").val(sale.totalAR).trigger("change");
             $("#totalWithCharges").val(sale.totalAR);
             $("#paymentCurrency").val(sale.discountCurrency);
+            if(sale.discountCurrency === "BRT") {
+                $("#paymentMethod").val("transferP");
+                _refreshPaymentCurrency();
+            }
             $("#paymentAmountToAdd").val($("#totalDiscount").val());
         }
 
@@ -1124,6 +1145,23 @@
             $("#totalDiscountLabel").text(text);
         }
 
+        function _validateExchangeRate(e) {
+            var exchRateInp = $("#exchangeRate");
+            var min = Number(exchRateInp.attr("min"));
+            var max = Number(exchRateInp.attr("max"));
+            var val = Number(exchRateInp.val());
+            if(val >= min && val <= max) {
+                _calculateSubtotalAmount();
+            } else {
+                val = min === max ? 1 : min + 0.5;
+                exchRateInp.val(val);
+                $('#invalidExchangeModal').modal('show');
+                $('#invalidExchangeModalText').empty().text("Los valores válidos para esta cotización varian entre AR$ "
+                + min + " y AR$ "+ max +
+                ", y dependen del valor configurado en el sistema (AR$ "+ val +"). Contacte al administrador para modificar estos valores.");
+            }
+        }
+
         function _calculateSubtotalAmount() {
             var curr = $("#discountcurrencysel").find("option:selected").attr("curr");
             if(curr === "ARS") {
@@ -1159,6 +1197,22 @@
             $("#paymentAmountToAdd").val(newValue);
         }
 
+        function _refreshPaymentCurrency(e) {
+            var method = $("#paymentMethod").val();
+            if("transferP" === method) {
+                $(".paymentT").show();
+                $(".paymentN").hide();
+                $("#paymentCurrency").val("BRT");
+            } else {
+                $(".paymentT").hide();
+                $(".paymentN").show();
+                var curr = $("#paymentCurrency").val();
+                if(curr === "BRT")
+                    $("#paymentCurrency").val("USD");
+            }
+            _refreshPaymentAmountToAdd();
+        }
+
         function _updatePrice(productID, select) {
             var prod = Models["products"].find(function(element){
                 if(element.product_id === productID)
@@ -1169,10 +1223,12 @@
             var prodPrice = prodPanel.find("#uprice");
             var stockPrice = prodPanel.find("#stockprice");
 
-            var numberOfPeople = _numberOfPeople(prodPanel);
-            
-            prodPrice.val(prod.selling_price * (numberOfPeople));
-            stockPrice.val(prod.stock_price * (numberOfPeople));
+            var numberAdults = parseInt(prodPanel.find("#adults").val());
+            var numberChildren = parseInt(prodPanel.find("#children").val());
+            var numberBabies = parseInt(prodPanel.find("#babies").val());
+
+            prodPrice.val(prod.selling_price_adult*numberAdults + prod.selling_price_child*numberChildren + prod.selling_price_baby*numberBabies);
+            stockPrice.val(prod.stock_price_adult*numberAdults + prod.stock_price_child*numberChildren + prod.stock_price_baby*numberBabies);
         }
 
         function _numberOfPeople(panel) {
@@ -1243,8 +1299,20 @@
         }
 
         function loadCurrencyValue(curr) {
-            var rate = getCustomExchangeRates(curr);
-            $("#exchangeRate").val(rate);
+            var min = 1;
+            var max = 1;
+            var defaultExchRate = 1;
+            var customExchRate = 1;
+            if("ARS" !== curr) {
+                defaultExchRate = _getExchangeRate(curr);
+                customExchRate = getCustomExchangeRates(curr);
+                min = defaultExchRate - 0.5;
+                max = defaultExchRate + 1;
+            }
+            $("#exchangeRate").val(customExchRate).attr({
+                "max" : max,
+                "min" : min
+            });
         }
 
         function _calculateSubtotal() {
@@ -1272,12 +1340,12 @@
         function loadProdTableHeader(prodTable, o) {
             var th1 = $(document.createElement("th")).text("Proveedor");
             var th2 = $(document.createElement("th")).text("Servicio");
-            var th3 = $(document.createElement("th")).text("Fecha");
+            var th3 = $(document.createElement("th")).text("Fecha/Hora pick-up (Si aplica)");
             var th4 = $(document.createElement("th")).text("Traslado");
             var th5 = $(document.createElement("th")).text("Adulto(s)");
             var th6 = $(document.createElement("th")).text("Niños(s)");
             var th7 = $(document.createElement("th")).text("Bebé(s)");
-            var th8 = $(document.createElement("th")).text("Precio lista");
+            var th8 = $(document.createElement("th")).text("Subtotal producto");
             var tr1 = $(document.createElement("tr")).append(th1).append(th2).append(th3).append(th4).append(th5).append(th6).append(th7).append(th8);
             var thd1 = $(document.createElement("thead")).append(tr1);
             var clss = o === 3? "productConfTableBody" : "productFinishTableBody";
@@ -1318,7 +1386,7 @@
             var sel1 = $(document.createElement('select')).addClass("form-control").attr("id","providerSel");
             var lbl2 = $(document.createElement('label')).text("Servicio");
             var sel2 = $(document.createElement('select')).addClass("form-control").attr("id","servicesel");
-            var lbl3 = $(document.createElement('label')).text("Fecha");
+            var lbl3 = $(document.createElement('label')).text("Fecha/Hora pick-up (Si aplica)");
             var fec3 = $(document.createElement('input')).addClass("form-control").attr("type","datetime-local").attr("id","date").attr("step","300").val(_getCurrentDate()+"T12:00");
             var lbl4 = $(document.createElement('label')).text("Traslado");
             var sel4 = $(document.createElement('select')).addClass("form-control").attr("id","transfersel");
@@ -1330,7 +1398,7 @@
             var inp6 = $(document.createElement('input')).addClass("form-control").attr("type","number").attr("id","children").attr("value","0").attr("min","0");
             var lbl7 = $(document.createElement('label')).text("Bebé(s)");
             var inp7 = $(document.createElement('input')).addClass("form-control").attr("type","number").attr("id","babies").attr("value","0").attr("min","0");
-            var lbl8 = $(document.createElement('label')).text("Precio lista");
+            var lbl8 = $(document.createElement('label')).text("Subtotal producto");
             var spn81 = $(document.createElement('span')).addClass("input-group-addon").text("$");
             var spn82 = $(document.createElement('span')).addClass("input-group-addon").text(".00");
             var ig8 = $(document.createElement('div')).addClass("input-group");
