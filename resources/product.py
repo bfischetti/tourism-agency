@@ -20,13 +20,35 @@ class Product(Resource):
                         required=True,
                         help="This field cannot be left blank!"
                         )
-    parser.add_argument('selling_price',
+    parser.add_argument('selling_price_adult',
                         type=float,
-                        required=False
+                        required=True,
+                        help="This field cannot be left blank!"
                         )
-    parser.add_argument('stock_price',
+    parser.add_argument('stock_price_adult',
                         type=float,
-                        required=False
+                        required=True,
+                        help="This field cannot be left blank!"
+                        )
+    parser.add_argument('selling_price_child',
+                        type=float,
+                        required=True,
+                        help="This field cannot be left blank!"
+                        )
+    parser.add_argument('stock_price_child',
+                        type=float,
+                        required=True,
+                        help="This field cannot be left blank!"
+                        )
+    parser.add_argument('selling_price_baby',
+                        type=float,
+                        required=True,
+                        help="This field cannot be left blank!"
+                        )
+    parser.add_argument('stock_price_baby',
+                        type=float,
+                        required=True,
+                        help="This field cannot be left blank!"
                         )
     parser.add_argument('description',
                         type=str,
