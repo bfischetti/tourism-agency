@@ -159,8 +159,9 @@ function _createSale(client, sale) {
     sale.client_id = client.client_id;
     sale.promoter_id = sale.promoter.user_id;
     sale.total = sale.totalAR;
-    sale.promoter_commission = sale.total*0.1;
-    sale.seller_commission = Number(((sale.total*0.9 - Number(sale.totalStockAR))*0.1625).toFixed(2));
+    var commissions = _calculateCommissions(sale)
+    sale.promoter_commission = commissions[0];
+    sale.seller_commission = commissions[1];
 
     _loadAjaxSetup();
     $.post(host+"/sale",
@@ -501,6 +502,27 @@ function _calculateProductsSubtotal(sale) {
     sale.totalStockAR = totalStock;
 }
 
+function _calculateCommissions(sale) {
+    var subtotal1 = 0;
+    var subtotal2 = 0;
+    var discount = sale.discount;
+    var adjust = sale.totalAR/sale.subtotalAR;
+
+    sale.products.forEach(function(e) {
+        var commRate = Number(e.provider.commission_rate/100);
+        if(commRate === 8)
+            subtotal1 += e.price * commRate * adjust;
+        else
+            subtotal2 += e.price * commRate * adjust;
+    });
+
+    var subtotalSeller = sale.totalAR - (subtotal1+subtotal2);
+    var totalSeller = Number(((subtotalSeller - sale.totalStockAR)*0.1625).toFixed(2));
+    return [subtotal1+subtotal2 , totalSeller];
+}
+
+
+
 function _enableEdit(e) {
     $(".panel").removeClass("panel-green").addClass("panel-default");
     $(e.target).closest(".input-group").find("input")[0].disabled = false;
@@ -547,8 +569,12 @@ function _fixProductsFormat(result) {
         elem.providerid = e.provider_id;
         elem.description = e.description;
         elem.name = e.name;
-        elem.sellingprice = e.selling_price;
-        elem.stockprice = e.stock_price;
+        elem.sellingpriceadults = e.selling_price_adult;
+        elem.stockpriceadults = e.stock_price_adult;
+        elem.sellingpricechildren = e.selling_price_child;
+        elem.stockpricechildren = e.stock_price_child;
+        elem.sellingpricebabies = e.selling_price_baby;
+        elem.stockpricebabies = e.stock_price_baby;
         list.push(elem);
     });
     return list;
@@ -613,15 +639,16 @@ function _fixReportsPendingFormat(result) {
         var sale = Models["sales"].find(function(sale) {
             return sale.sale_id === e.sale_id;
         });
+        var soldText = (e.adults !== 0 ? e.adults + " Ad. " : "") + (e.children !== 0 ? e.children + " Ni. " : "") + (e.babies !== 0 ? e.babies + " Be. " : "");
         elem.pendingid = e.sold_product_id;
         elem.providerid = e.product.provider.provider_id;
         elem.date = _getFormatDateDDMMYYYY(new Date(e.date));
         elem.productname = e.product.name;
         elem.clientname = sale.client.name;
-        elem.numbersold = e.adults + e.children + e.babies;
+        elem.numbersold = soldText;
         elem.providerid = e.product.provider.provider_id;
         elem.totalsold = e.price;
-        elem.amounttopay = e.product.stock_price * elem.numbersold;
+        elem.amounttopay = e.product.stock_price_adult * e.adults + e.product.stock_price_child * e.children + e.product.stock_price_baby * e.babies;
         list.push(elem);
     });
     return list;
