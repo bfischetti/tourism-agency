@@ -556,9 +556,11 @@
                                 {
                                     targets: -1, //-1 es la ultima columna y 0 la primera
                                     data: null,
-                                    defaultContent: buttonsHTML
-                                },
-                                { orderable: false, searchable: false, targets: -1 } //Ultima columna no ordenable para botones
+                                    defaultContent: buttonsHTML,
+                                    class: 'all',
+                                    orderable: false,
+                                    searchable: false
+                                }
                             ]
                         });
                     })
@@ -608,7 +610,7 @@
                 var from = aData[1].split("-");
                 var rowDate = new Date(from[2], from[1] - 1, from[0]).getTime();
 
-                if (typeof rowDate == 'undefined') {
+                if (typeof rowDate === 'undefined') {
                     rowDate = new Date(aData[0]).getTime();
                 }
 
@@ -628,7 +630,8 @@
                     return false;
                 }
 
-                return true;            }
+                return true;
+            }
         );
 
     </script>

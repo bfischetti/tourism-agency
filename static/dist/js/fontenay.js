@@ -159,7 +159,7 @@ function _createSale(client, sale) {
     sale.client_id = client.client_id;
     sale.promoter_id = sale.promoter.user_id;
     sale.total = sale.totalAR;
-    var commissions = _calculateCommissions(sale)
+    var commissions = _calculateCommissions(sale);
     sale.promoter_commission = commissions[0];
     sale.seller_commission = commissions[1];
 
@@ -273,6 +273,21 @@ function _saveProviderDetails(providerEdited) {
     });
 }
 
+function _deleteTransaction(tx) {
+    _loadAjaxSetup();
+
+    $.ajax({
+        url: host+"/transaction",
+        type: "PUT",
+        data: JSON.stringify(tx),
+        success: function(result){
+            _parseDeletedTransactionData(result)
+        },
+        fail: function(error) {
+            _manageError(error);
+        }
+    });
+}
 
 
 
@@ -479,6 +494,10 @@ function  _parseCreatedTransactionData(result) {
     _refreshCreateTransactionModal(result);
 }
 
+function _parseDeletedTransactionData(result) {
+    _refreshDeleteTransactionModal(result);
+}
+
 function  _parseEditedProduct(result) {
     _refreshEditProductModal(result);
 }
@@ -526,7 +545,8 @@ function _calculateCommissions(sale) {
 function _enableEdit(e) {
     $(".panel").removeClass("panel-green").addClass("panel-default");
     $(e.target).closest(".input-group").find("input")[0].disabled = false;
-    $("form button.btn-success")[0].disabled = false;
+    var successBtn = $("form button.btn-success")[0];
+    successBtn ? successBtn.disabled = false : 0;
 }
 
 function _fillProductsTable(sale) {
