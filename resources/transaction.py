@@ -1,13 +1,24 @@
 from flask_restful import Resource, reqparse
+from flask import request
 from flask_jwt_extended import jwt_required
 from models.transaction import TransactionModel
+from utils import str_to_bool
 
 
 class TransactionList(Resource):
 
+    parser = reqparse.RequestParser()
+    parser.add_argument('deleted', type=str)
+
     @jwt_required
     def get(self):
-        return [transaction.json() for transaction in TransactionModel.find_all()]
+        custom_filter = TransactionList.parser.parse_args()
+
+        if custom_filter.get('deleted'):
+            return [transaction.json() for transaction
+                    in TransactionModel.filter_by_custom(str_to_bool(custom_filter.get('deleted')))]
+        else:
+            return [transaction.json() for transaction in TransactionModel.find_all()]
 
 
 class Transaction(Resource):
