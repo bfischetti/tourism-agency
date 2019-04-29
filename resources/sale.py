@@ -1,4 +1,4 @@
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
 from flask import request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.sale import SaleModel
@@ -6,6 +6,8 @@ from models.sold_product import SoldProductModel
 from models.transaction import TransactionModel
 from models.category import CategoryModel
 import math
+
+from utils import str_to_bool
 
 
 class Sale(Resource):
@@ -72,11 +74,31 @@ class Sale(Resource):
 
 class SaleList(Resource):
 
+    parser = reqparse.RequestParser()
+    parser.add_argument('deleted', type=str)
+
     @jwt_required
     def get(self):
+        custom_filter = SaleList.parser.parse_args()
+
+        if custom_filter.get('deleted'):
+            return [transaction.json() for transaction
+                    in TransactionModel.filter_by_custom(str_to_bool(custom_filter.get('deleted')))]
+        else:
+            return [transaction.json() for transaction in TransactionModel.find_all()]
+
+
+    @jwt_required
+    def get(self):
+        custom_filter = SaleList.parser.parse_args()
         response = []
 
-        for sale in SaleModel.find_all():
+        if custom_filter.get('deleted'):
+            sales =  SaleModel.filter_by_deleted(str_to_bool(custom_filter.get('deleted')))
+        else:
+            sales = SaleModel.find_all()
+
+        for sale in sales:
             products_from_sale = SoldProductModel.find_by_sale_id(sale.sale_id)
             # payments_from_sale = TransactionModel.find_by_sale_id(sale.sale_id)
 
