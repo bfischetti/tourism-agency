@@ -46,7 +46,7 @@ class TransactionModel(db.Model):
             self.deleted = deleted
 
     @classmethod
-    def filter_by_custom(cls, deleted):
+    def filter_by_deleted(cls, deleted):
         return cls.query.filter_by(deleted=deleted).all()
 
     @classmethod

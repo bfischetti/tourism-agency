@@ -16,7 +16,7 @@ class TransactionList(Resource):
 
         if custom_filter.get('deleted'):
             return [transaction.json() for transaction
-                    in TransactionModel.filter_by_custom(str_to_bool(custom_filter.get('deleted')))]
+                    in TransactionModel.filter_by_deleted(str_to_bool(custom_filter.get('deleted')))]
         else:
             return [transaction.json() for transaction in TransactionModel.find_all()]
 
