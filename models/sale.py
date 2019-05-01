@@ -50,6 +50,10 @@ class SaleModel(db.Model):
         sale_to_delete.save_to_db()
 
     @classmethod
+    def filter_by_deleted(cls, deleted):
+        return cls.query.filter_by(deleted=deleted).all()
+
+    @classmethod
     def find_by_id(cls, _id):
         return cls.query.filter_by(sale_id=_id).first()
 
