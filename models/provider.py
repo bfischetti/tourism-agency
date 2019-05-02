@@ -38,6 +38,8 @@ class ProviderModel(db.Model):
             provider_to_update.phone = self.phone
         if self.commission_rate is not None:
             provider_to_update.commission_rate = self.commission_rate
+        if self.deleted is not None:
+            provider_to_update.deleted = self.deleted
 
         provider_to_update.save_to_db()
         
@@ -58,7 +60,6 @@ class ProviderModel(db.Model):
     def save_to_db(self):
         db.session.add(self)
         db.session.commit()
-
 
     def json(self):
         return {'provider_id': self.provider_id,

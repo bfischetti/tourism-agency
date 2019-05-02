@@ -63,6 +63,9 @@ class Product(Resource):
     parser.add_argument('billable',
                         type=bool,
                         required=False)
+    parser.add_argument('deleted',
+                        type=str,
+                        required=False,)
 
     @jwt_required
     def post(self):
@@ -89,3 +92,16 @@ class Product(Resource):
             return {"message": "An error occurred updating the operation"}, 500
 
         return {"message": "update OK"}, 200
+
+
+class ProductId(Resource):
+
+    @jwt_required
+    def delete(self, product_id):
+
+        try:
+            ProductModel.delete_from_db(product_id)
+        except:
+            return {"message": "An error occurred deleting the Product"}, 500
+
+        return {"message": "Product deleted"}, 200

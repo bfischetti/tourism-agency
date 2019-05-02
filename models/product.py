@@ -19,8 +19,10 @@ class ProductModel(db.Model):
     provider_id = db.Column(db.Integer, db.ForeignKey('provider.provider_id'))
     provider = db.relationship('ProviderModel')
 
+    deleted = db.Column(db.Boolean, default=False)
+
     def __init__(self, product_id, billable, name, stock_price_adult, selling_price_adult, stock_price_child,
-                 selling_price_child, stock_price_baby, selling_price_baby, description, provider_id):
+                 selling_price_child, stock_price_baby, selling_price_baby, description, provider_id, deleted=None):
         self.product_id = product_id
         self.billable = billable
         self.name = name
@@ -32,6 +34,8 @@ class ProductModel(db.Model):
         self.selling_price_baby = selling_price_baby
         self.description = description
         self.provider_id = provider_id
+        if deleted:
+            self.deleted = deleted
 
     @classmethod
     def find_by_id(cls, _id):
@@ -57,6 +61,8 @@ class ProductModel(db.Model):
             product_to_update.description = self.description
         if self.provider_id is not None:
             product_to_update.provider_id = self.provider_id
+        if self.deleted is not None:
+            product_to_update.deleted = self.deleted
 
         product_to_update.save_to_db()
 
@@ -76,9 +82,11 @@ class ProductModel(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
-        db.session.delete(self)
-        db.session.commit()
+    @classmethod
+    def delete_from_db(cls, product_id):
+        product_to_delete = cls.find_by_id(product_id)
+        product_to_delete.deleted = True
+        product_to_delete.save_to_db()
 
     def json(self):
         return {'product_id': self.product_id,
@@ -90,4 +98,5 @@ class ProductModel(db.Model):
                 'selling_price_child': self.selling_price_child,
                 'selling_price_baby': self.selling_price_baby,
                 'description': self.description,
-                'provider': self.provider.json()}
+                'provider': self.provider.json(),
+                'deleted': self.deleted}
