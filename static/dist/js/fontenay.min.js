@@ -51,8 +51,8 @@ $(function() {
 /**************************************************************************/
 /***************               CONFIG            **************************/
 /**************************************************************************/
-var host = "https://fontenay.herokuapp.com" ;
-// var host = "https://fontenay-staging.herokuapp.com";
+// var host = "https://fontenay.herokuapp.com";
+var host = "https://fontenay-staging.herokuapp.com";
 // var host = "https://192.168.1.111:5000";
 
 /*FORCED LOGIN*/
@@ -99,6 +99,15 @@ function _manageError(error) {
     }
 }
 
+function _loadGetAjaxSetup() {
+    $.ajaxSetup({
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Bearer ' + getCookie("access_token")
+        }
+    });
+}
+
 function _loadAjaxSetup() {
     $.ajaxSetup({
         headers: {
@@ -107,8 +116,6 @@ function _loadAjaxSetup() {
         }
     });
 }
-
-
 
 
 
@@ -273,13 +280,12 @@ function _saveProviderDetails(providerEdited) {
     });
 }
 
-function _deleteTransaction(tx) {
+function _deleteTransaction(txId) {
     _loadAjaxSetup();
 
     $.ajax({
-        url: host+"/transaction",
-        type: "PUT",
-        data: JSON.stringify(tx),
+        url: host+"/transaction/"+txId,
+        type: "DELETE",
         success: function(result){
             _parseDeletedTransactionData(result)
         },
@@ -289,13 +295,12 @@ function _deleteTransaction(tx) {
     });
 }
 
-function _deleteSale(tx) {
+function _deleteSale(saleId) {
     _loadAjaxSetup();
 
     $.ajax({
-        url: host+"/sales",
-        type: "PUT",
-        data: JSON.stringify(tx),
+        url: host+"/sale/"+saleId,
+        type: "DELETE",
         success: function(result){
             _parseDeletedSaleData(result)
         },
@@ -312,7 +317,7 @@ function _deleteSale(tx) {
 /*------------------------ GET -----------------------------------------*/
 /*----------------------------------------------------------------------*/
 function _getExchangeRates(res, rej) {
-    _loadAjaxSetup();
+    _loadGetAjaxSetup();
 
     $.get(host+"/currencies",
         function (result, error) {
@@ -327,7 +332,7 @@ function _getExchangeRates(res, rej) {
 }
 
 function _getPendings(res, rej) {
-    _loadAjaxSetup();
+    _loadGetAjaxSetup();
 
     $.get(host+"/pending",
         function (result, error) {
@@ -342,7 +347,7 @@ function _getPendings(res, rej) {
 }
 
 function _getProducts(res, rej) {
-    _loadAjaxSetup();
+    _loadGetAjaxSetup();
 
     $.get(host+"/products",
         function (result, error) {
@@ -357,7 +362,7 @@ function _getProducts(res, rej) {
 }
 
 function _getPromoters(res, rej) {
-    _loadAjaxSetup();
+    _loadGetAjaxSetup();
 
     $.get(host+"/promoters",
         function (result, error) {
@@ -372,7 +377,7 @@ function _getPromoters(res, rej) {
 }
 
 function _getProviders(res, rej) {
-    _loadAjaxSetup();
+    _loadGetAjaxSetup();
 
     $.get(host+"/providers",
         function (result, error) {
@@ -387,7 +392,7 @@ function _getProviders(res, rej) {
 }
 
 function _getSale(res, rej, id) {
-    _loadAjaxSetup();
+    _loadGetAjaxSetup();
 
     $.get(host+"/sale/" + id,
         function (result, error) {
@@ -401,8 +406,24 @@ function _getSale(res, rej, id) {
     })
 }
 
+
+function _getSellers(res, rej) {
+    _loadGetAjaxSetup();
+
+    $.get(host+"/sellers",
+        function (result, error) {
+            Models["sellers"] = result;
+            res(result);
+        }).fail(function(error) {
+        if(error.status === 401 || error.status === 422) {
+            window.location = "/pages/login.html";
+        }
+        rej(error);
+    })
+}
+
 function _getSales(res, rej) {
-    _loadAjaxSetup();
+    _loadGetAjaxSetup();
 
     $.get(host+"/sales",
         function (result, error) {
@@ -417,7 +438,7 @@ function _getSales(res, rej) {
 }
 
 function _getTransactions(res, rej) {
-    _loadAjaxSetup();
+    _loadGetAjaxSetup();
 
     $.get(host+"/transactions",
         function (result, error) {
@@ -432,7 +453,7 @@ function _getTransactions(res, rej) {
 }
 
 function _getUser(res, rej) {
-    _loadAjaxSetup();
+    _loadGetAjaxSetup();
     $.get(host+"/user",
         function (result, error) {
             Models["user"] = result;
@@ -450,7 +471,7 @@ function _getUser(res, rej) {
 }
 
 function _getUsers(res, rej) {
-    _loadAjaxSetup();
+    _loadGetAjaxSetup();
 
     $.get(host+"/users",
         function (result, error) {
@@ -914,6 +935,26 @@ function _loadPromoters() {
         promotersPromise
             .then(function (result) {
                 _loadPromotersHandler(result);
+            })
+            .catch(function (error) {
+                console.log(error.message);
+            });
+    };
+    load();
+}
+
+
+function _loadSellers() {
+    var sellersPromise = new Promise(
+        function (resolve, reject) {
+            _getSellers(resolve, reject);
+        }
+    );
+
+    var load = function() {
+        sellersPromise
+            .then(function (result) {
+                _loadSellersHandler(result);
             })
             .catch(function (error) {
                 console.log(error.message);
