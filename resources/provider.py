@@ -61,3 +61,16 @@ class Provider(Resource):
             return {"message": "An error occurred updating the operation"}, 500
 
         return provider.json(), 200
+
+
+class ProviderId(Resource):
+
+    @jwt_required
+    def delete(self, provider_id):
+
+        try:
+            ProviderModel.delete_from_db(provider_id)
+        except:
+            return {"message": "An error occurred deleting the Provider"}, 500
+
+        return {"message": "Provider deleted"}, 200

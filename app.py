@@ -12,7 +12,7 @@ from db import db
 from blacklist import BLACKLIST
 
 from resources.user import User, UserLogin, UserLogout, UserRegister, TokenRefresh
-from resources.provider import Provider, ProviderList
+from resources.provider import Provider, ProviderList, ProviderId
 from resources.product import Product, ProductList
 from resources.category import Category, CategoryList
 from resources.transaction import TransactionList, Transaction, TransactionId
@@ -96,6 +96,7 @@ api.add_resource(TokenRefresh, '/refresh')
 api.add_resource(User, '/user')
 api.add_resource(Provider, '/provider')
 api.add_resource(ProviderList, '/providers')
+api.add_resource(ProviderId, '/promoter/<int:provider_id>')
 api.add_resource(Product, '/product')
 api.add_resource(ProductList, '/products')
 api.add_resource(CategoryList, '/categories')
