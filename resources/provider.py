@@ -66,6 +66,10 @@ class Provider(Resource):
 class ProviderId(Resource):
 
     @jwt_required
+    def get(self, provider_id):
+        return ProviderModel.find_by_id(provider_id).json()
+
+    @jwt_required
     def delete(self, provider_id):
 
         try:

@@ -59,9 +59,6 @@ class ProviderModel(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
-        db.session.delete(self)
-        db.session.commit()
 
     def json(self):
         return {'provider_id': self.provider_id,
@@ -69,4 +66,5 @@ class ProviderModel(db.Model):
                 'url': self.url,
                 'email': self.email,
                 'phone': self.phone,
-                'commission_rate': self.commission_rate }
+                'commission_rate': self.commission_rate,
+                'deleted': self.deleted}
