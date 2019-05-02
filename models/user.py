@@ -87,7 +87,7 @@ class UserModel(db.Model):
 
     @classmethod
     def find_sellers(cls):
-        return cls.query.filter_by(role=2).all()
+        return cls.query.filter(UserModel.role.in_((1, 2))).all()
 
     def json(self):
         return {'user_id': self.user_id,
