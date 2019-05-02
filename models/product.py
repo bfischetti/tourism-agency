@@ -41,6 +41,10 @@ class ProductModel(db.Model):
     def find_by_id(cls, _id):
         return cls.query.filter_by(product_id=_id).first()
 
+    @classmethod
+    def filter_by_deleted(cls, deleted):
+        return cls.query.filter_by(deleted=deleted).all()
+
     def update_to_db(self):
         product_to_update = ProductModel.find_by_id(self.product_id)
         if self.name is not None:

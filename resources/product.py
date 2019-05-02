@@ -1,13 +1,23 @@
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required
 from models.product import ProductModel
+from utils import str_to_bool
 
 
 class ProductList(Resource):
 
+    parser = reqparse.RequestParser()
+    parser.add_argument('deleted', type=str)
+
     @jwt_required
     def get(self):
-        return [product.json() for product in ProductModel.find_all()]
+        custom_filter = ProductList.parser.parse_args()
+
+        if custom_filter.get('deleted'):
+            return [transaction.json() for transaction
+                    in ProductModel.filter_by_deleted(str_to_bool(custom_filter.get('deleted')))]
+        else:
+            return [product.json() for product in ProductModel.find_all()]
 
 
 class Product(Resource):
