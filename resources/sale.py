@@ -80,17 +80,6 @@ class SaleList(Resource):
     @jwt_required
     def get(self):
         custom_filter = SaleList.parser.parse_args()
-
-        if custom_filter.get('deleted'):
-            return [transaction.json() for transaction
-                    in TransactionModel.filter_by_custom(str_to_bool(custom_filter.get('deleted')))]
-        else:
-            return [transaction.json() for transaction in TransactionModel.find_all()]
-
-
-    @jwt_required
-    def get(self):
-        custom_filter = SaleList.parser.parse_args()
         response = []
 
         if custom_filter.get('deleted'):

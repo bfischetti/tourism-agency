@@ -50,6 +50,10 @@ class ProviderModel(db.Model):
         provider_to_delete.save_to_db()
 
     @classmethod
+    def filter_by_deleted(cls, deleted):
+        return cls.query.filter_by(deleted=deleted).all()
+
+    @classmethod
     def find_by_name(cls, name):
         return cls.query.filter_by(name=name).first()
 

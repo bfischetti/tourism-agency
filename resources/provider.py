@@ -1,13 +1,23 @@
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import jwt_required
 from models.provider import ProviderModel
+from utils import str_to_bool
 
 
 class ProviderList(Resource):
 
+    parser = reqparse.RequestParser()
+    parser.add_argument('deleted', type=str)
+
     @jwt_required
     def get(self):
-        return [provider.json() for provider in ProviderModel.find_all()]
+        custom_filter = ProviderList.parser.parse_args()
+
+        if custom_filter.get('deleted'):
+            return [transaction.json() for transaction
+                    in ProviderModel.filter_by_deleted(str_to_bool(custom_filter.get('deleted')))]
+        else:
+            return [provider.json() for provider in ProviderModel.find_all()]
 
 
 class Provider(Resource):
