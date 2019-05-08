@@ -83,7 +83,7 @@ class UserModel(db.Model):
 
     @classmethod
     def find_promoters(cls):
-        return cls.query.filter_by(role=3).all()
+        return cls.query.filter(UserModel.role.in_((1, 2, 3))).all()
 
     @classmethod
     def find_sellers(cls):
