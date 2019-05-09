@@ -372,6 +372,10 @@ function _getPromoters(res, rej) {
 
     $.get(host+"/promoters",
         function (result, error) {
+            //Discard the test users (id 2, 39 & 40)
+            result = result.filter(function(value) {
+                return (value.user_id !== 2) && (value.user_id !== 39) && (value.user_id !== 40);
+            });
             Models["promoters"] = result;
             res(result);
         }).fail(function(error) {
@@ -666,6 +670,8 @@ function _fixSalesFormat(result) {
             return;
         var elem = {};
         elem.promoter = e.promoter ? e.promoter : e.seller;
+        elem.promoter_commission = e.promoter_commission;
+        elem.seller_commission = e.user_commission;
         elem.id = e.sale_id;
         elem.email = e.client.email;
         elem.clientname = e.client.name;
