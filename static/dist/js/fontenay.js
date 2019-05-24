@@ -77,6 +77,21 @@ function _login() {
     //.always(function() {});
 }
 
+function _logout() {
+
+    $.post(host+"/logout",
+        {},
+        function (result, error) {
+            setCookie("access_token");
+            setCookie("refresh_token");
+            setCookie("role");
+            setCookie("userid");
+            window.location = "/pages/login.html";
+        }).fail(function(error) {
+            window.location = "/pages/login.html";
+        })
+}
+
 function _checkLogin(check) {
     var role = getCookie("role");
     if ((role === "undefined" || role === "") || (role === "2" && check) || (role === "3" && check))
@@ -317,6 +332,36 @@ function _deleteSale(saleId) {
 }
 
 
+function _deleteProvider(providerId) {
+    _loadAjaxSetup();
+
+    $.ajax({
+        url: host+"/provider/"+providerId,
+        type: "DELETE",
+        success: function(result){
+            _parseDeletedProviderData(result)
+        },
+        fail: function(error) {
+            _manageError(error);
+        }
+    });
+}
+
+
+function _deleteProduct(productId) {
+    _loadAjaxSetup();
+
+    $.ajax({
+        url: host+"/product/"+productId,
+        type: "DELETE",
+        success: function(result){
+            _parseDeletedProductData(result)
+        },
+        fail: function(error) {
+            _manageError(error);
+        }
+    });
+}
 
 
 /*----------------------------------------------------------------------*/
@@ -542,6 +587,14 @@ function _parseDeletedTransactionData(result) {
     _refreshDeleteTransactionModal(result);
 }
 
+function _parseDeletedProviderData(result) {
+    _refreshDeleteProviderModal(result);
+}
+
+function _parseDeletedProductData(result) {
+    _refreshDeleteProductModal(result);
+}
+
 function _parseDeletedSaleData(result) {
     _refreshDeleteSaleModal(result);
 }
@@ -632,6 +685,8 @@ function _fixFormat(result) {
 function _fixProductsFormat(result) {
     var list = [];
     result.forEach(function(e) {
+        if(e.deleted === true)
+            return;
         var elem = {};
         elem.id = e.product_id;
         elem.providername = e.provider.name; //e.provider.name;
@@ -652,6 +707,8 @@ function _fixProductsFormat(result) {
 function _fixProvidersFormat(result) {
     var list = [];
     result.forEach(function(e) {
+        if(e.deleted === true)
+            return;
         var elem = {};
         elem.id = e.provider_id;
         elem.name = e.name;
