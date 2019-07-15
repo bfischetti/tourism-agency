@@ -528,7 +528,7 @@
                                     <label>Subtotal convertido</label>
                                     <div class=" input-group">
                                         <span class="input-group-addon" id="subtotalDiscountLabel">US$</span>
-                                        <input id="subtotalDiscount" class="form-control" type="number" name="quantity" min="0" disabled>
+                                        <input id="subtotalDiscount" class="form-control" type="number" name="quantity" min="0" step="0.01" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-6 col-sm-6 col-md-3 col-lg-3">
@@ -536,19 +536,13 @@
                                     <div class="input-group">
                                         <span class="input-group-addon" id="discountLabel">US$</span>
                                         <input id="discount" class="form-control" disabled value="0" step="0.1" type="number" name="quantity" min="0">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button" onclick="_enableEdit(event)"><i class="fa fa-edit"></i></button>
-                                        </span>
                                     </div>
                                 </div>
                                 <div class="form-group col-xs-6 col-sm-6 col-md-3 col-lg-3">
                                     <label>Total a cobrar</label>
                                     <div class=" input-group">
                                         <span class="input-group-addon" id="totalDiscountLabel">US$</span>
-                                        <input id="totalDiscount" class="form-control" value="0" type="number" name="quantity" min="0" step="0.01" disabled>
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button" onclick="_enableEdit(event)"><i class="fa fa-edit"></i></button>
-                                        </span>
+                                        <input id="totalDiscount" class="form-control" value="0" type="number" name="quantity" min="0" step="0.01">
                                     </div>
                                 </div>
                             </div>
@@ -863,8 +857,8 @@
             $("#servicesel").change(_productChanged);
             $("#discountcurrencysel").change(_currencyChanged);
             $("#exchangeRate").blur(_validateExchangeRate);
-            $("#discount").blur(_calculateTotalAmount);
-            $("#totalDiscount").blur(_changeTotalAmount);
+            //$("#discount").blur(_calculateDiscountAmount);
+            $("#totalDiscount").blur(_calculateDiscountAmount);
             $("#adults, #children, #babies").change(_peopleChanged);
             $("#paymentMethod").change(_refreshPaymentCurrency);
             $("#paymentCurrency").change(_refreshPaymentAmountToAdd);
@@ -963,6 +957,12 @@
                         $('#noPeopleModal').modal('show');
                         peopleNumber = false;
                     }
+                } else if(2 === currentTab) {
+                    var inpTot = $("#totalDiscount");
+                    if(Number(inpTot.val()) <= 0) {
+                        inpTot.addClass("invalid").parent().addClass("has-error");
+                        valid = false;
+                    }
                 } else if(3 === currentTab) {
                     var value = Math.abs(Number($("#remainingAmount").val()));
                     if(value > 1) {
@@ -1042,13 +1042,15 @@
             sale.discount = Number(discInput.val() * sale.customExchangeRate);
 
             if(sale.discount > 0) {
-                sale.totalAR -= (sale.discount).toFixed(2);
+                sale.totalAR -= sale.discount;
             }
 
             var possiblyGreaterTotal = Number($("#totalDiscount").val())*excRate;
 
             if(possiblyGreaterTotal > sale.totalAR)
                 sale.totalAR = Number(possiblyGreaterTotal.toFixed(2));
+            else
+                sale.totalAR = Number((Math.round(sale.totalAR * 100)/100).toFixed(2));
 
             $("#totalAmountPayment").text(sale.totalAR);
             $("#remainingAmount").val(sale.totalAR).trigger("change");
@@ -1104,7 +1106,7 @@
 
         function _refreshProvidersSelect(select) {
             var provSel = select ? select : $("#providerSel");
-            Models["providers"].forEach(function(element, index){
+            Models["providers"].filter(function(p) { return !p.deleted}).forEach(function(element, index){
                 var opt = $(document.createElement("option"));
                 opt.text(element.name);
                 opt.attr("value", element.provider_id);
@@ -1185,34 +1187,27 @@
                 $("#exchangeRate").val(1);
             }
             _calculateSubtotal();
-            _calculateTotalAmount();
+            _calculateDiscountAmount();
         }
 
-        function _calculateTotalAmount() {
-            var discount = $("#discount").val();
-            var subtotal = $("#subtotalDiscount").val();
-            var total = Number((Number(subtotal) - Number(discount)).toFixed(2));
-            if(total > 0) {
-                $("#totalDiscount").val(total).attr("min",total);
+        function _calculateDiscountAmount() {
+            var discountColor;
+            var borderWidth = 1;
+            var totalDiscount = Number($("#totalDiscount").val());
+            var subtotal = Number($("#subtotalDiscount").val());
+            totalDiscount = totalDiscount ? totalDiscount : subtotal;
+            var discount = Number((subtotal - totalDiscount).toFixed(2));
+            if(discount > 0) {
+                discountColor = "red;";
+                borderWidth = 3;
+            } else if(discount === 0) {
+                discountColor = "rgb(204, 204, 204);";
+                borderWidth = 1;
+            } else {
+                discountColor = "green;";
+                borderWidth = 3;
             }
-            else {
-                alert("El descuento no debe superar el subtotal");//ERROR
-                $("#totalDiscount").val("");
-            }
-        }
-
-        function _changeTotalAmount() {
-            var discount = $("#discount").val();
-            var subtotal = $("#subtotalDiscount").val();
-            var oldTotal = Number((Number(subtotal) - Number(discount)).toFixed(2));
-            var newTotal = Number($("#totalDiscount").val());
-            if(newTotal >= oldTotal) {
-                $("#totalDiscount").val(newTotal);
-            }
-            else {
-                alert("El nuevo valor total no debe ser menor al subtotal menos el descuento. Para asignar un valor mas bajo, indique un descuento mayor.");//ERROR
-                $("#totalDiscount").val(oldTotal);
-            }
+            $("#discount").val(discount).attr("style", "border-width: " + borderWidth + "px; border-color: " + discountColor);
         }
 
 
@@ -1278,9 +1273,9 @@
 
         function _refreshProductsSelect(providerID, select) {
             var prodSel = select ? select : $("#servicesel");
-            Models["products"].filter(function(element){
-                if(element.provider.provider_id === Number(providerID))
-                    return element;})
+            Models["products"].filter(function(e) {
+                   return e.provider.provider_id === Number(providerID) && !e.deleted;
+                })
                 .forEach(function(element){
                     var opt = $(document.createElement("option"));
                     opt.text(element.name);
