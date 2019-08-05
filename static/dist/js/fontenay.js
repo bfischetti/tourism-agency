@@ -835,9 +835,9 @@ function _getExchangeRate(currency) {
 }
 
 function _getFormatDateDDMMYYYY(stringDate){
-    var dat = new Date(stringDate.replace(/-/g, '/'));
-    if(undefined === dat) {
-        dat = new Date();
+    var dat = new Date();
+    if(undefined !== stringDate) {
+        dat = new Date(stringDate.replace(/-/g, '/').replace(/T/g,' '));
     }
     var day = dat.getDate();
     var month = dat.getMonth()+1;
@@ -864,11 +864,12 @@ function _getFormatDateYYYYMMDDHHMMSS(dat){
     return dat.getFullYear()+"-"+month+"-"+day+" "+hours+":"+minutes+":"+seconds;
 }
 
-function _getFormatDateDDMMYYYYHHMM(dat){
-    if(undefined === dat) {
-        dat = new Date();
+function _getFormatDateDDMMYYYYHHMM(stringDate){
+    var dat = new Date();
+    if(undefined !== stringDate) {
+        dat = new Date(stringDate.replace(/-/g, '/').replace(/T/g,' '));
     }
-    var dateStr = _getFormatDateDDMMYYYY(dat);
+    var dateStr = _getFormatDateDDMMYYYY(stringDate);
     var hours = dat.getHours();
     var minutes = dat.getMinutes();
 
