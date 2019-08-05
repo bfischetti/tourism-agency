@@ -692,7 +692,7 @@ function _findProvider(id) {
 function _fixFormat(result) {
     var list = $.extend(true, [], result);
     list.forEach(function(e) {
-        e.date = _getFormatDateDDMMYYYY(new Date(e.date));
+        e.date = _getFormatDateDDMMYYYY(e.date);
         e.expenseText = e.is_expense ? "Si" : "No";
         e.method = _getMethodString(e.method);
         e.amountARS = (e.amount * e.exchange).toFixed("2");
@@ -751,7 +751,7 @@ function _fixSalesFormat(result) {
         elem.email = e.client.email;
         elem.clientname = e.client.name;
         elem.passport = e.client.passport_number;
-        elem.date = _getFormatDateDDMMYYYY(new Date(e.date));
+        elem.date = _getFormatDateDDMMYYYY(e.date);
         elem.seller = e.seller.first_name + ' ' + e.seller.last_name;
         elem.promoter = elem.promoter.first_name + ' ' + elem.promoter.last_name;
         elem.currency = e.currency || "N/A";
@@ -769,7 +769,7 @@ function _fixReportsFormat(result) {
         elem.saleid = e.sale_id;
         elem.userid = e.seller.user_id;
         elem.promoterid = elem.promoter.user_id;
-        elem.date = _getFormatDateDDMMYYYY(new Date(e.date));
+        elem.date = _getFormatDateDDMMYYYY(e.date);
         elem.seller = e.seller.first_name + " " + e.seller.last_name;
         elem.sellercommission = e.user_commission;
         elem.promoter = elem.promoter.first_name + " " + elem.promoter.last_name;
@@ -790,7 +790,7 @@ function _fixReportsPendingFormat(result) {
         var soldText = (e.adults !== 0 ? e.adults + " Ad. " : "") + (e.children !== 0 ? e.children + " Ni. " : "") + (e.babies !== 0 ? e.babies + " Be. " : "");
         elem.pendingid = e.sold_product_id;
         elem.providerid = e.product.provider.provider_id;
-        elem.date = _getFormatDateDDMMYYYY(new Date(e.date));
+        elem.date = _getFormatDateDDMMYYYY(e.date);
         elem.productname = e.product.name;
         elem.clientname = sale.client.name;
         elem.numbersold = soldText;
@@ -834,7 +834,8 @@ function _getExchangeRate(currency) {
     return exchRate;
 }
 
-function _getFormatDateDDMMYYYY(dat){
+function _getFormatDateDDMMYYYY(stringDate){
+    var dat = new Date(stringDate.replace(/-/g, '/'));
     if(undefined === dat) {
         dat = new Date();
     }
@@ -910,7 +911,7 @@ function _getLongCurrentDate(){
 function loadProdTableRow(product, tableBody) {
     var td1 = $(document.createElement("td")).text(product.product.provider.name);
     var td2 = $(document.createElement("td")).text(product.product.name);
-    var td3 = $(document.createElement("td")).text(_getFormatDateDDMMYYYY(new Date(product.date)));
+    var td3 = $(document.createElement("td")).text(_getFormatDateDDMMYYYY(product.date));
     var td4 = $(document.createElement("td")).text(product.transfer ? "Sí" : "No");
     var td5 = $(document.createElement("td")).text(product.adults);
     var td6 = $(document.createElement("td")).text(product.children);
