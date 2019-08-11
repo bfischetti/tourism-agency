@@ -37,22 +37,30 @@
             <div class="row">
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
                     <p>
-                        Av. Córdoba 543, local 74.<br>
-                        CP 1054, CABA.<br>
+                        Av. Córdoba 543, local 74.
+                    </p>
+                    <p>
+                        CP 1054, CABA.
+                    </p>
+                    <p>
                         Ciudad Autónoma de Buenos Aires, Argentina.
                     </p>
                     <p>
                        Número de identificación fiscal: 16.426
                     </p>
                     <p>
-                        Teléfono: +54 11 68388892<br>
-                        Lunes a Viernes, de 9:00hs. a 18:00hs.<br>
-                        fontenaytours@gmail.com<br>
-                        www.fontenaytours.com<br>
+                        Teléfono: +54 11 68388892<br/>
+                        Lunes a Viernes, de 9:00hs. a 18:00hs.<br/>
+                        fontenaytours@gmail.com<br/>
+                        www.fontenaytours.com<br/>
                     </p>
                 </div>
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
-                    <p class ="receiptInfo"></p>
+                    N° de formato: <div id="saleid"></div>
+                    Fecha del formato: <div id="saledate"></div>
+                    <br/>
+                    Cliente: <div id="saleclient"></div>
+                    Email: <div id="saleemail"></div>
                 </div>
             </div>
             <div class="row">
@@ -153,12 +161,16 @@
         }
 
         function _fillReceiptInfo(sale) {
-            var saleDate = _getFormatDateDDMMYYYY(new Date(sale.date));
-            var html = "N° de formato: " + sale.sale_id + "<br>Fecha del formato: " + saleDate +"<br>";
-            html += "<br>Cliente: " + sale.client.name +"<br>";
-            html += "Email: " + sale.client.email +"<br>";
+            var saleDate = _getFormatDateDDMMYYYY(sale.date);
 
-            $(".receiptInfo").append(html);
+            var html = "N° de formato: " + sale.sale_id + "<br/>Fecha del formato: " + saleDate +"<br/>";
+            html += "<br/>Cliente: " + sale.client.name +"<br/>";
+            html += "Email: " + sale.client.email +"<br/>";
+
+            $("#saleid").text(sale.sale_id);
+            $("#saledate").text(saleDate);
+            $("#saleclient").text(sale.client.name);
+            $("#saleemail").text(sale.client.email);
         }
 
         function _downloadPDF(saleid) {
