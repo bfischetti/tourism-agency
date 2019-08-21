@@ -45,7 +45,7 @@ setup(name='tourism-agency',
           'SQLAlchemy==1.3.0',
           'urllib3==1.25.2',
           'uWSGI==2.0.15',
-          'Werkzeug==0.14.1'
+          'Werkzeug==0.15.3'
       ],
       entry_points='''
           [console_scripts]
