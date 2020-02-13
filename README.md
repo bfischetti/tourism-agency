@@ -1,5 +1,19 @@
 # Tourism Agency
 
+
+##To run the project
+
+Install: python3 and pip
+
+In the base of the project: 
+```
+pip install -e .
+python3 app.py runserver
+```
+
+
+
+
 ## If there are changes to the DB model
 
 From the project:
