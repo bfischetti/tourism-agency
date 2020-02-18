@@ -99,7 +99,7 @@ class UserLogin(Resource):
         user = UserModel.find_by_mail(data['email'])
 
         if user and safe_str_cmp(user.password, data['password']):
-            expires = datetime.timedelta(days=1)
+            expires = datetime.timedelta(days=30)
             access_token = create_access_token(identity=user.user_id, fresh=True, expires_delta=expires)
             refresh_token = create_refresh_token(user.user_id)
             return {
