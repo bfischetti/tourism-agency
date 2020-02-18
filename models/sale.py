@@ -63,7 +63,7 @@ class SaleModel(db.Model):
 
     @classmethod
     def find_all(cls):
-        return cls.query.order_by(SaleModel.date.desc()).limit(10);
+        return cls.query.order_by(SaleModel.date.desc()).limit(100);
 
     def json(self):
         response = {'sale_id': self.sale_id,
