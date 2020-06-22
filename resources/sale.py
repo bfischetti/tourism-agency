@@ -6,6 +6,8 @@ from models.sold_product import SoldProductModel
 from models.transaction import TransactionModel
 from models.category import CategoryModel
 import math
+from resources.email_dispatcher import send_email, prepare_sale_email, prepare_provider_email
+
 
 from utils import str_to_bool
 
@@ -17,6 +19,7 @@ class Sale(Resource):
         json_data = request.get_json(force=True)
 
         total = 0
+        sold_products = []
 
         for payment in json_data.get('payments'):
 
@@ -51,6 +54,9 @@ class Sale(Resource):
                                             transfer=product.get('transfer'),
                                             sale_id=sale.sale_id, payment_pending=True)
             sold_product.save_to_db()
+            sold_products.append(sold_product)
+            prod_sold_msg = prepare_provider_email(product, sale)
+            result = send_email(sold_product.product.provider.email, prod_sold_msg)
 
         category = CategoryModel.find_by_name('venta')
 
@@ -65,7 +71,11 @@ class Sale(Resource):
                                            method=payment.get('method'), currency_id=payment.get('currency_id'))
             transaction.save_to_db()
 
-        return sale.json(), 201
+        sale_msg = prepare_sale_email(sale, sold_products)
+        result = send_email(sale.client.email, sale_msg)
+        json_sale = sale.json()
+        json_sale['email_sent'] = result
+        return json_sale, 201
 
     @classmethod
     def are_equal(cls, total_sum, total_sale):
@@ -114,7 +124,7 @@ class SaleList(Resource):
 
 class SaleId(Resource):
 
-    @jwt_required
+    #Test to avoid 422 without authentication @jwt_required
     def get(self, sale_id):
         sale = SaleModel.find_by_id(sale_id)
 

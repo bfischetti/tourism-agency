@@ -21,6 +21,7 @@ from resources.client import Client, ClientList
 from resources.employees import SellerList, PromoterList
 from resources.sold_products import PendingProducts, PayProducts
 from resources.currency import Currency, CurrencyList, CurrencyId
+from resources.email import Email
 
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'static')
 app = Flask(__name__)
@@ -117,6 +118,7 @@ api.add_resource(PayProducts, '/pay')
 api.add_resource(Currency, '/currency')
 api.add_resource(CurrencyId, '/currency/<int:currency_id>')
 api.add_resource(CurrencyList, '/currencies')
+api.add_resource(Email, '/send_email')
 
 if __name__ == '__main__':
     manager.run()
