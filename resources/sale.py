@@ -6,7 +6,7 @@ from models.sold_product import SoldProductModel
 from models.transaction import TransactionModel
 from models.category import CategoryModel
 import math
-from resources.email_dispatcher import send_email, prepare_sale_email, prepare_provider_email
+from resources.email_dispatcher import send_email, prepare_sale_email, prepare_provider_email, prepare_receipt_email
 
 
 from utils import str_to_bool
@@ -72,9 +72,14 @@ class Sale(Resource):
             transaction.save_to_db()
 
         sale_msg = prepare_sale_email(sale, sold_products)
-        result = send_email(sale.client.email, sale_msg)
+        result_sale = send_email(sale.client.email, sale_msg)
+
+        receipt_msg = prepare_receipt_email(sale, sold_products)
+        result_receipt = send_email(sale.client.email, receipt_msg)
+
         json_sale = sale.json()
-        json_sale['email_sent'] = result
+        json_sale['sale_email_sent'] = result_sale
+        json_sale['receipt_email_sent'] = result_receipt
         return json_sale, 201
 
     @classmethod

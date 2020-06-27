@@ -274,3 +274,147 @@ def prepare_provider_email(prod, sale):
     message.attach(part2)
 
     return message
+
+
+
+def prepare_receipt_email(sale, sold_products):
+    SUBJECT = 'Recibo venta Fontenay'
+    TEXT = 'Reservar de servicio.'
+
+    message = MIMEMultipart("alternative")
+    message["Subject"] = SUBJECT
+
+    date = str(sale.date)[8:10] + "/" + str(sale.date)[5:7] + "/" + str(sale.date)[:4]
+
+    text = """\
+    TEXT"""
+    html = """\
+    <html>
+    	<head>
+    		<style>
+    		body {
+    			font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    			font-size: 14px;
+    		}
+    		#total-width {
+    			width: 800px;
+    			padding: 25px;
+    		}
+    		.first-col-width {
+    			width: 450px;
+    		}
+    		.half-first-col-width {
+    			width: 210px;
+    		}
+    		.second-col-width {
+    			max-width: 350px;
+    			min-width: 200px;
+    		}
+    		.align-text {
+    			text-align: left;
+    		}
+    		.striped>tbody>tr:nth-of-type(odd) {
+    			background-color: #eee;
+    		}
+    		th, td {
+    			padding: 5px;
+    		}
+    		table {
+    			font-size: 14px;
+    			border-collapse: collapse;
+    		}
+    		#gray-border {
+    			border-bottom: #ccc solid 2px;
+    		}
+    		.logo {
+                margin: 5px -20px 0 10px;
+                height: 50px;
+                width: 225px;
+            }
+    		</style>
+    	</head>
+        <body>
+            <div id="total-width">
+                <div class="header first">
+                    <img class="logo" src="https://fontenay.herokuapp.com/dist/images/logo.png">
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class= "first-col-width"> Av. Córdoba 543, local 74.</td>
+                            <td class="second-col-width">N° de formato:</td>
+                        </tr>
+                        <tr>
+                            <td class= "first-col-width"> CP 1054, CABA.</td>
+                            <td class="second-col-width"> """ + str(sale.sale_id) + """</td>
+                        </tr>
+                        <tr>
+                            <td class= "first-col-width"> Ciudad Autónoma de Buenos Aires, Argentina.</td>
+                            <td class="second-col-width">Fecha del formato:<br> """ + date + """</td>
+                        </tr>
+                        <tr>
+                            <td class= "first-col-width"> Número de identificación fiscal: 16.426</td>
+                            <td class="second-col-width">Cliente:<br> """ + str(sale.client.name) + """</td>
+                        </tr>
+                        <tr>
+                            <td class= "first-col-width"><p>
+                            Teléfono: +54 11 68388892<br>
+                            Lunes a Viernes, de 9:00hs. a 18:00hs.<br>
+                            fontenaytours@gmail.com<br>
+                            www.fontenaytours.com<br>
+                            </p></td>
+                            <td class="second-col-width">Email:<br>""" + str(sale.client.email) + """</td>
+                        </tr>
+                    </tbody>
+                </table><br><br>
+                <table class="striped">
+                    <thead id="gray-border">
+                        <tr>
+                            <th class= "align-text first-col-width">Descripción</th>
+                            <th class= "align-text second-col-width">Cantidad personas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    """
+
+    for sold_prod in sold_products:
+        html += """\
+                        <tr>
+                            <td>""" + str(sold_prod.product.name) + """</td>
+                            <td>""" + str(sold_prod.adults + sold_prod.children + sold_prod.babies) + """</td>
+                        </tr>
+        """
+    html += """\
+                    </tbody>
+                </table><br><br>
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="align-text half-first-col-width"><b>Subtotal</b></th>
+                            <th class="align-text half-first-col-width"><b>Descuento</b></th>
+                            <th class="align-text"><b>TOTAL</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ARS $""" + str(format(sale.total + sale.discount, '.2f')) + """</td>
+                            <td>ARS $""" + str(format(sale.discount, '.2f')) + """</td>
+                            <td><b>ARS $""" + str(format(sale.total, '.2f')) + """</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </body>
+    </html>
+    """
+
+
+    # Turn these into plain/html MIMEText objects
+    part1 = MIMEText(text, "plain")
+    part2 = MIMEText(html, "html")
+    # Add HTML/plain-text parts to MIMEMultipart message
+    # The email client will try to render the last part first
+    message.attach(part1)
+    message.attach(part2)
+
+    return message
