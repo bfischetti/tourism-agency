@@ -8,6 +8,7 @@ Install: python3 and pip
 In the base of the project: 
 ```
 pip install -e .
+py app.py runserver
 python3 app.py runserver
 ```
 
