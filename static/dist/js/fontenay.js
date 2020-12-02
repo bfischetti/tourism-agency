@@ -368,6 +368,21 @@ function _deleteProduct(productId) {
 /*----------------------------------------------------------------------*/
 /*------------------------ GET -----------------------------------------*/
 /*----------------------------------------------------------------------*/
+function _getDashboard(res, rej) {
+    _loadGetAjaxSetup();
+
+    $.get(host+"/dashboard",
+        function (result, error) {
+            Models["dashboard"] = result;
+            res(result);
+        }).fail(function(error) {
+        if(error.status === 401 || error.status === 422) {
+            window.location = "/pages/login.html";
+        }
+        rej(error);
+    })
+}
+
 function _getExchangeRates(res, rej) {
     _loadGetAjaxSetup();
 
@@ -465,7 +480,6 @@ function _getSale(res, rej, id) {
         rej(error);
     })
 }
-
 
 function _getSellers(res, rej) {
     _loadGetAjaxSetup();
